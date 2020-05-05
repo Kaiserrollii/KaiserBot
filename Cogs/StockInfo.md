@@ -33,6 +33,8 @@ Full listings:
 Checking listings from these DO require a suffix. Note that Alpha Vantage does not officially support these exchanges.
 Requesting data from them may be faulty/inaccurate. The suffix that corresponds to each market is listed below:
 
+<br>
+
 **TSX**:<br>
 - Suffix: `.TO`
 - Example: `k.stock AC.TO short`
