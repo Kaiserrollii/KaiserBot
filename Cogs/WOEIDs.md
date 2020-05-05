@@ -1,12 +1,12 @@
 The following is a list of all the [WOEID](https://en.wikipedia.org/wiki/WOEID)s Twitter supports.
-The k.twitter(graph) [Amount] [Location] command(s) will work with any of these locations (467 total). 
-When calling the command(s), DO NOT use the WOEID as the [Location] parameter; use the actual location itself (ex. Worldwide).
+The `k.twitter(graph) [Amount] [Location]` command(s) will work with any of these locations (467 total). 
+When calling the command(s), DO NOT use the WOEID as the `[Location]` parameter; use the actual location itself (ex. `Worldwide`).
 
-The [Location] parameter is not case sensitive because no one likes case sensitivity. However, you do have to get the spelling, 
-spacing, and other special characters (ex. Dallas-Ft. Worth) right.
+The `[Location]` parameter is not case sensitive because no one likes case sensitivity. However, you do have to get the spelling, 
+spacing, and other special characters (ex. `Dallas-Ft. Worth`) right.
 
 This list was formed by running api.trends_available and formatting it using the code below. 
-The loop stopped numerous times throughout due to characters such as ń, ó, Ú, etc. Yeah, I'm looking at you, POLAND. Mexico too.
+The loop stopped numerous times throughout due to characters such as `ń`, `ó`, `Ú`, etc. Yeah, I'm looking at you, POLAND. Mexico too.
 
 ```fout = open('WOEIDs.txt', 'w')
 for i in api.trends_available():
