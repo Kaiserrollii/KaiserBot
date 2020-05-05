@@ -15,7 +15,7 @@ Neither of these parameters are case sensitive (`AAPL` = `aapl`, `SHORT` = `shor
 
 **No suffix required**: NASDAQ, NYSE, S&P 500, AMEX, DOW
 
-Checking listings from these DO NOT require a suffix.
+Checking listings from these DOES NOT require a suffix.
 
 Example: `k.stock AAPL short`
 
@@ -30,7 +30,7 @@ Full listings:
 
 **Suffix required:** TSX, LSE, FTSE, DAX, SSE, MSX, BSE, B3, ASX, KRX, KOSDAQ
 
-Checking listings from these DO require a suffix. Note that Alpha Vantage does not officially support these exchanges.
+Checking listings from these DOES require a suffix. Note that Alpha Vantage does not officially support these exchanges.
 Requesting data from them may be faulty/inaccurate. The suffix that corresponds to each market is listed below:
 
 <br>
