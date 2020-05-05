@@ -1,5 +1,8 @@
-The `k.stock [Ticker] [Timeframe]` command supports stock data from NASDAQ, NYSE, S&P 500, AMEX, DOW, TSX, LSE, FTSE, DAX, SSE, MSX, BSE,
-B3, ASX, KRX, and KOSDAQ (probably more, but I have yet to check any others).
+The `k.stock [Ticker] [Timeframe]` command supports stock data from NASDAQ, NYSE, S&P 500, AMEX, DOW, TSX, LSE, FTSE, DAX, SSE, MSX, BSE, B3, ASX, KRX, and KOSDAQ (probably more, but I have yet to check any others).
+
+<br>
+
+The API used for this command, Alpha Vantage, only allows for 5 calls per minute and a maximum of 500 calls daily since I'm not a premium user. Please don't spam this command, and be patient if the graphs take a while to generate. If nothing is returned after ~30 seconds, it's safe to assume either the equity/timeframe you requested is not supported by the API, the 5 call limit has been reached, or there is a bug.
 
 <br><br>
 
