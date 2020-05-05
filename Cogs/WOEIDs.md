@@ -8,7 +8,8 @@ spacing, and other special characters (ex. `Dallas-Ft. Worth`) right.
 This list was formed by running api.trends_available and formatting it using the code below. 
 The loop stopped numerous times throughout due to characters such as `ń`, `ó`, `Ú`, etc. Yeah, I'm looking at you, POLAND. Mexico too.
 
-```fout = open('WOEIDs.txt', 'w')
+```
+fout = open('WOEIDs.txt', 'w')
 for i in api.trends_available():
     name = i['name']
     woeid = i['woeid']
