@@ -1,5 +1,5 @@
 The following is a list of all the [WOEID](https://en.wikipedia.org/wiki/WOEID)s Twitter supports.
-The `k.twitter(graph) [Amount] [Location]` command(s) will work with any of these locations (467 total). 
+The `k.twitter_trends [Amount] [Location]` and `k.twitter_graph [Amount] [Location]` command(s) will work with any of these locations (467 total). 
 When calling the command(s), DO NOT use the WOEID as the `[Location]` parameter; use the actual location itself (ex. `Worldwide`).
 
 The `[Location]` parameter is not case sensitive because no one likes case sensitivity. However, you do have to get the spelling, 
