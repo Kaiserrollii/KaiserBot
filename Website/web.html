@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang = 'en'>
+<head>
+  
+  <script src = 'script.js'></script>
+  <link href = 'style.css' rel = 'stylesheet' type = 'text/css'/>
+  <link href = 'https://fonts.googleapis.com/css2?family=Roboto:wght@100;300&display=swap' rel = 'stylesheet'>
+  <link href = 'https://fonts.googleapis.com/css2?family=Staatliches&display=swap' rel = 'stylesheet'>
+  <link href = 'https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap' rel = 'stylesheet'>
+  <link href = 'https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Great+Vibes&display=swap' rel = 'stylesheet'>
+  <link href = 'https://fonts.googleapis.com/css2?family=Courier+Prime&display=swap' rel = 'stylesheet'>
+  <link href = 'https://fonts.googleapis.com/css2?family=Ubuntu&display=swap' rel = 'stylesheet'>
+  <link rel = 'shortcut icon' type = 'image/x-icon' href = 'Favicon/favicon.ico'>
+  <link rel = 'stylesheet' href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>
+
+  <title>KaiserBot</title>
+
+  <meta charset = 'UTF-8'>
+  <meta name = 'viewport' content = 'width=device-width, initial-scale=1'>
+
+</head>
+
+<div id = 'sidenavbar' class = 'sidenav'>
+  <a href = 'javascript:void(0)' class = 'closebtn' onclick = 'closesidenavbar()'>&times;</a>
+  <a href = '#commands'>Commands</a>
+  <a href = '#inprogress'>In-Progress</a>
+  <a href = '#changelog'>Changelog</a>
+</div>
+
+<div id = 'main'>
+  <span style = 'font-size: 30px; cursor: pointer; position: fixed; top: 52px; left: 10px' onclick = 'opensidenavbar()'>&#9776; </span>
+
+  <body>
+
+    <div align = 'center'>
+      <img src = 'https://media.discordapp.net/attachments/630633322686578689/699425742752317490/KaiserBotcircular.png'
+      style = 'width: 300px; height: 300px'>
+    </div>
+
+    <h1 style = "font-family: 'Staatliches', cursive; font-size: 65px">KaiserBot</h1>
+    <a name = 'commands'><span style = 'font-size: 15px'><i class="fa fa-chevron-down" aria-hidden="true"></i></span></a>
+
+    <br>
+    <br>
+
+    <p style='font-size: 30px'><strong>Commands</strong></p>
+
+    <div align = 'center'>
+      <table style = 'font-size: 10px'>
+        <tr><td><div class = 'colourbox tableparameterscolour'></div></td>
+          <td>Parameters</td>
+        <td><div class = 'colourbox tablealiasescolour'></div></td>
+          <td>Aliases</td>
+        <td><div class = 'colourbox tablepermscolour'></div></td>
+          <td>Permissions</td>
+        <td style = 'padding-left: 6px; padding-right: 3px;'><i class='fa fa-commenting'></i></td>
+         <td>Taking Suggestions</td></tr>
+      </table>
+    </div>
+
+    <br>
+
+    <button onclick = 'All()' id = 'allbutton' title = 'View all commands'>All</button>
+    <button onclick = 'Data()' id = 'databutton' title = 'Search for data commands'>Data</button>
+    <button onclick = 'Games()' id = 'gamesbutton' title = 'Search for games commands'>Games</button>
+    <button onclick = 'Images()' id = 'imagesbutton' title = 'Search for images commands'>Images</button>
+    <button onclick = 'Math()' id = 'mathbutton' title = 'Search for math commands'>Math</button>
+    <button onclick = 'Moderation()' id = 'moderationbutton' title = 'Search for moderation commands'>Moderation</button>
+    <button onclick = 'Miscellaneous()' id = 'miscellaneousbutton' title = 'Search for miscellaneous commands'>Miscellaneous</button>
+
+    <br>
+    <br>
+
+    <div align = 'center'>
+      <input type = 'text' id = 'searchbutton' onkeyup = 'Search()' placeholder = 'Search for commands...' title = 'Type in a command name'> 
+      <p id = 'master'></p>
+    </div>
+
+    <script>
+    var MasterTable = "<table id = 'MasterTable'><tr>\
+    <th><div class='tabletitle'>All</div></th>\
+    <th><div class='tabletitle'>&#x200b;</div></th>\
+    <th><div class='tabletitle'>&#x200b;</div></th>\
+    <th><div class='tabletitle'>&#x200b;</div></th></tr>";
+
+        MasterTable += "<tr><td><div class = 'tablecommands'>k.advice <div class = 'tooltip'>[Question]\
+        <span class = 'tooltiptext'>Any type</div></span> <i class='fa fa-commenting'></i></div></td>";
+        MasterTable += "<td>Ask any question. Receive good advice.</td>";
+        MasterTable += "<td><div class = 'tablealiases'>k.question</div></td>";
+        MasterTable += '<td></td></tr>';
+
+        MasterTable += "<tr><td><div class = 'tablecommands'>k.area_ngon <div class = 'tooltip'>[n] [Radius]\
+        <span class = 'tooltiptext'>[n]: Positive integer<br>[Radius]: Positive number </div></span></div></td>";
+        MasterTable += "<td>Calculates the area of an n-sided regular polygon with the specified radius.</td>";
+        MasterTable += "<td><div class = 'tablealiases'>k.ngon<br>k.area</div></td>";
+        MasterTable += '<td></td></tr>';
+
+        MasterTable += "<tr><td><div class = 'tablecommands'>k.avatar <div class = 'tooltip'>[User]\
+        <span class = 'tooltiptext'>[User]: @ or ID<br>If empty, returns self</div></span></div></td>";
+        MasterTable += "<td>Returns the avatar of the specified user.</td>";
+        MasterTable += "<td><div class = 'tablealiases'>k.av<br>k.pfp<br>k.dp</div></td>";
+        MasterTable += '<td></td></tr>';
+
+        MasterTable += "<tr><td><div class = 'tablecommands'>k.ban <div class = 'tooltip'>[User]\
+        <span class = 'tooltiptext'>@ or ID</div></span></div></td>";
+        MasterTable += "<td>Bans the specified user.</td>";
+        MasterTable += "<td><div class = 'tablealiases'>k.CRIMINAL</div></td>";
+        MasterTable += "<td><div class = 'tableperms'>Ban Members</div></td></tr>";
+
+        MasterTable += "<tr><td><div class = 'tablecommands'>k.bmi <div class = 'tooltip'>[Height] [Weight]\
+        <span class = 'tooltiptext'>[Height]: Positive number (cm)<br>[Weight]: Positive number (kg)</div></span></div></td>";
+        MasterTable += "<td>Calculates BMI given height in cm and weight in kg.</td>";
+        MasterTable += "<td><div class = 'tablealiases'>k.BMI</div></td>";
+        MasterTable += '<td></td></tr>';
+
+        MasterTable += "<tr><td><div class = 'tablecommands'>k.boticon</div></td>";
+        MasterTable += "<td>Returns the KaiserBot icon.</td>";
+        MasterTable += "<td><div class = 'tablealiases'>k.bot_icon</div></td>";
+        MasterTable += '<td></td></tr>';
+
+        MasterTable += "<tr><td><div class = 'tablecommands'>k.choose <div class = 'tooltip'>[Choice 1]...[Choice n] \
+        <span class = 'tooltiptext'>[Choice n]: Any type</div></span></div></td>";
+        MasterTable += '<td>Makes a choice for you.</td>';
+        MasterTable += "<td><div class = 'tablealiases'>k.choice</div></td>";
+        MasterTable += '<td></td></tr>';
+
+        MasterTable += "<tr><td><div class = 'tablecommands'>k.cipher <div class = 'tooltip'>[Increment] [Message]\
+        <span class = 'tooltiptext'>[Increment]: Integer<br>[Message]: Any type</div></span></div></td>";
+        MasterTable += '<td>Encrypts a message by shifting each character by the specified increment.</td>';
+        MasterTable += "<td><div class = 'tablealiases'>k.encrypt</div></td>";
+        MasterTable += '<td></td></tr>';
+
+        MasterTable += "<tr><td><div class = 'tablecommands'>k.cleanse <div class = 'tooltip'>[Amount]\
+        <span class = 'tooltiptext'>Positive integer</div></span></div></td>";
+        MasterTable += "<td>Deletes the specified amount of messages.</td>";
+        MasterTable += "<td><div class = 'tablealiases'>k.purge<br>k.clean</div></td>";
+        MasterTable += "<td><div class = 'tableperms'>Manage Messages</div></td></tr>";
+
+        MasterTable += "<tr><td><div class = 'tablecommands'>k.cringe <i class='fa fa-commenting'></div></td>";
+        MasterTable += '<td>Returns something cringey.</td>';
+        MasterTable += "<td><div class = 'tablealiases'>k.yikes</div></td>";
+        MasterTable += '<td></td></tr>';
+
+        MasterTable += "<tr><td><div class = 'tablecommands'>k.define <div class = 'tooltip'>[Word]\
+        <span class = 'tooltiptext'>Valid noun, verb, adjective, and/or adverb</div></span></div></td>";
+        MasterTable += "<td>Retrieves definitions of the specified word.</td>";
+        MasterTable += "<td><div class = 'tablealiases'>k.def<br>k.word</div></td>";
+        MasterTable += '<td></td></tr>';
+
+        MasterTable += "<tr><td><div class = 'tablecommands'>k.derivative <div class = 'tooltip'>[Variable] [Function]\
+        <span class = 'tooltiptext'>[Variable]: Letter<br>[Function]: Valid function (follows BEDMAS)</div></span></div></td>";
+        MasterTable += "<td>Calculates the derivative of the function with respect to the given variable.</td>";
+        MasterTable += "<td><div class = 'tablealiases'>k.deriv<br>k.differentiate</div></td>";
+        MasterTable += '<td></td></tr>';
+
+        MasterTable += "<tr><td><div class = 'tablecommands'>k.dice <div class = 'tooltip'>[n]\
+        <span class = 'tooltiptext'>Positive integer</div></span></div></td>";
+        MasterTable += '<td>Rolls an n-sided die.</td>';
+        MasterTable += "<td><div class = 'tablealiases'>k.roll</div></td>";
+        MasterTable += '<td></td></tr>';
+
+        MasterTable += "<tr><td><div class = 'tablecommands'>k.evaluate <div class = 'tooltip'>[Expression]\
+        <span class = 'tooltiptext'>Valid expression (follows BEDMAS)</div></span></div></td>";
+        MasterTable += "<td>Evaluates/simplifies any mathematical expression. Supports multiple variables.</td>";
+        MasterTable += "<td><div class = 'tablealiases'>k.eval<br>k.simplify</div></td>";
+        MasterTable += '<td></td></tr>';
+
+        MasterTable += "<tr><td><div class = 'tablecommands'>k.expand <div class = 'tooltip'>[Expression]\
+        <span class = 'tooltiptext'>Valid expression (follows BEDMAS)</div></span></div></td>";
+        MasterTable += "<td>Expands any mathematical expression. Supports multiple variables.</td>";
+        MasterTable += "<td><div class = 'tablealiases'>k.exp</div></td>";
+        MasterTable += '<td></td></tr>';
+
+        MasterTable += "<tr><td><div class = 'tablecommands'>k.gcd <div class = 'tooltip'>[x] [y]\
+        <span class = 'tooltiptext'>[x]: Integer<br>[y]: Integer</div></span></div></td>";
+        MasterTable += "<td>Consumes two integers, x and y, and returns their GCD.</td>";
+        MasterTable += "<td><div class = 'tablealiases'>k.GCD</div></td>";
+        MasterTable += '<td></td></tr>';
+
+        MasterTable += "<tr><td><div class = 'tablecommands'>k.help</div></td>";
+        MasterTable += "<td>Returns a general help page for KaiserBot.</td>";
+        MasterTable += "<td><div class = 'tablealiases'>k.pabo</div></td>";
+        MasterTable += '<td></td></tr>';
+
+        MasterTable += "<tr><td><div class = 'tablecommands'>k.img_analyze <div class = 'tooltip'>[Link]\
+        <span class = 'tooltiptext'>[Link]: Valid image link</div></span></div></td>";
+        MasterTable += "<td>Returns an analysis of the specified image.</td>";
+        MasterTable += "<td><div class = 'tablealiases'>k.img_a</div></td>";
+        MasterTable += '<td></td></tr>';
+
+        MasterTable += "<tr><td><div class = 'tablecommands'>k.img_crop <div class = 'tooltip'>[Link] [Amount]\
+        <span class = 'tooltiptext'>[Link]: Valid image link<br>[Amount]: Positive integer less than half the image width/height\
+        </div></span></div></td>";
+        MasterTable += "<td>Returns a cropped version of the image with [amount] pixels removed from each side.</td>";
+        MasterTable += "<td><div class = 'tablealiases'>k.img_c</div></td>";
+        MasterTable += '<td></td></tr>';
+
+        MasterTable += "<tr><td><div class = 'tablecommands'>k.img_filter <div class = 'tooltip'>[Link] [Filter]\
+        <span class = 'tooltiptext'>[Link]: Valid image link<br>[Filter]: Valid filter (see k.img_filter_ex)</div></span></div></td>";
+        MasterTable += "<td>Returns the image with the specified filter applied.</td>";
+        MasterTable += "<td><div class = 'tablealiases'>k.img_f</div></td>";
+        MasterTable += '<td></td></tr>';
+
+        MasterTable += "<tr><td><div class = 'tablecommands'>k.img_superimpose <div class = 'tooltip'>[Link1] [Link2]\
+        <span class = 'tooltiptext'>[Link1]: Valid image link<br>[Link2]: Valid image link</div></span></div></td>";
+        MasterTable += "<td>Returns a superimposed version of the two specified images. Images may be of different sizes.</td>";
+        MasterTable += "<td><div class = 'tablealiases'>k.img_s</div></td>";
+        MasterTable += '<td></td></tr>';
+
+        MasterTable += "<tr><td><div class = 'tablecommands'>k.img_transform <div class = 'tooltip'>[Link] [Direction]\
+        <span class = 'tooltiptext'>[Link]: Valid image link<br>[Direction]: Vertical/v or horizontal/h</div></span></div></td>";
+        MasterTable += "<td>Returns a flipped version of the image according to the specified direction.</td>";
+        MasterTable += "<td><div class = 'tablealiases'>k.img_t</div></td>";
+        MasterTable += '<td></td></tr>';
+
+        MasterTable += "<tr><td><div class = 'tablecommands'>k.img_wasted <div class = 'tooltip'>[Link]\
+        <span class = 'tooltiptext'>[Link]: Valid image link</div></span></div></td>";
+        MasterTable += "<td>Returns a GTA V wasted version of the specified image.</td>";
+        MasterTable += "<td><div class = 'tablealiases'>k.img_w</div></td>";
+        MasterTable += '<td></td></tr>';
+
+        MasterTable += "<tr><td><div class = 'tablecommands'>k.integral <div class = 'tooltip'>[Variable] [Function]\
+        <span class = 'tooltiptext'>[Variable]: Letter<br>[Function]: Valid function (follows BEDMAS)</div></span></div></td>";
+        MasterTable += "<td>Calculates the indefinite integral of the function with respect to the given variable.</td>";
+        MasterTable += "<td><div class = 'tablealiases'>k.int<br>k.integrate</div></td>";
+        MasterTable += '<td></td></tr>';
+
+        MasterTable += "<tr><td><div class = 'tablecommands'>k.invite</div></td>";
+        MasterTable += "<td>Returns an invite link to Kaisercord.</td>";
+        MasterTable += "<td><div class = 'tablealiases'>k.inv</div></td>";
+        MasterTable += '<td></td></tr>';
+
+        MasterTable += "<tr><td><div class = 'tablecommands'>k.kick <div class = 'tooltip'>[User]\
+        <span class = 'tooltiptext'>@ or ID</div></span></div></td>";
+        MasterTable += "<td>Kicks the specified user.</td>";
+        MasterTable += "<td><div class = 'tablealiases'>k.sadbye</div></td>";
+        MasterTable += "<td><div class = 'tableperms'>Kick Members</div></td></tr>";
+
+        MasterTable += "<tr><td><div class = 'tablecommands'>k.limit <div class = 'tooltip'>[Variable] [Approaches] [Function]\
+        <span class = 'tooltiptext'>[Variable]: Letter<br>[Approaches]: 'inf' for infinity<br>[Function]: Valid function (follows BEDMAS)\
+        </div></span></div></td>";
+        MasterTable += "<td>Calculates the limit as the function approaches the specified value.</td>";
+        MasterTable += "<td><div class = 'tablealiases'>k.lim</div></td>";
+        MasterTable += '<td></td></tr>';
+
+        MasterTable += "<tr><td><div class = 'tablecommands'>k.mute <div class = 'tooltip'>[User]\
+        <span class = 'tooltiptext'>@ or ID</div></span></div></td>";
+        MasterTable += "<td>Mutes the specified user.</td>";
+        MasterTable += "<td><div class = 'tablealiases'>k.shh</div></td>";
+        MasterTable += "<td><div class = 'tableperms'>Mute Members</div></td></tr>";
+
+        MasterTable += "<tr><td><div class = 'tablecommands'>k.ping</div></td>";
+        MasterTable += "<td>Returns the bot's ping.</td>";
+        MasterTable += "<td><div class = 'tablealiases'>k.pong</div></td>";
+        MasterTable += '<td></td></tr>';
+
+        MasterTable += "<tr><td><div class = 'tablecommands'>k.pop <div class = 'tooltip'>[Query]\
+        <span class = 'tooltiptext'>Valid group/soloist on kprofiles</div></span></div></td>";
+        MasterTable += "<td>Retrieves info on any group or soloist.</td>";
+        MasterTable += "<td><div class = 'tablealiases'>k.profile</div></td>";
+        MasterTable += '<td></td></tr>';
+
+        MasterTable += "<tr><td><div class = 'tablecommands'>k.reddit_hot <div class = 'tooltip'>[Subreddit]\
+        <span class = 'tooltiptext'>Do <strong>not </strong>include 'r/'</div></span></div></td>";
+        MasterTable += '<td>Returns the current hot post from an SFW subreddit.</td>';
+        MasterTable += "<td><div class = 'tablealiases'>k.rh</div></td>";
+        MasterTable += '<td></td></tr>';
+
+        MasterTable += "<tr><td><div class = 'tablecommands'>k.reddit_top <div class = 'tooltip'>[Subreddit]\
+        <span class = 'tooltiptext'>Do <strong>not </strong>include 'r/'</div></span></div></td>";
+        MasterTable += '<td>Returns the all-time top post from an SFW subreddit.</td>';
+        MasterTable += "<td><div class = 'tablealiases'>k.rt</div></td>";
+        MasterTable += '<td></td></tr>';
+
+        MasterTable += "<tr><td><div class = 'tablecommands'>k.say <div class = 'tooltip'>[Channel] [Message]\
+        <span class = 'tooltiptext'>[Channel]: Valid channel<br>[Message]: Any type</div></span></div></td>";
+        MasterTable += "<td>Sends a message in the specified channel.</td>";
+        MasterTable += "<td><div class = 'tablealiases'>k.send</div></td>";
+        MasterTable += "<td><div class = 'tableperms'>Administrator</div></td></tr>";
+
+        MasterTable += "<tr><td><div class = 'tablecommands'>k.servericon</div></td>";
+        MasterTable += "<td>Returns the server icon.</td>";
+        MasterTable += "<td><div class = 'tablealiases'>k.server_icon</div></td>";
+        MasterTable += '<td></td></tr>';
+
+        MasterTable += "<tr><td><div class = 'tablecommands'>k.ship <div class = 'tooltip'>[1] [2]\
+        <span class = 'tooltiptext'>[1]: Any type<br>[2]: Any type</div></span> <i class='fa fa-commenting'></div></td>";
+        MasterTable += "<td>Ship any two things together and find out their compatibility, as well as recommended next steps.</td>";
+        MasterTable += "<td><div class = 'tablealiases'>k.compatibility</div></td>";
+        MasterTable += '<td></td></tr>';
+
+        MasterTable += "<tr><td><div class = 'tablecommands'>k.slowmode <div class = 'tooltip'>[Duration] [Units]\
+        <span class = 'tooltiptext'>[Duration]: Positive integer<br>[Units]: sec/min/h<br>Stop: [k.slowmode off]\
+        </div></span></div></td>";
+        MasterTable += "<td>Activates slowmode in the current channel according to the given duration.</td>";
+        MasterTable += "<td><div class = 'tablealiases'>k.slow<br>k.sm</div></td>";
+        MasterTable += "<td><div class = 'tableperms'>Manage Messages</div></td></tr>";
+
+        MasterTable += "<tr><td><div class = 'tablecommands'>k.spongebobify <div class = 'tooltip'>[Message]\
+        <span class = 'tooltiptext'>Any type</div></span></div></td>";
+        MasterTable += "<td>Returns a spongebobified version of the specified message.</td>";
+        MasterTable += "<td><div class = 'tablealiases'>k.copypasta</div></td>";
+        MasterTable += '<td></td></tr>';
+
+        MasterTable += "<tr><td><div class = 'tablecommands'>k.spongebobify2 <div class = 'tooltip'>[Message]\
+        <span class = 'tooltiptext'>Any type</div></span></div></td>";
+        MasterTable += "<td>Returns a scuffed spongebobified version of the specified message.</td>";
+        MasterTable += "<td><div class = 'tablealiases'>k.scuffed</div></td>";
+        MasterTable += '<td></td></tr>';
+
+        MasterTable += "<tr><td><div class = 'tablecommands'>k.stock <div class = 'tooltip'>[Ticker] [Timeframe]\
+        <span class = 'tooltiptext'>[Ticker]: Valid ticker symbol<br>[Timeframe]: s/m/l</div></span></div></td>";
+        MasterTable += "<td>Retrieves closing price data of the specified equity within the specified timeframe and presents a graphical \
+        representation of the data retrieved. \
+        <a href = 'https://github.com/Kaiserrollii/KaiserBot/blob/master/Cogs/StockInfo.md', target = '_blank', style = 'color: rgb(243, 136, 54)'>\
+        <strong>Documentation.</strong></a></td>";
+        MasterTable += "<td><div class = 'tablealiases'>k.stonks</div></td>";
+        MasterTable += '<td></td></tr>';
+
+        MasterTable += "<tr><td><div class = 'tablecommands'>k.translate <div class = 'tooltip'>[Start] [End] [Message]\
+        <span class = 'tooltiptext'>[Start]: Valid language code<br>[End]: Valid language code<br>[Message]: Any type</div></span></div></td>";
+        MasterTable += "<td>Translates the message according to the specified language codes.</td>";
+        MasterTable += "<td><div class = 'tablealiases'>k.tr</div></td>";
+        MasterTable += '<td></td></tr>';
+
+        MasterTable += "<tr><td><div class = 'tablecommands'>k.twitter_trends <div class = 'tooltip'>[Amount] [Location]\
+        <span class = 'tooltiptext'>[Amount]: Integer from 1-25<br>[Location]: Valid location</div></span></div></td>";
+        MasterTable += "<td>Retrieves the specified amount of trending topics on Twitter in the specified location. \
+        <a href = 'https://github.com/Kaiserrollii/KaiserBot/blob/master/Cogs/WOEIDs.md', target = '_blank', style = 'color: rgb(243, 136, 54)'>\
+        <strong>Documentation.</strong></a></td>";
+        MasterTable += "<td><div class = 'tablealiases'>k.twt</div></td>";
+        MasterTable += '<td></td></tr>';
+
+        MasterTable += "<tr><td><div class = 'tablecommands'>k.twitter_graph <div class = 'tooltip'>[Amount] [Location]\
+        <span class = 'tooltiptext'>[Amount]: Integer from 1-25<br>[Location]: Valid location</div></span></div></td>";
+        MasterTable += "<td>Retrieves the specified amount of trending topics on Twitter in the specified location and presents a graphical \
+        representation of the data retrieved. \
+        <a href = 'https://github.com/Kaiserrollii/KaiserBot/blob/master/Cogs/WOEIDs.md', target = '_blank', style = 'color: rgb(243, 136, 54)'>\
+        <strong>Documentation.</strong></a></td>";
+        MasterTable += "<td><div class = 'tablealiases'>k.twg</div></td>";
+        MasterTable += '<td></td></tr>';
+
+        MasterTable += "<tr><td><div class = 'tablecommands'>k.twitter_search <div class = 'tooltip'>[Query] [Category] [Timeframe]\
+        <span class = 'tooltiptext'>[Query]: Hashtag, single word, or multiple words. For multiple, add + between each.<br><br>\
+        [Category]: popular/p or recent/r. If recent, leave timeframe blank.<br><br>\
+        [Timeframe]: Integer between 0 - 7. Leave blank for recent.</div></span></div></td>";
+        MasterTable += '<td>Returns three tweets according to the specified query, category, and timeframe.</td>';
+        MasterTable += "<td><div class = 'tablealiases'>k.tws</div></td>";
+        MasterTable += '<td></td></tr>';
+
+        MasterTable += "<tr><td><div class = 'tablecommands'>k.unban <div class = 'tooltip'>[User]\
+        <span class = 'tooltiptext'>[Username][Tag]</div></span></div></td>";
+        MasterTable += "<td>Unbans the specified user.</td>";
+        MasterTable += "<td><div class = 'tablealiases'>k.reverseCRIMINAL</div></td>";
+        MasterTable += "<td><div class = 'tableperms'>Ban Members</div></td></tr>";
+
+        MasterTable += "<tr><td><div class = 'tablecommands'>k.unmute <div class = 'tooltip'>[User]\
+        <span class = 'tooltiptext'>@ or ID</div></span></div></td>";
+        MasterTable += "<td>Unmutes the specified user.</td>";
+        MasterTable += "<td><div class = 'tablealiases'>k.reverseshh</div></td>";
+        MasterTable += "<td><div class = 'tableperms'>Mute Members</div></td></tr>";
+
+        MasterTable += '</table>'
+
+        document.getElementById('master').innerHTML = MasterTable;
+    </script>
+
+    <p style = 'font-size: 11px'>
+      Attach "_ex" to the end of any command with parameters to see an example. For instance, <strong>k.choose_ex.</strong>
+    </p>
+
+    <div class = 'navbar'>
+      <a href = 'https://github.com/Kaiserrollii/KaiserBot' target = '_blank'>
+        <img src = 'https://cdn.discordapp.com/attachments/665437935088304132/703051597504053278/iu.png' width = '20' height = '20'>
+      </a>
+      <a href = 'https://discord.gg/kjuX5TZ' target = '_blank' class = 'glow'>Kaisercord</a>
+      <a href = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ' target = '_blank'>Patreon</a> 
+      <b><img src = 'https://media.discordapp.net/attachments/630633322686578689/699425742752317490/KaiserBotcircular.png' 
+        width = '20' height = '20'></b>
+    </div>
+
+    <button onclick = 'topFunction()' id = 'topbutton' title = 'Go to top'>⬆</button>
+
+    <script>
+    var button = document.getElementById('topbutton');
+    window.onscroll = function() {scrollFunction()};
+
+    function scrollFunction() {
+      if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+        button.style.display = 'block';
+      } else {
+        button.style.display = 'none';
+      }
+    }
+
+    function topFunction() {
+      document.body.scrollTop = 0;
+      document.documentElement.scrollTop = 0;
+    }
+    </script>
+
+    <p><a name = 'inprogress'>&#x200b;</a></p>
+    <br>
+
+    <h1>In-Progress</h1>
+    <p>What is currently being worked on in terms of larger-scale projects. Changelog will be updated once a task is complete.<br>
+    Suggest new ideas and report issues with old ones in #suggestions.<br></p>
+
+    <br>
+    <br>
+
+    <div style = 'padding-left: 80px; padding-right: 80px'>
+      <div class = 'row'>
+        <div class = 'column'>
+          <span style = "font-family: 'Staatliches', cursive; font-size: 40px">Music</span><br>
+          <img src = 'https://cdn.discordapp.com/attachments/665437935088304132/699169824353288222/music.png' style = 'width: 85%'>
+          <br><br>
+          <span style = 'font-size: 12px'>Basic music functionality.<br>
+            Plays anything YouTube has to offer.<br>
+            Supports files as well.</span>
+        </div>
+        <div class = 'column'>
+          <span style = "font-family: 'Bebas Neue', cursive; font-size: 38px">Levelling System</span><br>
+          <img src = 'https://cdn.discordapp.com/attachments/665437935088304132/699454529992654868/levellingsystem.png' style = 'width: 85%'>
+          <br><br>
+          <span style = 'font-size: 12px'>Watch as I struggle with databases.<br>
+            Track how much time you've wasted on Discord.<br>
+            Not sponsored by Red Velvet.</span>
+        </div>
+        <div class = 'column'>
+          <span style = "font-family: 'Great Vibes', cursive; font-size: 38px">Simple RPG</span><br>
+          <img src = 'https://cdn.discordapp.com/attachments/665437935088304132/699455826347294720/rpg.png' style = 'width: 85%'>
+          <br><br>
+          <span style = 'font-size: 12px'>Watch as I continue to struggle with databases.<br>
+            Maybe experience points or something.<br>
+            This is really still in the brainstorming stage.</span>
+        </div>
+      </div>
+    </div>
+
+    <br>
+    <p><a name = 'changelog'>&#x200b;</a></p>
+    <br>
+
+    <div style = 'padding-bottom: 80px'>
+
+      <h1>Changelog</h1>
+      <p>Updated whenever significant changes are made to the bot (see <a href = '#inprogress' style = 'color: rgb(243, 136, 54)'>
+        <strong>In-Progress</strong></a>). 
+        Small changes will be reflected in each update.<br>
+        Dates in DD/MM/YY format. Hover over each for more detailed descriptions.
+      </p>
+
+      <br>
+      <br>
+
+      <div class = 'changelog' style = 'width: 80%'>
+        <div class = 'changelogbox left'>
+          <div class = 'changelog_content'>
+            <h2>Development</h2>
+            <p style = 'text-align: left'>
+              <div class = 'tooltipchangelog'><strong>11/01/20:</strong><span class = 'tooltipchangelogtext tooltipchangelogleft'>
+                KaiserBot created<br>
+                I forgot the rest 
+              </span></div>&#x200b; Created<br><br>
+
+              ----------------------------- <strong>Busy with school + forgot to document</strong> -----------------------------<br><br>
+
+              <div class = 'tooltipchangelog'><strong>11/03/20:</strong><span class = 'tooltipchangelogtext tooltipchangelogleft'>
+                Changelog, finally
+                Background task cog<br>
+                Chat Revive background task<br>
+                Cringe command<br>
+                Icon command<br>
+                Updated help command
+              </span></div>&#x200b; Background tasks, more commands<br>
+              <div class = 'tooltipchangelog'><strong>12/03/20:</strong><span class = 'tooltipchangelogtext tooltipchangelogleft'>
+                Added additional cases to mute/unmute commands<br>
+              </span></div>&#x200b; Updated moderation commands<br>
+              <div class = 'tooltipchangelog'><strong>20/03/20:</strong><span class = 'tooltipchangelogtext tooltipchangelogleft'>
+                Math cog<br>
+                Dice command<br>
+                BMI command<br>
+                Area_ngon command
+              </span></div>&#x200b; Math cog, more commands<br>
+              <div class = 'tooltipchangelog'><strong>02/04/20:</strong><span class = 'tooltipchangelogtext tooltipchangelogleft'>
+                Cipher command<br>
+                Reddit commands<br>
+                Updated aliases<br>
+                Updated cringe command
+              </span></div>&#x200b; Updated aliases, games commands<br>
+              <div class = 'tooltipchangelog'><strong>03/04/20:</strong><span class = 'tooltipchangelogtext tooltipchangelogleft'>
+                Derivative command<br>
+                Integral command<br>
+                Limit command<br>
+              </span></div>&#x200b; Calculus commands<br>  
+              <div class = 'tooltipchangelog'><strong>10/04/20:</strong><span class = 'tooltipchangelogtext tooltipchangelogleft'>
+                Filtered out NSFW subreddits<br>
+              </span></div>&#x200b; Updated reddit commands<br>
+              <div class = 'tooltipchangelog'><strong>11/04/20:</strong><span class = 'tooltipchangelogtext tooltipchangelogleft'>
+                Fixed topnav bar<br>
+                Fixed footer<br>
+                Go to top button<br>
+                Command filter buttons<br>
+                Command search bar<br>
+                Glowing link
+              </span></div>&#x200b; Fixed bars, buttons, commands section<br>
+              <div class = 'tooltipchangelog'><strong>12/04/20:</strong><span class = 'tooltipchangelogtext tooltipchangelogleft'>
+                Shifted sidebar with links<br>
+                Favicon (locally)<br>
+                Additional filter tables<br>
+                In-progress side-by-side images<br>
+              </span></div>&#x200b; Sidebar, local links, in-progress images<br>
+              <div class = 'tooltipchangelog'><strong>13/04/20:</strong><span class = 'tooltipchangelogtext tooltipchangelogleft'>
+                Mastertable<br>
+                All filter button<br>
+                Updated font<br>
+                Progress bars with tooltips<br>
+                Updated fixed navbar to responsive<br>
+                Updated footer with image<br>
+                Changelog template<br>
+                W3 verification<br>
+                Updated in-progress images
+              </span></div>&#x200b; Filter tables, progress bars, updated fixed bars<br>
+              <div class = 'tooltipchangelog'><strong>14/04/20:</strong><span class = 'tooltipchangelogtext tooltipchangelogleft'>
+                Pre-release changelog<br>
+                Updated tooltip for cipher command
+              </span></div>&#x200b; Pre-release changelog, in-progress description<br>
+              <div class = 'tooltipchangelog'><strong>15/04/20:</strong><span class = 'tooltipchangelogtext tooltipchangelogleft'>
+                Darkmode CSS<br>
+                Darkmode button<br>
+                Updated top button
+              </span></div>&#x200b; Darkmode, updated buttons<br>
+              <div class = 'tooltipchangelog'><strong>19/04/20:</strong><span class = 'tooltipchangelogtext tooltipchangelogleft'>
+                Added tooltips to changelog<br>
+                Updated tooltips in filter tables<br>
+                Updated tooltip cursors<br>
+                Updated commands link
+              </span></div>&#x200b; Updated changelog, updated tooltips<br>
+              <div class = 'tooltipchangelog'><strong>20/04/20:</strong><span class = 'tooltipchangelogtext tooltipchangelogleft'>
+                Styled filter tables<br>
+                Down arrow function
+              </span></div>&#x200b; Updated tables, added function<br>
+              <div class = 'tooltipchangelog'><strong>21/04/20:</strong><span class = 'tooltipchangelogtext tooltipchangelogleft'>
+                Added border to bottom buttons
+              </span></div>&#x200b; Updated darkmode buttons<br>
+              <div class = 'tooltipchangelog'><strong>22/04/20:</strong><span class = 'tooltipchangelogtext tooltipchangelogleft'>
+                Choose command<br>
+                Say command<br>
+                Slowmode command<br>
+                Reply events<br>
+                Resolved markdown issues with calculus commands
+              </span></div>&#x200b; Added/updated games, math, moderation commands<br>
+              <div class = 'tooltipchangelog'><strong>23/04/20:</strong><span class = 'tooltipchangelogtext tooltipchangelogleft'>
+                Confirmation for kick/ban commands<br>
+                Darkmode compatible filter tables
+              </span></div>&#x200b; Updated moderation commands, updated darkmode<br>
+              <div class = 'tooltipchangelog'><strong>24/04/20:</strong><span class = 'tooltipchangelogtext tooltipchangelogleft'>
+                Added examples for commands<br>
+                Removed unnecessary commands<br>
+                Updated help command<br>
+                Merged commands cog<br>
+                Encrypted token and secret<br>
+                Added license<br>
+                Repl.it hosting setup<br>
+                Invite command
+              </span></div>&#x200b; Command examples, trimmed commands, 24/7 hosting<br>
+              <div class = 'tooltipchangelog'><strong>25/04/20:</strong><span class = 'tooltipchangelogtext tooltipchangelogleft'>
+                Ship command<br>
+                Updated mastertable
+              </span></div>&#x200b; Added games command, resolved darkmode issues<br>
+              <div class = 'tooltipchangelog'><strong>26/04/20:</strong><span class = 'tooltipchangelogtext tooltipchangelogleft'>
+                Updated tooltips<br>
+                Autorole on member join
+              </span></div>&#x200b; Updated changelog, autorole<br>
+              <div class = 'tooltipchangelog'><strong>28/04/20:</strong><span class = 'tooltipchangelogtext tooltipchangelogleft'>
+                Updated kick/ban commands<br>
+                Updated ship command<br>
+                Avatar command
+              </span></div>&#x200b; Updated/added commands<br>
+              <div class = 'tooltipchangelog'><strong>29/04/20:</strong><span class = 'tooltipchangelogtext tooltipchangelogleft'>
+                Updated math_ex commands<br>
+                Added consumes and returns documentation<br>
+                GCD command
+              </span></div>&#x200b; Added basic documentation, GCD command<br>
+              <div class = 'tooltipchangelog'><strong>02/05/20:</strong><span class = 'tooltipchangelogtext tooltipchangelogleft'>
+                Pop command<br>
+                Updated cipher command<br>
+                Updated background task<br>
+                Translate command
+              </span></div>&#x200b; Pop command, translating, updated commands<br>
+              <div class = 'tooltipchangelog'><strong>03/05/20:</strong><span class = 'tooltipchangelogtext tooltipchangelogleft'>
+                Twitter_trends command<br>
+                Twitter_graph command<br>
+                Updated kick/ban commands<br>
+              </span></div>&#x200b; Twitter commands, updated moderation commands<br>
+              <div class = 'tooltipchangelog'><strong>04/05/20:</strong><span class = 'tooltipchangelogtext tooltipchangelogleft'>
+                Stock command<br>
+                Define command<br>
+                Updated twt_ex and twg_ex commands<br>
+                Documented WOEIDs.md<br>
+                Documented StockInfo.md
+              </span></div>&#x200b; Stock command, define command, documentation<br>
+              <div class = 'tooltipchangelog'><strong>05/05/20:</strong><span class = 'tooltipchangelogtext tooltipchangelogleft'>
+                Twitter_search command<br>
+                Evaluate command<br>
+                Expand command<br>
+                Updated calculus commands<br>
+                Moved some commands to data cog<br>
+                Spongebobify command<br>
+                Spongebobify2 command
+              </span></div>&#x200b; More commands, data cog<br>
+              <div class = 'tooltipchangelog'><strong>06/05/20:</strong><span class = 'tooltipchangelogtext tooltipchangelogleft'>
+                Fixed a bug in the eval command<br>
+                Image cog<br>
+                Img_analysis command<br>
+                Img_crop command<br>
+                Img_transform command<br>
+                Img_filter command<br>
+                Img_superimpose command<br>
+                Img_wasted command
+              </span></div>&#x200b; Image commands<br>
+              <div class = 'tooltipchangelog'><strong>07/05/20:</strong><span class = 'tooltipchangelogtext tooltipchangelogleft'>
+                Fixed a bug in img_superimpose command
+              </span></div>&#x200b; Bug fixes
+            </p>
+          </div>
+        </div>
+        <div class = 'changelogbox right'>
+          <div class = 'changelog_content'>
+            <h2>1.0.0 - Initial Release</h2>
+            <p>
+              <i>07/05/20</i><br><br>
+              At long last, KaiserBot is joining Kaisercord!<br><br>
+              <strong>Features:</strong><br>
+              - Data, games, math, moderation, and miscellaneous commands<br>
+              - Welcome message, autorole, and chat reviver<br>
+              - Retrieve info about your favourite groups/soloists<br>
+              - Do calculus, manipulate images, translate phrases, and define words<br>
+              - Twitter trends/search data (with graphs!) from 467 different locations<br>
+              - Up to 20 years of stock market data from 17 different exchanges/indexes<br><br>
+              <strong>Coming Soon:</strong><br>
+              - New command category: Music
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <button class = 'darkmodebutton' onclick = 'darkmode()' title = 'Toggle darkmode'>💡</button>
+
+  </body>
+
+  <div class = 'footerbody'>
+    <p><a><img style = 'border: 0; width: 71px; height: 25px' src = 'https://jigsaw.w3.org/css-validator/images/vcss'></a></p>
+    <br>
+  </div>
+
+  <div class = 'footer'>
+    <p>Report issues & suggestions to Kaiserrollii#6698 
+      <img src = 'https://cdn.discordapp.com/attachments/630633322686578689/699426662265389086/Kaisercircular.png' width = '8' height = '7'>
+      Source code licensed by <a href = 'https://opensource.org/licenses/mit-license.php' style = 'color: rgb(243, 136, 54)',
+      target = '_blank'>MIT</a>
+    </p>
+  </div>
+
+</div>
+</html>
+
