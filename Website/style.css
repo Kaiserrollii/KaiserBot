@@ -177,6 +177,23 @@ body {
   border-bottom: transparent;
 }
 
+#DataTable {
+  border-collapse: collapse;
+  width: 75%;
+  border: transparent;
+  font-size: 18px;
+}
+
+#DataTable th, #DataTable td {
+  text-align: center;
+  padding: 12px;
+  background: transparent;
+}
+
+#DataTable tr {
+  border-bottom: transparent;
+}
+
 #GamesTable {
   border-collapse: collapse;
   width: 75%;
@@ -283,6 +300,25 @@ body {
   background: rgb(110, 109, 109);
 }
 
+#databutton {
+  display: inline-block;
+  padding: 0.3em 1.2em;
+  margin: 0 0.3em 0.3em 0;
+  border-radius: 2em;
+  box-sizing:  border-box;
+  text-decoration: none;
+  font-weight: 300;
+  color: #FFFFFF;
+  background: #333;
+  text-align: center;
+  transition:  all 0.2s;
+  cursor:  pointer;
+}
+
+#databutton:hover{
+  background: rgb(110, 109, 109);
+}
+
 #gamesbutton {
   display: inline-block;
   padding: 0.3em 1.2em;
@@ -299,6 +335,25 @@ body {
 }
 
 #gamesbutton:hover{
+  background: rgb(110, 109, 109);
+}
+
+#imagesbutton {
+  display: inline-block;
+  padding: 0.3em 1.2em;
+  margin: 0 0.3em 0.3em 0;
+  border-radius: 2em;
+  box-sizing:  border-box;
+  text-decoration: none;
+  font-weight: 300;
+  color: #FFFFFF;
+  background: #333;
+  text-align: center;
+  transition:  all 0.2s;
+  cursor:  pointer;
+}
+
+#imagesbutton:hover{
   background: rgb(110, 109, 109);
 }
 
