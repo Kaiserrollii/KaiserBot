@@ -14,7 +14,7 @@ Add `_ex` to the end of any command with parameters to see an example. For insta
 <br> 
 
 Features:
-- Games, math, moderation, and miscellaneous commands
+- Data, games, images, math, moderation, and miscellaneous commands
 - Welcome message, autorole, and chat reviver
 - Retrieve info about your favourite groups/soloists
 - Do calculus, manipulate images, translate phrases, and define words
@@ -25,7 +25,7 @@ Features:
 
 Links:
 
-- [Website](https://kaiserbotwebsite--kaiserrollii.repl.co/)
+- [Website](https://kaiserbotwebsite--kaiserrollii.repl.co/) (Use desktop Chrome/Firefox)
 
 - [Kaisercord](https://discord.gg/kjuX5TZ)
 
