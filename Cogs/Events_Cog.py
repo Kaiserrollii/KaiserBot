@@ -28,7 +28,8 @@ class Events_Cog(commands.Cog):
             and `k.help` will answer all your bot inquiries. :confetti_ball: Have fun, nerd.')
             embed.set_thumbnail(url = f'{member.avatar_url}')
             embed.set_author(name = f'Welcome to {member.guild.name}!', url = 'https://discord.gg/kjuX5TZ', icon_url = f'{member.avatar_url}')
-            embed.set_footer(text = f'Member #{len(list(member.guild.members))} | KaiserBot | {member.guild.name}', icon_url = f'{member.guild.icon_url}')
+            embed.set_footer(text = f'Member #{len(list(member.guild.members))} | KaiserBot | {member.guild.name}',
+            icon_url = 'https://i.imgur.com/bgneUkj.gifv')
             embed.timestamp = datetime.datetime.utcnow()
 
             await channel.send(embed = embed)
