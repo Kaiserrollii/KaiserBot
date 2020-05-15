@@ -133,7 +133,7 @@ class Moderation_Cog (commands.Cog):
                 embed.set_author(name = 'Kick Confirmation', icon_url = f'{member.avatar_url}')
                 embed.title = f'Please confirm kick for {member}.'
                 embed.set_footer(text = f'KaiserBot | {ctx.guild.name}',
-                icon_url = 'https://cdn.discordapp.com/attachments/630633322686578689/699425742752317490/KaiserBotcircular.png')
+                icon_url = 'https://i.imgur.com/CuNlLOP.png')
                 embed.timestamp = datetime.datetime.utcnow()
                 message = await ctx.send(embed = embed)
                 await message.add_reaction('✅')
@@ -185,7 +185,7 @@ class Moderation_Cog (commands.Cog):
                 embed.set_author(name = '⇽  C R I M I N A L', icon_url = f'{member.avatar_url}')
                 embed.title = f'Please confirm ban for {member}.'
                 embed.set_footer(text = f'KaiserBot | {ctx.guild.name}',
-                icon_url = 'https://cdn.discordapp.com/attachments/630633322686578689/699425742752317490/KaiserBotcircular.png')
+                icon_url = 'https://i.imgur.com/CuNlLOP.png')
                 embed.timestamp = datetime.datetime.utcnow()
                 message = await ctx.send(embed = embed)
                 await message.add_reaction('✅')
