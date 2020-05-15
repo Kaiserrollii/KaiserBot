@@ -41,7 +41,8 @@ class Games_Cog(commands.Cog):
                        'https://cdn.discordapp.com/attachments/623770537340174336/697975848090730556/9c54e90.png',
                        'https://twitter.com/baelkie/status/1173066011265949696',
                        'https://cdn.discordapp.com/attachments/623770537340174336/707742026728341594/IMG_1648.JPG',
-                       'https://cdn.discordapp.com/attachments/623770537340174336/707870719714918421/unknown.png']
+                       'https://cdn.discordapp.com/attachments/623770537340174336/707870719714918421/unknown.png',
+                       'https://cdn.discordapp.com/attachments/630633322686578689/708470605556613140/afzxwn0il7221.png']
                     
         await ctx.send(f'{random.choice(cringe_list)}')
 
@@ -64,7 +65,8 @@ class Games_Cog(commands.Cog):
                     'That is a dumb question.',
                     '_whoasked',
                     'Find someone to simp on.',
-                    'Ask Dr. Phil']
+                    'Ask Dr. Phil',
+                    'Ask Gabba']
 
         await ctx.send (f''':question:**Question:** {question}\n'''
                         f''':pencil:**Good Advice:** {random.choice (answer_list)}''')
@@ -145,7 +147,7 @@ class Games_Cog(commands.Cog):
         f'{random.choice(responses1)}')
         embed1.set_thumbnail(url = 'https://cdn.discordapp.com/attachments/665437935088304132/703702638184628325/unknown.png')
         embed1.set_footer(text = f'KaiserBot | {ctx.guild.name}',
-        icon_url = 'https://cdn.discordapp.com/attachments/630633322686578689/699425742752317490/KaiserBotcircular.png')
+        icon_url = f'{ctx.guild.icon_url}')
         embed1.timestamp = datetime.datetime.utcnow()
 
         embed2 = discord.Embed\
@@ -157,7 +159,7 @@ class Games_Cog(commands.Cog):
         f'{random.choice(responses2)}')
         embed2.set_thumbnail(url = 'https://cdn.discordapp.com/attachments/665437935088304132/703702638184628325/unknown.png')
         embed2.set_footer(text = f'KaiserBot | {ctx.guild.name}',
-        icon_url = 'https://cdn.discordapp.com/attachments/630633322686578689/699425742752317490/KaiserBotcircular.png')
+        icon_url = f'{ctx.guild.icon_url}')
         embed2.timestamp = datetime.datetime.utcnow()
         
         message = await ctx.send('*Calculating compatibility...*')
@@ -205,6 +207,68 @@ class Games_Cog(commands.Cog):
     @commands.command(aliases = ['Spongebobify2_ex', 'scuffed_ex', 'Scuffed_ex'])
     async def spongebobify2_ex(self, ctx):
         await ctx.send('```k.scuffed sai more like cry\n>>> sAAII MMorEE liKKEE cRRYY```')
+
+    # Consumes a str, message
+    # Returns an uwufied version of the specified message
+    @commands.command(aliases = ['Uwufy', 'uwufier', 'Uwufier', 'uwu', 'Uwu'])
+    async def uwufy(self, ctx, *, message):
+        wd = message.replace('r', 'w').replace('R', 'W').replace('l', 'w').replace('L', 'W')
+        punctuation = wd.replace('!', '!!!!! owo').replace('?', '?!??!!?')
+        emojis = punctuation.replace('❤️', '<3').replace('♥️', '<3').replace('💕', '<3 <3').replace('😊', '>w<')
+        no = emojis.replace('no', 'nyo').replace('No', 'Nyo')
+        uwu = no.replace('you', 'youwu').replace('You', 'Youwu')
+        await ctx.send(uwu)
+
+    @commands.command(aliases = ['Uwufy_ex', 'uwufier_ex', 'Uwufier_ex', 'uwu_ex', 'Uwu_ex'])
+    async def uwufy_ex(self, ctx):
+        await ctx.send("```k.uwufy gn everyone ❤️ remember to stay hydrated & please make sure youre washing your hands & staying clean of germs\
+ ~ 💕 Take care, we're half way through the week! Stay in there but remember I'm always here if you want someone to talk to about anything \
+:PepeLove: 😊 Take care and gave a great day/night! ♥️\n\n\
+>>> gn evewyone <3 wemembew to stay hydwated & pwease make suwe youwuwe washing youwuw hands & staying cwean of gewms ~ <3 <3 Take cawe, we'we \
+hawf way thwough the week!!!!! owo Stay in thewe but wemembew I'm awways hewe if youwu want someone to tawk to about anything :PepeWove: >w<\
+Take cawe and gave a gweat day/night!!!!! owo <3```")
+
+    # Consumes a str, message
+    # Returns a scrambled version of the specified message with a 15% chance of a word getting dropped
+    @commands.command(aliases = ['Cloutify', 'scramble', 'Scramble', 'jumble', 'Jumble'])
+    async def cloutify(self, ctx, *, message):
+        lst = message.strip().split(' ')
+        lst = list(filter(lambda x: (random.randint(1, 100) >= 15), lst))
+        random.shuffle(lst)
+        await ctx.send(' '.join(lst))
+
+    @commands.command(aliases = ['Cloutify_ex', 'scramble_ex', 'Scramble_ex', 'jumble_ex', 'Jumble_ex'])
+    async def cloutify_ex(self, ctx):
+        await ctx.send('```k.cloutifier Oasis do you have Korean fried chicken where you at\n>>> Oasis does where you at Korean fried Chicken```')
+
+    # Consumes question, which can be any type
+    # Returns a magic 8ball answer
+    @commands.command(aliases = ['Magic8Ball', 'magic', 'Magic'])
+    async def magic8ball(self, ctx, *, question):
+
+        answer_list = ['It is certain.',
+                       'Without a doubt.',
+                       'You may rely on it.',
+                       'Yes definitely.',
+                       'It is decidedly so.',
+                       'As the great bearer of wisdow, the almightly seeker of truth, *yes*.',
+                       'Most likely.',
+                       'YES.',
+                       'Outlook good.',
+                       'Signs point to yes.',
+                       "I'm busy right now. Ask me later.",
+                       "I would tell you now, but I don't think you can handle it.",
+                       'Ask again later.',
+                       'Cannot predict now.',
+                       'Concentrate and ask again.',
+                       "Don’t count on it.",
+                       'Outlook not so good.',
+                       'My sources say no.',
+                       'Very doubtful.',
+                       'My reply is no.']
+
+        await ctx.send (f''':question:**Question:** {question}\n'''
+                        f''':pencil:**Answer:** {random.choice (answer_list)}''')
 
 
 def setup(bot):
