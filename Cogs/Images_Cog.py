@@ -33,7 +33,7 @@ class Images_Cog(commands.Cog):
             embed.set_thumbnail(url = link)
             embed.add_field(name ='General information:', value = f'{img.format}, **{img.size[0]}** x **{img.size[1]}**, {img.mode}', inline = False)
             embed.set_footer(text = f'KaiserBot | {ctx.guild.name}',
-            icon_url = f'{ctx.guild.icon_url}')
+            icon_url = 'https://i.imgur.com/CuNlLOP.png')
             embed.timestamp = datetime.datetime.utcnow()
 
             await ctx.send(embed = embed)
@@ -68,7 +68,7 @@ class Images_Cog(commands.Cog):
                 description = f'Original: **{width}** x **{height}**\nCropped: **{width - amount * 2}** x **{height - amount * 2}**')
                 embed.set_thumbnail(url = link)
                 embed.set_footer(text = f'KaiserBot | {ctx.guild.name}',
-                icon_url = f'{ctx.guild.icon_url}')
+                icon_url = 'https://i.imgur.com/CuNlLOP.png')
                 embed.timestamp = datetime.datetime.utcnow()
                 embed.set_image(url = f'attachment://imgcrop.png')
 
@@ -114,7 +114,7 @@ k.img_crop https://cdn.discordapp.com/attachments/665437935088304132/70767945537
             embed = discord.Embed(title = 'Image Transform', color = discord.Colour(0xefe61), description = f'Transformation: **{direction}**')
             embed.set_thumbnail(url = link)
             embed.set_footer(text = f'KaiserBot | {ctx.guild.name}',
-            icon_url = f'{ctx.guild.icon_url}')
+            icon_url = 'https://i.imgur.com/CuNlLOP.png')
             embed.timestamp = datetime.datetime.utcnow()
             embed.set_image(url = f'attachment://imgtransform.png')
 
@@ -200,7 +200,7 @@ k.img_transform https://cdn.discordapp.com/attachments/665437935088304132/707679
             embed = discord.Embed(title = 'Image Filter', color = discord.Colour(0xefe61), description = f'Filter: **{filt}**')
             embed.set_thumbnail(url = link)
             embed.set_footer(text = f'KaiserBot | {ctx.guild.name}',
-            icon_url = f'{ctx.guild.icon_url}')
+            icon_url = 'https://i.imgur.com/CuNlLOP.png')
             embed.timestamp = datetime.datetime.utcnow()
             embed.set_image(url = f'attachment://imgfilter.png')
 
@@ -242,7 +242,7 @@ k.img_filter https://cdn.discordapp.com/attachments/665437935088304132/707679455
             embed = discord.Embed(title = 'Image Superimpose', color = discord.Colour(0xefe61),
             description = f'Image 1: {link1}\nImage 2: {link2}')
             embed.set_footer(text = f'KaiserBot | {ctx.guild.name}',
-            icon_url = f'{ctx.guild.icon_url}')
+            icon_url = 'https://i.imgur.com/CuNlLOP.png')
             embed.timestamp = datetime.datetime.utcnow()
             embed.set_image(url = f'attachment://imgsuperimpose.png')
 
@@ -308,7 +308,7 @@ https://cdn.discordapp.com/attachments/665437935088304132/707717245224222760/Kai
             embed = discord.Embed(title = 'Image Wastedifier', color = discord.Colour(0xefe61), description = '*Press F to pay respects.*')
             embed.set_thumbnail(url = link)
             embed.set_footer(text = f'KaiserBot | {ctx.guild.name}',
-            icon_url = f'{ctx.guild.icon_url}')
+            icon_url = 'https://i.imgur.com/CuNlLOP.png')
             embed.timestamp = datetime.datetime.utcnow()
             embed.set_image(url = f'attachment://imgwasted.png')
 
