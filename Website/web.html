@@ -118,6 +118,13 @@
         MasterTable += "<td><div class = 'tablealiases'>k.bot_icon</div></td>";
         MasterTable += '<td></td></tr>';
 
+        MasterTable += "<tr><td><div class = 'tablecommands'>k.charts <div class = 'tooltip'>[Artist]\
+        <span class = 'tooltiptext'>Valid artist on the charts (see k.chart_ex for full list)</div></span></div></td>";
+        MasterTable += '<td>Returns the chart positions for the specified artist. Supports Melon, Flo, Bugs, genie, soribada,\
+        and Naver. Artist name is case insensitive, but hangul names are often required.</td>';
+        MasterTable += "<td><div class = 'tablealiases'>k.chart</div></td>";
+        MasterTable += '<td></td></tr>';
+
         MasterTable += "<tr><td><div class = 'tablecommands'>k.choose <div class = 'tooltip'>[Choice 1]...[Choice n] \
         <span class = 'tooltiptext'>[Choice n]: Any type</div></span></div></td>";
         MasterTable += '<td>Makes a choice for you.</td>';
@@ -135,6 +142,12 @@
         MasterTable += "<td>Deletes the specified amount of messages.</td>";
         MasterTable += "<td><div class = 'tablealiases'>k.purge<br>k.clean</div></td>";
         MasterTable += "<td><div class = 'tableperms'>Manage Messages</div></td></tr>";
+
+        MasterTable += "<tr><td><div class = 'tablecommands'>k.cloutify <div class = 'tooltip'>[Message]\
+        <span class = 'tooltiptext'>Any type</div></span></div></td>";
+        MasterTable += '<td>Returns a cloutified version of the specified message.</td>';
+        MasterTable += "<td><div class = 'tablealiases'>k.scramble<br>k.jumble</div></td>";
+        MasterTable += '<td></td></tr>';
 
         MasterTable += "<tr><td><div class = 'tablecommands'>k.cringe <i class='fa fa-commenting'></div></td>";
         MasterTable += '<td>Returns something cringey.</td>';
@@ -243,11 +256,28 @@
         MasterTable += "<td><div class = 'tablealiases'>k.lim</div></td>";
         MasterTable += '<td></td></tr>';
 
+        MasterTable += "<tr><td><div class = 'tablecommands'>k.magic8ball <div class = 'tooltip'>[Question]\
+        <span class = 'tooltiptext'>Any type</div></span> <i class = 'fa fa-commenting'></div></td>";
+        MasterTable += "<td>Ask any question, and it'll give an answer. May not be a good one, though.</td>";
+        MasterTable += "<td><div class = 'tablealiases'>k.magic</div></td>";
+        MasterTable += '<td></td></tr>';
+
+        MasterTable += "<tr><td><div class = 'tablecommands'>k.melon <div class = 'tooltip'>[Timeframe]\
+        <span class = 'tooltiptext'>Valid timeframe (see k.melon_ex for full list)</div></span></div></td>";
+        MasterTable += '<td>Returns the top ten songs on the Melon charts according to the specified timeframe.</td>';
+        MasterTable += "<td><div class = 'tablealiases'>k.mel</div></td>";
+        MasterTable += '<td></td></tr>';
+
         MasterTable += "<tr><td><div class = 'tablecommands'>k.mute <div class = 'tooltip'>[User]\
         <span class = 'tooltiptext'>@ or ID</div></span></div></td>";
         MasterTable += "<td>Mutes the specified user.</td>";
         MasterTable += "<td><div class = 'tablealiases'>k.shh</div></td>";
         MasterTable += "<td><div class = 'tableperms'>Mute Members</div></td></tr>";
+
+        MasterTable += "<tr><td><div class = 'tablecommands'>k.patreon</div></td>";
+        MasterTable += "<td>Returns the bot's patreon's page.</td>";
+        MasterTable += "<td><div class = 'tablealiases'>k.simp</div></td>";
+        MasterTable += '<td></td></tr>';
 
         MasterTable += "<tr><td><div class = 'tablecommands'>k.ping</div></td>";
         MasterTable += "<td>Returns the bot's ping.</td>";
@@ -260,14 +290,28 @@
         MasterTable += "<td><div class = 'tablealiases'>k.profile</div></td>";
         MasterTable += '<td></td></tr>';
 
+        MasterTable += "<tr><td><div class = 'tablecommands'>k.reddit_controversial <div class = 'tooltip'>[Subreddit] [Timeframe]\
+        <span class = 'tooltiptext'>[Subreddit]: Do <strong>not </strong>include 'r/'<br>[Timeframe]: must be a valid timeframe\
+        (see k.rc_ex for full list)</div></span></div></td>";
+        MasterTable += '<td>Returns the most controversial post from an SFW subreddit according to the specified timeframe.</td>';
+        MasterTable += "<td><div class = 'tablealiases'>k.rc</div></td>";
+        MasterTable += '<td></td></tr>';
+
         MasterTable += "<tr><td><div class = 'tablecommands'>k.reddit_hot <div class = 'tooltip'>[Subreddit]\
         <span class = 'tooltiptext'>Do <strong>not </strong>include 'r/'</div></span></div></td>";
         MasterTable += '<td>Returns the current hot post from an SFW subreddit.</td>';
         MasterTable += "<td><div class = 'tablealiases'>k.rh</div></td>";
         MasterTable += '<td></td></tr>';
 
-        MasterTable += "<tr><td><div class = 'tablecommands'>k.reddit_top <div class = 'tooltip'>[Subreddit]\
+        MasterTable += "<tr><td><div class = 'tablecommands'>k.reddit_new <div class = 'tooltip'>[Subreddit]\
         <span class = 'tooltiptext'>Do <strong>not </strong>include 'r/'</div></span></div></td>";
+        MasterTable += '<td>Returns the newest post from an SFW subreddit.</td>';
+        MasterTable += "<td><div class = 'tablealiases'>k.rn</div></td>";
+        MasterTable += '<td></td></tr>';
+
+        MasterTable += "<tr><td><div class = 'tablecommands'>k.reddit_top <div class = 'tooltip'>[Subreddit] [Timeframe]\
+        <span class = 'tooltiptext'>[Subreddit]: Do <strong>not </strong>include 'r/'<br>[Timeframe]: must be a valid timeframe\
+        </div></span></div></td>";
         MasterTable += '<td>Returns the all-time top post from an SFW subreddit.</td>';
         MasterTable += "<td><div class = 'tablealiases'>k.rt</div></td>";
         MasterTable += '<td></td></tr>';
@@ -359,6 +403,17 @@
         MasterTable += "<td>Unmutes the specified user.</td>";
         MasterTable += "<td><div class = 'tablealiases'>k.reverseshh</div></td>";
         MasterTable += "<td><div class = 'tableperms'>Mute Members</div></td></tr>";
+
+        MasterTable += "<tr><td><div class = 'tablecommands'>k.uwufy <div class = 'tooltip'>[Message]\
+        <span class = 'tooltiptext'>Any type</div></span></div></td>";
+        MasterTable += '<td>Returns an uwufied version of the specified message.</td>';
+        MasterTable += "<td><div class = 'tablealiases'>k.uwu</div></td>";
+        MasterTable += '<td></td></tr>';
+
+        MasterTable += "<tr><td><div class = 'tablecommands'>k.website</div></td>";
+        MasterTable += "<td>Returns the bot's website.</td>";
+        MasterTable += "<td><div class = 'tablealiases'>k.site</div></td>";
+        MasterTable += '<td></td></tr>';
 
         MasterTable += '</table>'
 
@@ -636,8 +691,8 @@
               <i>08/05/20</i><br><br>
               At long last, KaiserBot is joining Kaisercord!<br><br>
               <strong>Features:</strong><br>
-              - Data, games, math, moderation, and miscellaneous commands<br>
-              - Welcome message, autorole, and chat reviver<br>
+              - Data, games, images, math, moderation, and miscellaneous commands<br>
+              - Welcome message, autorole, and roles system (Kaisercord only)<br>
               - Retrieve info about your favourite groups/soloists<br>
               - Do calculus, manipulate images, translate phrases, and define words<br>
               - Twitter trends/search data (with graphs!) from 467 different locations<br>
