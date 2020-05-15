@@ -32,14 +32,8 @@ class Images_Cog(commands.Cog):
             embed = discord.Embed(title = 'Image Analysis', color = discord.Colour(0xefe61))
             embed.set_thumbnail(url = link)
             embed.add_field(name ='General information:', value = f'{img.format}, **{img.size[0]}** x **{img.size[1]}**, {img.mode}', inline = False)
-            embed.add_field(name ='Minimum/maximum values per band:', value = str(ImageStat.Stat(img).extrema), inline = False)
-            embed.add_field(name ='Total pixels per band:', value = str(ImageStat.Stat(img).count), inline = False)
-            embed.add_field(name ='Average pixel level per band:', value = str(ImageStat.Stat(img).mean), inline = False)
-            embed.add_field(name ='Median pixel level per band:', value = str(ImageStat.Stat(img).median), inline = False)
-            embed.add_field(name ='Variance per band:', value = str(ImageStat.Stat(img).var), inline = False)
-            embed.add_field(name ='Standard deviation per band:', value = str(ImageStat.Stat(img).stddev), inline = False)
             embed.set_footer(text = f'KaiserBot | {ctx.guild.name}',
-            icon_url = 'https://cdn.discordapp.com/attachments/630633322686578689/699425742752317490/KaiserBotcircular.png')
+            icon_url = f'{ctx.guild.icon_url}')
             embed.timestamp = datetime.datetime.utcnow()
 
             await ctx.send(embed = embed)
@@ -74,7 +68,7 @@ class Images_Cog(commands.Cog):
                 description = f'Original: **{width}** x **{height}**\nCropped: **{width - amount * 2}** x **{height - amount * 2}**')
                 embed.set_thumbnail(url = link)
                 embed.set_footer(text = f'KaiserBot | {ctx.guild.name}',
-                icon_url = 'https://cdn.discordapp.com/attachments/630633322686578689/699425742752317490/KaiserBotcircular.png')
+                icon_url = f'{ctx.guild.icon_url}')
                 embed.timestamp = datetime.datetime.utcnow()
                 embed.set_image(url = f'attachment://imgcrop.png')
 
@@ -120,7 +114,7 @@ k.img_crop https://cdn.discordapp.com/attachments/665437935088304132/70767945537
             embed = discord.Embed(title = 'Image Transform', color = discord.Colour(0xefe61), description = f'Transformation: **{direction}**')
             embed.set_thumbnail(url = link)
             embed.set_footer(text = f'KaiserBot | {ctx.guild.name}',
-            icon_url = 'https://cdn.discordapp.com/attachments/630633322686578689/699425742752317490/KaiserBotcircular.png')
+            icon_url = f'{ctx.guild.icon_url}')
             embed.timestamp = datetime.datetime.utcnow()
             embed.set_image(url = f'attachment://imgtransform.png')
 
@@ -206,7 +200,7 @@ k.img_transform https://cdn.discordapp.com/attachments/665437935088304132/707679
             embed = discord.Embed(title = 'Image Filter', color = discord.Colour(0xefe61), description = f'Filter: **{filt}**')
             embed.set_thumbnail(url = link)
             embed.set_footer(text = f'KaiserBot | {ctx.guild.name}',
-            icon_url = 'https://cdn.discordapp.com/attachments/630633322686578689/699425742752317490/KaiserBotcircular.png')
+            icon_url = f'{ctx.guild.icon_url}')
             embed.timestamp = datetime.datetime.utcnow()
             embed.set_image(url = f'attachment://imgfilter.png')
 
@@ -248,7 +242,7 @@ k.img_filter https://cdn.discordapp.com/attachments/665437935088304132/707679455
             embed = discord.Embed(title = 'Image Superimpose', color = discord.Colour(0xefe61),
             description = f'Image 1: {link1}\nImage 2: {link2}')
             embed.set_footer(text = f'KaiserBot | {ctx.guild.name}',
-            icon_url = 'https://cdn.discordapp.com/attachments/630633322686578689/699425742752317490/KaiserBotcircular.png')
+            icon_url = f'{ctx.guild.icon_url}')
             embed.timestamp = datetime.datetime.utcnow()
             embed.set_image(url = f'attachment://imgsuperimpose.png')
 
@@ -314,12 +308,12 @@ https://cdn.discordapp.com/attachments/665437935088304132/707717245224222760/Kai
             embed = discord.Embed(title = 'Image Wastedifier', color = discord.Colour(0xefe61), description = '*Press F to pay respects.*')
             embed.set_thumbnail(url = link)
             embed.set_footer(text = f'KaiserBot | {ctx.guild.name}',
-            icon_url = 'https://cdn.discordapp.com/attachments/630633322686578689/699425742752317490/KaiserBotcircular.png')
+            icon_url = f'{ctx.guild.icon_url}')
             embed.timestamp = datetime.datetime.utcnow()
             embed.set_image(url = f'attachment://imgwasted.png')
 
             message = await ctx.send('*Wastedifying image...*')
-            await asyncio.sleep(5)
+            await asyncio.sleep(3)
             await message.edit(content = '*Wastedifying image... ✅*')
             await asyncio.sleep(1)
             embedmessage = await ctx.send(file = imgwasted, embed = embed)
