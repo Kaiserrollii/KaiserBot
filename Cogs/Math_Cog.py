@@ -21,17 +21,20 @@ class Math_Cog(commands.Cog):
     # Returns the evaluated expression 
     @commands.command(aliases = ['Evaluate', 'eval', 'Eval', 'simplify', 'Simplify'])
     async def evaluate(self, ctx, *, expression):
-        parseable = expression.replace('^', '**')
-        parsed = parse_expr(parseable)
-        evaluated = str(simplify(parsed)).replace('**', '^')
-        L = list(filter(lambda x: x.isalpha(), list(evaluated)))
-        if L == []:
-            evaluated = float(sum(Fraction(s) for s in evaluated.split()))
-            await ctx.send(f''':question:: Evaluate/simplify `{expression}` ?\n'''
-                       f':pencil:: `{evaluated}`')
+        parseable = expression.replace('^', '**').replace(' ', '')
+        if '/0' in parseable:
+            await ctx.send("You can't divide by zero, pabo. Try again.")
         else:
-            await ctx.send(f''':question:: Evaluate/simplify `{expression}` ?\n'''
-                       f':pencil:: `{evaluated}`')
+            parsed = parse_expr(parseable)
+            evaluated = str(simplify(parsed)).replace('**', '^')
+            L = list(filter(lambda x: x.isalpha(), list(evaluated)))
+            if L == []:
+                evaluated = float(sum(Fraction(s) for s in evaluated.split()))
+                await ctx.send(f''':question:: Evaluate/simplify `{expression}` ?\n'''
+                        f':pencil:: `{evaluated}`')
+            else:
+                await ctx.send(f''':question:: Evaluate/simplify `{expression}` ?\n'''
+                        f':pencil:: `{evaluated}`')
 
     @commands.command(aliases = ['Evaluate_ex', 'eval_ex', 'Eval_ex'])
     async def evaluate_ex(self, ctx):
@@ -91,16 +94,19 @@ class Math_Cog(commands.Cog):
     # Returns the encrypted message by shifting each character by the specified increment
     @commands.command(aliases = ['Cipher', 'encrypt', 'Encrypt'])
     async def cipher(self, ctx, increment, *, message):
-        increment = int(increment)
-        cipher = ''
-        for char in message: 
-            if char == ' ':
-                cipher = cipher + char
-            elif char.isupper():
-                cipher = cipher + chr((ord(char) + increment - 65) % 26 + 65)
-            else:
-                cipher = cipher + chr((ord(char) + increment - 97) % 26 + 97)
-        await ctx.send(cipher)
+        increment = int(round(float(increment)))
+        if increment == 0:
+            await ctx.send(message)
+        else:
+            cipher = ''
+            for char in message: 
+                if char == ' ':
+                    cipher = cipher + char
+                elif char.isupper():
+                    cipher = cipher + chr((ord(char) + increment - 65) % 26 + 65)
+                else:
+                    cipher = cipher + chr((ord(char) + increment - 97) % 26 + 97)
+            await ctx.send(cipher)
 
     @commands.command(aliases = ['Cipher_ex', 'encrypt_ex', 'Encrypt_ex'])
     async def cipher_ex(self, ctx):
