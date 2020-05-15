@@ -31,7 +31,7 @@ class Miscellaneous_Cog(commands.Cog):
 
         embed.set_thumbnail(url = 'https://cdn.discordapp.com/attachments/637561476051238912/650462638433632272/5274dbb7a4a02ebb643cab87efde7fe0.png')
         embed.set_footer(text = f'KaiserBot | {ctx.guild.name}',
-        icon_url = f'{ctx.guild.icon_url}')
+        icon_url = 'https://i.imgur.com/CuNlLOP.png')
         embed.timestamp = datetime.datetime.utcnow()
 
         await ctx.send(embed = embed)
@@ -68,7 +68,7 @@ class Miscellaneous_Cog(commands.Cog):
             embed1.set_author(name = f"{ctx.author.name}'s Avatar", icon_url = f'{ctx.author.avatar_url}')
             embed1.set_image(url = ctx.author.avatar_url)
             embed1.set_footer(text = f'KaiserBot | {ctx.guild.name}',
-            icon_url = f'{ctx.guild.icon_url}')
+            icon_url = 'https://i.imgur.com/CuNlLOP.png')
             embed1.timestamp = datetime.datetime.utcnow()
 
             await ctx.send(embed = embed1)
@@ -79,7 +79,7 @@ class Miscellaneous_Cog(commands.Cog):
             embed2.set_author(name = f"{member.name}'s Avatar", icon_url = f'{member.avatar_url}')
             embed2.set_image(url = member.avatar_url)
             embed2.set_footer(text = f'KaiserBot | {ctx.guild.name}',
-            icon_url = f'{ctx.guild.icon_url}')
+            icon_url = 'https://i.imgur.com/CuNlLOP.png')
             embed2.timestamp = datetime.datetime.utcnow()
 
             await ctx.send(embed = embed2)
