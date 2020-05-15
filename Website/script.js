@@ -7,10 +7,21 @@ var DataTable = "<table id = 'DataTable'><tr class = 'header'>\
 <th><div class = 'tabletitle'>&#x200b;</div></th>\
 <th><div class = 'tabletitle'>&#x200b;</div></th>";
 
+    DataTable += "<tr><td><div class = 'tablecommands'>k.charts <div class = 'tooltip'>[Artist]\
+    <span class = 'tooltiptext'>[Artist]: Valid artist on the charts (see k.chart_ex for full list)</div></span></div></td>";
+    DataTable += '<td>Returns the chart positions for the specified artist. Supports Melon, Flo, Bugs, genie, soribada,\
+    and Naver. Artist name is case insensitive, but hangul names are often required.</td>';
+    DataTable += "<td><div class = 'tablealiases'>k.chart</div></td></tr>";
+
     DataTable += "<tr><td><div class = 'tablecommands'>k.define <div class = 'tooltip'>[Word]\
     <span class = 'tooltiptext'>Valid noun, verb, adjective, and/or adverb</div></span></div></td>";
     DataTable += "<td>Retrieves definitions of the specified word.</td>";
     DataTable += "<td><div class = 'tablealiases'>k.def<br>k.word</div></td></tr>";
+
+    DataTable += "<tr><td><div class = 'tablecommands'>k.melon <div class = 'tooltip'>[Timeframe]\
+    <span class = 'tooltiptext'>Valid timeframe (see k.melon_ex for full list)</div></span></div></td>";
+    DataTable += '<td>Returns the top ten songs on the Melon charts according to the specified timeframe.</td>';
+    DataTable += "<td><div class = 'tablealiases'>k.mel</div></td></tr>";
 
     DataTable += "<tr><td><div class = 'tablecommands'>k.pop <div class = 'tooltip'>[Query]\
     <span class = 'tooltiptext'>Valid group/soloist on kprofiles</div></span></div></td>";
@@ -83,6 +94,11 @@ var GamesTable = "<table id = 'GamesTable'><tr class = 'header'>\
     GamesTable += '<td>Makes a choice for you.</td>';
     GamesTable += "<td><div class = 'tablealiases'>k.choice</div></td></tr>";
 
+    GamesTable += "<tr><td><div class = 'tablecommands'>k.cloutify <div class = 'tooltip'>[Message]\
+    <span class = 'tooltiptext'>Any type</div></span></div></td>";
+    GamesTable += '<td>Returns a cloutified version of the specified message.</td>';
+    GamesTable += "<td><div class = 'tablealiases'>k.scramble<br>k.jumble</div></td></tr>";
+
     GamesTable += "<tr><td><div class = 'tablecommands'>k.cringe <i class = 'fa fa-commenting'></td>";
     GamesTable += '<td>Returns something cringey.</td>';
     GamesTable += "<td><div class = 'tablealiases'>k.yikes</div></td></tr>";
@@ -91,6 +107,11 @@ var GamesTable = "<table id = 'GamesTable'><tr class = 'header'>\
     <span class = 'tooltiptext'>Positive integer</div></span></div></td>";
     GamesTable += '<td>Rolls an n-sided die.</td>';
     GamesTable += "<td><div class = 'tablealiases'>k.roll</div></td></tr>";
+
+    GamesTable += "<tr><td><div class = 'tablecommands'>k.magic8ball <div class = 'tooltip'>[Question]\
+    <span class = 'tooltiptext'>Any type</div></span> <i class = 'fa fa-commenting'></div></td>";
+    GamesTable += "<td>Ask any question, and it'll give an answer. May not be a good one, though.</td>";
+    GamesTable += "<td><div class = 'tablealiases'>k.magic</div></td></tr>";
 
     GamesTable += "<tr><td><div class = 'tablecommands'>k.ship <div class = 'tooltip'>[1] [2]\
     <span class = 'tooltiptext'>[1]: Any type<br>[2]: Any type</div></span> <i class = 'fa fa-commenting'></div></td>";
@@ -106,6 +127,11 @@ var GamesTable = "<table id = 'GamesTable'><tr class = 'header'>\
     <span class = 'tooltiptext'>Any type</div></span></div></td>";
     GamesTable += "<td>Returns a scuffed spongebobified version of the specified message.</td>";
     GamesTable += "<td><div class = 'tablealiases'>k.scuffed</div></td></tr>";
+
+    GamesTable += "<tr><td><div class = 'tablecommands'>k.uwufy <div class = 'tooltip'>[Message]\
+    <span class = 'tooltiptext'>Any type</div></span></div></td>";
+    GamesTable += '<td>Returns an uwufied version of the specified message.</td>';
+    GamesTable += "<td><div class = 'tablealiases'>k.uwu</div></td></tr>";
 
     GamesTable += '</table>';
 
@@ -299,6 +325,10 @@ var MiscellaneousTable = "<table id = 'MiscellaneousTable'><tr class = 'header'>
     MiscellaneousTable += '<td>Returns an invite link to Kaisercord.</td>';
     MiscellaneousTable += "<td><div class = 'tablealiases'>k.inv</div></td></tr>";
 
+    MiscellaneousTable += "<tr><td><div class = 'tablecommands'>k.patreon</div></td>";
+    MiscellaneousTable += "<td>Returns the bot's patreon's page.</td>";
+    MiscellaneousTable += "<td><div class = 'tablealiases'>k.simp</div></td></tr>";
+
     MiscellaneousTable += "<tr><td><div class = 'tablecommands'>k.ping</div></td>";
     MiscellaneousTable += "<td>Returns the bot's ping.</td>";
     MiscellaneousTable += "<td><div class = 'tablealiases'>k.pong</div></td></tr>";
@@ -306,6 +336,10 @@ var MiscellaneousTable = "<table id = 'MiscellaneousTable'><tr class = 'header'>
     MiscellaneousTable += "<tr><td><div class = 'tablecommands'>k.servericon</div></td>";
     MiscellaneousTable += '<td>Returns the server icon.</td>';
     MiscellaneousTable += "<td><div class = 'tablealiases'>k.server_icon</div></td></tr>";
+
+    MiscellaneousTable += "<tr><td><div class = 'tablecommands'>k.website</div></td>";
+    MiscellaneousTable += "<td>Returns the bot's website.</td>";
+    MiscellaneousTable += "<td><div class = 'tablealiases'>k.site</div></td></tr>";
 
     MiscellaneousTable += '</table>';
 
