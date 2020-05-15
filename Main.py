@@ -3,11 +3,13 @@ import os
 from discord.ext import commands 
 
 
-fin = open('Confidential.txt')
-line = fin.readline()
+fin = open('Saved/Confidential.txt')
+lines = list(map(lambda x: x.strip(), fin.readlines()))
 fin.close()
 
-Token = line.strip()
+Token = lines[0]
+password = lines[1]
+
 bot = commands.Bot(command_prefix = 'k.')
 bot.remove_command('help')
 
@@ -17,40 +19,34 @@ async def on_ready():
     activity = discord.Activity(name = 'Interstellar 🔭', type = discord.ActivityType.watching)
     return await bot.change_presence(activity = activity)
 
-# Will be tweaked if bot goes public
 @bot.command(aliases = ['Kill', 'end', 'End', 'exit', 'Exit'])
 async def kill(ctx):
-    if ctx.message.author.guild_permissions.administrator:
-        await ctx.send('**Status:** Offline\n**Background Tasks:** Offline\n**Commands:** Offline\n**Events:** Offline\n**Games:** Offline\
-        \n**Math:** Offline\n**Miscellaneous:** Offline\n**Moderation:** Offline\n')
+    if ctx.message.author.id == 496181635952148483:
+        await ctx.send('**Status:** Offline\n**Background Tasks:** Offline\n**Data:** Offline\n**Events:** Offline\n**Games:** Offline\
+        \n**Images:** Offline\n**Math:** Offline\n**Miscellaneous:** Offline\n**Moderation:** Offline\n')
         await bot.logout()
     else:
-        await ctx.send("You don't have the perms. GIT GUD.")
+        await ctx.send("Sorry, but you're not the bot owner.")
 
 @bot.command(aliases = ['Cog_online', 'cogon'])
 async def cog_online(ctx, extension):
-    if ctx.message.author.guild_permissions.administrator:
+    if ctx.message.author.id == 496181635952148483:
         bot.load_extension(f'cogs.{extension}')
         await ctx.send(f':white_check_mark: **{extension}** loaded.')
     else:
-        await ctx.send("You don't have the perms. GIT GUD.")
+        await ctx.send("Sorry, but you're not the bot owner.")
 
 @bot.command(aliases = ['Cog_offline', 'cogoff'])
 async def cog_offline(ctx, extension):
-    if ctx.message.author.guild_permissions.administrator:
+    if ctx.message.author.id == 496181635952148483:
         bot.unload_extension (f'cogs.{extension}')
         await ctx.send(f':x: **{extension}** unloaded.')
     else:
-        await ctx.send("You don't have the perms. GIT GUD.")
+        await ctx.send("Sorry, but you're not the bot owner.")
         
-for filename in os.listdir('./cogs'):
+for filename in os.listdir('./Cogs'):
     if filename.endswith('.py'):
-        bot.load_extension(f'cogs.{filename[:-3]}')
+        bot.load_extension(f'Cogs.{filename[:-3]}')
 
 
 bot.run(Token)
-
-
-
-
-
