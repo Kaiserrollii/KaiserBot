@@ -1,7 +1,6 @@
 import discord 
 import datetime 
-import sys 
-import sqlite3
+import asyncio
 from discord.ext import commands 
 
 
@@ -15,8 +14,6 @@ class Events_Cog(commands.Cog):
         print('Events: Online')
 
     # Welcome message, autorole, and bot DM when a new user joins Kaisercord
-    # Customizable welcome message and autorole when a new user joins any other server
-    # Not in use at the moment (for when bot begins joining other servers)
     @commands.Cog.listener()
     async def on_member_join(self, member): 
         if member.guild.id == 604539500223397898:
@@ -29,7 +26,7 @@ class Events_Cog(commands.Cog):
             Please check the **Starter Guide** linked above, as well as [Part Ⅱ](https://revelupsubs.com/level-up-project/) and\
             [Part Ⅲ](https://www.youtube.com/watch?v=kpsuuAAaG48). Afterwards, {channel2.mention} is here to help you get acquainted with the server,\
             and `k.help` will answer all your bot inquiries. :confetti_ball: Have fun, nerd.')
-            embed.set_thumbnail(url = 'https://cdn.discordapp.com/attachments/637561476051238912/650177237211021312/13f908c41de53de2b94ea89c0804b1b0.jpg')
+            embed.set_thumbnail(url = f'{member.avatar_url}')
             embed.set_author(name = f'Welcome to {member.guild.name}!', url = 'https://discord.gg/kjuX5TZ', icon_url = f'{member.avatar_url}')
             embed.set_footer(text = f'Member #{len(list(member.guild.members))} | KaiserBot | {member.guild.name}', icon_url = f'{member.guild.icon_url}')
             embed.timestamp = datetime.datetime.utcnow()
@@ -40,115 +37,106 @@ class Events_Cog(commands.Cog):
     https://kaiserbotwebsite--kaiserrollii.repl.co/")
 
         else:
-            db = sqlite3.connect('cogs/EventsDB.sqlite')
-            cursor = db.cursor()
-            cursor.execute(f'SELECT Channel_ID FROM EventsDB WHERE Guild_ID = {member.guild.id}')
-            channelID = cursor.fetchone()
-            if channelID is None:
-                return 
+            return
+
+    # Roles system for Kaisercord
+    @commands.Cog.listener()
+    async def on_message(self, message):
+        if message.author == self.bot.user:
+            return
+        else:
+            if message.author.guild.id == 604539500223397898:
+                roleschannel = self.bot.get_channel(id = 623772688711942144)
+                if message.channel == roleschannel:
+                    if message.content.startswith('+') or message.content.startswith('-'):
+                        rolename = message.content[1:]
+                        rolelist = list(map(lambda x: str(x), message.author.guild.roles))
+                        index = list(reversed(rolelist)).index('🔱 Commanders 🔱') + 1
+                        offlimits = list(reversed(rolelist))[:index]
+                        memberroles = list(map(lambda x: str(x), message.author.roles))
+                        if rolename in rolelist:
+                            if rolename in offlimits or rolename == '@everyone':
+                                noperms = await roleschannel.send('Nice try.')
+                                await asyncio.sleep(3)
+                                await message.delete()
+                                await noperms.delete()
+                            else:
+                                role = discord.utils.get(message.author.guild.roles, name = rolename)
+                                d = dict(role.permissions)
+                                roleperms = list(filter(lambda key: d[key], d))
+                                if 'administrator' in roleperms or 'mention_everyone' in roleperms or 'kick_members' in roleperms or\
+                                'ban_members' in roleperms or 'manage_channels' in roleperms or 'manage_guild' in roleperms or\
+                                'view_audit_log' in roleperms or 'priority_speaker' in roleperms or 'manage_messages' in roleperms or\
+                                'mute_members' in roleperms or 'deafen_members' in roleperms or 'move_members' in roleperms or\
+                                'manage_nicknames' in roleperms or 'manage_roles' in roleperms or 'manage_webhooks' in roleperms or\
+                                'manage_emojis' in roleperms:
+                                    if message.author.guild_permissions.ban_members == False:
+                                        noperms = await roleschannel.send('Nice try.')
+                                        await asyncio.sleep(3)
+                                        await message.delete()
+                                        await noperms.delete()
+                                    else:
+                                        if message.content.startswith('+'):
+                                            if rolename in memberroles:
+                                                existent = await roleschannel.send(f"You can't add a role you already have, pabo. Try something else.")
+                                                await asyncio.sleep(3)
+                                                await message.delete()
+                                                await existent.delete()
+                                            else:
+                                                await message.author.add_roles(role)
+                                                addmessage = await roleschannel.send(f'`{role}` added for {message.author}!')
+                                                await asyncio.sleep(3)
+                                                await message.delete()
+                                                await addmessage.delete()
+                                        elif message.content.startswith('-'):
+                                            if rolename not in memberroles:
+                                                nonexistent = await roleschannel.send(f"You can't remove a role you don't have, pabo. Try something else.")
+                                                await asyncio.sleep(3)
+                                                await message.delete()
+                                                await nonexistent.delete()
+                                            else:
+                                                await message.author.remove_roles(role)
+                                                removemessage = await roleschannel.send(f'`{role}` removed for {message.author}!')
+                                                await asyncio.sleep(3)
+                                                await message.delete()
+                                                await removemessage.delete()
+                                else:
+                                    if message.content.startswith('+'):
+                                        if rolename in memberroles:
+                                            existent = await roleschannel.send(f"You can't add a role you already have, pabo. Try something else.")
+                                            await asyncio.sleep(3)
+                                            await message.delete()
+                                            await existent.delete()
+                                        else:
+                                            await message.author.add_roles(role)
+                                            addmessage = await roleschannel.send(f'`{role}` added for {message.author}!')
+                                            await asyncio.sleep(3)
+                                            await message.delete()
+                                            await addmessage.delete()
+                                    elif message.content.startswith('-'):
+                                        if rolename not in memberroles:
+                                            nonexistent = await roleschannel.send(f"You can't remove a role you don't have, pabo. Try something else.")
+                                            await asyncio.sleep(3)
+                                            await message.delete()
+                                            await nonexistent.delete()
+                                        else:
+                                            await message.author.remove_roles(role)
+                                            removemessage = await roleschannel.send(f'`{role}` removed for {message.author}!')
+                                            await asyncio.sleep(3)
+                                            await message.delete()
+                                            await removemessage.delete()
+                        else:
+                            validmessage = await roleschannel.send(f'`{rolename}` is not a valid role, pabo. Try again, and remember that \
+role names are **CASE SENSITIVE**.')
+                            await asyncio.sleep(5)
+                            await message.delete()
+                            await validmessage.delete()
+                    else:
+                        await message.delete()
+                else:
+                    return
             else:
-                cursor.execute(f'SELECT WMessage FROM EventsDB WHERE Guild_ID = {member.guild.id}')
-                message = cursor.fetchone()
-                user = member.mention
-                server = member.guild
-                
-                embed = discord.Embed(title = 'New Member!', colour = discord.Colour(0xefe61), 
-                description = str(message[0]).format(user = user, server = server) + ' `k.help` for more information about KaiserBot.')
-                embed.set_author(name = member.name, icon_url = f'{member.avatar_url}')
-                embed.set_footer(text = f'Member #{len(list(member.guild.members))} | KaiserBot | {member.guild.name}',
-                icon_url = f'{member.guild.icon_url}')
-                embed.timestamp = datetime.datetime.utcnow()
-
-                cursor.execute(f'SELECT Autorole FROM EventsDB WHERE GUILD_ID = {member.guild.id}')
-                auto = cursor.fetchone()
-                autorole = discord.utils.get(member.guild.roles, name = auto[0])
-                await member.add_roles(autorole)
-
-                sendchannel = self.bot.get_channel(id = int(channelID[0]))
-                await sendchannel.send(embed = embed)
-
-    @commands.command(aliases = ['Set_channel', 'setchannel', 'Setchannel', 'set_c', 'Set_c'])
-    async def set_channel(self, ctx, channel: discord.TextChannel):
-        if ctx.message.author.guild_permissions.administrator:
-            db = sqlite3.connect('cogs/EventsDB.sqlite')
-            cursor = db.cursor()
-            cursor.execute(f'SELECT Channel_ID FROM EventsDB WHERE Guild_ID = {ctx.guild.id}')
-            channelID = cursor.fetchone()
-            if channelID is None:
-                sql = ('INSERT INTO EventsDB(Guild_ID, Channel_ID) VALUES(?, ?)')
-                val = (ctx.guild.id, channel.id)
-                await ctx.send(f'Welcome message channel set to {channel.mention}.')
-            elif channelID is not None:
-                sql = ('UPDATE EventsDB SET Channel_ID = ? WHERE Guild_ID = ?')
-                val = (channel.id, ctx.guild.id)
-                await ctx.send(f'Welcome message channel updated to {channel.mention}.')
-            cursor.execute(sql, val)
-            cursor.close()
-            db.commit()
-            db.close()
-        else:
-            await ctx.send("You don't have the perms. GIT GUD.")
-    
-    @commands.command(aliases = ['Set_channel_ex', 'setchannel_ex', 'Setchannel_ex', 'set_c_ex', 'Set_c_ex'])
-    async def set_channel_ex(self, ctx):
-        await ctx.send('```k.set_channel #the-lounge\n>>> [Welcome message will display in #the-lounge]```')
-
-    @commands.command(aliases = ['Set_welcome', 'setwelcome', 'Setwelcome', 'set_w', 'Set_w'])
-    async def set_welcome(self, ctx, *, message):
-        if ctx.message.author.guild_permissions.administrator:
-            db = sqlite3.connect('cogs/EventsDB.sqlite')
-            cursor = db.cursor()
-            cursor.execute(f'SELECT WMessage FROM EventsDB WHERE Guild_ID = {ctx.guild.id}')
-            welcome = cursor.fetchone()
-            if welcome is None:
-                sql = ('INSERT INTO EventsDB(Guild_ID, WMessage) VALUES(?, ?)')
-                val = (ctx.guild.id, message)
-                await ctx.send(f'Welcome message text set to: ```{message}```')
-            elif welcome is not None:
-                sql = ('UPDATE EventsDB SET WMessage = ? WHERE Guild_ID = ?')
-                val = (message, ctx.guild.id)
-                await ctx.send(f'Welcome message text updated to: ```{message}```')
-            cursor.execute(sql, val)
-            cursor.close()
-            db.commit()
-            db.close()
-        else:
-            await ctx.send("You don't have the perms. GIT GUD.")
-
-    @commands.command(aliases = ['Set_welcome_ex', 'setwelcome_ex', 'Setwelcome_ex', 'set_w_ex', 'Set_w_ex'])
-    async def set_welcome_ex(self, ctx):
-        await ctx.send('```{server}: mentions the server\n{user}: mentions the user\n\nk.set_welcome Please welcome {user}, the newest \
-member of {server}!\n>>> [Sets welcome message as "Plase welcome {user}, the newest member of {server}!"]```')
-
-    @commands.command(aliases = ['Set_autorole', 'setautorole', 'Setautorole', 'set_a', 'Set_a'])
-    async def set_autorole(self, ctx, *, role):
-        if ctx.message.author.guild_permissions.administrator:
-            if role in list(map(lambda x: str(x), ctx.guild.roles)):
-                db = sqlite3.connect('cogs/EventsDB.sqlite')
-                cursor = db.cursor()
-                cursor.execute(f'SELECT Autorole FROM EventsDB WHERE Guild_ID = {ctx.guild.id}')
-                autorole = cursor.fetchone()
-                if autorole is None:
-                    sql = ('INSERT INTO EventsDB(Guild_ID, Autorole) VALUES(?, ?)')
-                    val = (ctx.guild.id, role)
-                    await ctx.send(f'Autorole set to `{role}`.')
-                elif autorole is not None:
-                    sql = ('UPDATE EventsDB SET Autorole = ? WHERE Guild_ID = ?')
-                    val = (role, ctx.guild.id)
-                    await ctx.send(f'Autorole updated to `{role}`.')
-                cursor.execute(sql, val)
-                cursor.close()
-                db.commit()
-                db.close()
-            else:
-                await ctx.send("That's not a valid role in this server, pabo. Remember, the role is __**CASE SENSITIVE**__.")
-        else:
-            await ctx.send("You don't have the perms. GIT GUD.")
-
-    @commands.command(aliases = ['Set_autorole_ex', 'setautorole_ex', 'Setautorole_ex', 'set_a_ex', 'Set_a_ex'])
-    async def set_autorole_ex(self, ctx):
-        await ctx.send('```Role name is CASE SENSITIVE.\n\n\
-k.set_autorole Hydrated\n>>> [Sets Hydrated as the autorole]```')
+                return
 
 
 def setup (bot):
