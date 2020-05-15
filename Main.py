@@ -8,7 +8,6 @@ lines = list(map(lambda x: x.strip(), fin.readlines()))
 fin.close()
 
 Token = lines[0]
-password = lines[1]
 
 bot = commands.Bot(command_prefix = 'k.')
 bot.remove_command('help')
