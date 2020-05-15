@@ -15,7 +15,7 @@ Add `_ex` to the end of any command with parameters to see an example. For insta
 
 Features:
 - Data, games, images, math, moderation, and miscellaneous commands
-- Welcome message, autorole, and chat reviver
+- Welcome message, autorole, and roles system (Kaisercord only)
 - Retrieve info about your favourite groups/soloists
 - Do calculus, manipulate images, translate phrases, and define words
 - Twitter trends data (with graphs!) from 467 locations around the world
@@ -26,6 +26,8 @@ Features:
 Links:
 
 - [Website](https://kaiserbotwebsite--kaiserrollii.repl.co/) (Use desktop Chrome/Firefox)
+
+- [Patreon](https://www.patreon.com/kaiserbot)
 
 - [Kaisercord](https://discord.gg/kjuX5TZ)
 
