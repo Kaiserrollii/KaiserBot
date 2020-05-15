@@ -147,7 +147,7 @@ class Games_Cog(commands.Cog):
         f'{random.choice(responses1)}')
         embed1.set_thumbnail(url = 'https://cdn.discordapp.com/attachments/665437935088304132/703702638184628325/unknown.png')
         embed1.set_footer(text = f'KaiserBot | {ctx.guild.name}',
-        icon_url = f'{ctx.guild.icon_url}')
+        icon_url = 'https://i.imgur.com/CuNlLOP.png')
         embed1.timestamp = datetime.datetime.utcnow()
 
         embed2 = discord.Embed\
@@ -159,7 +159,7 @@ class Games_Cog(commands.Cog):
         f'{random.choice(responses2)}')
         embed2.set_thumbnail(url = 'https://cdn.discordapp.com/attachments/665437935088304132/703702638184628325/unknown.png')
         embed2.set_footer(text = f'KaiserBot | {ctx.guild.name}',
-        icon_url = f'{ctx.guild.icon_url}')
+        icon_url = 'https://i.imgur.com/CuNlLOP.png')
         embed2.timestamp = datetime.datetime.utcnow()
         
         message = await ctx.send('*Calculating compatibility...*')
