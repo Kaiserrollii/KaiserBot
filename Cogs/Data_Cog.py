@@ -58,7 +58,7 @@ class Data_Cog(commands.Cog):
         else:
             embed = discord.Embed(title = f"Define: {word.capitalize()}", colour = discord.Colour(0xefe61),
             description = '*N: Noun* | *V: Verb* | *Adj: Adjective* | *Adv: Adverb*')
-            embed.set_footer(text = f'KaiserBot | {ctx.guild.name}', icon_url = f'{ctx.guild.icon_url}')
+            embed.set_footer(text = f'KaiserBot | {ctx.guild.name}', icon_url = 'https://i.imgur.com/CuNlLOP.png')
             embed.timestamp = datetime.datetime.utcnow()
             
             d = pyd.meaning(word)
@@ -137,7 +137,7 @@ Language codes: https://py-googletrans.readthedocs.io/en/latest/#googletrans-lan
                         **Flair:** {submission.link_flair_text}\n**Score:** {submission.score} karma\n**Comments:** {submission.num_comments}')
                         embed.add_field(name = 'Contents:', value = f'{submission.selftext[:300]}...', inline = False)
                         embed.add_field(name = 'Link to post:', value = f'https://www.reddit.com{submission.permalink}', inline = False)
-                        embed.set_footer(text = f'KaiserBot | {ctx.guild.name}', icon_url = f'{ctx.guild.icon_url}')
+                        embed.set_footer(text = f'KaiserBot | {ctx.guild.name}', icon_url = 'https://i.imgur.com/CuNlLOP.png')
                         embed.timestamp = datetime.datetime.utcnow()
                         await ctx.send(embed = embed)
                         break
@@ -145,7 +145,7 @@ Language codes: https://py-googletrans.readthedocs.io/en/latest/#googletrans-lan
                         embed = discord.Embed(title = f'Current Hot Post from r/{subreddit}', color = discord.Colour(0xefe61),
                         description = f'```{submission.title}```\n**Submitted by:** u/{submission.author.name}\n**Date:** {date}\n\
                         **Flair:** {submission.link_flair_text}\n**Score:** {submission.score} karma\n**Comments:** {submission.num_comments}')
-                        embed.set_footer(text = f'KaiserBot | {ctx.guild.name}', icon_url = f'{ctx.guild.icon_url}')           
+                        embed.set_footer(text = f'KaiserBot | {ctx.guild.name}', icon_url = 'https://i.imgur.com/CuNlLOP.png')           
                         embed.timestamp = datetime.datetime.utcnow()
 
                         link = submission.url
@@ -216,7 +216,7 @@ Language codes: https://py-googletrans.readthedocs.io/en/latest/#googletrans-lan
                     **Flair:** {submission.link_flair_text}\n**Score:** {submission.score} karma\n**Comments:** {submission.num_comments}')
                     embed.add_field(name = 'Contents:', value = f'{submission.selftext[:300]}...', inline = False)
                     embed.add_field(name = 'Link to post:', value = f'https://www.reddit.com{submission.permalink}', inline = False)
-                    embed.set_footer(text = f'KaiserBot | {ctx.guild.name}', icon_url = f'{ctx.guild.icon_url}')
+                    embed.set_footer(text = f'KaiserBot | {ctx.guild.name}', icon_url = 'https://i.imgur.com/CuNlLOP.png')
                     embed.timestamp = datetime.datetime.utcnow()
                     await ctx.send(embed = embed)
                     break
@@ -224,7 +224,7 @@ Language codes: https://py-googletrans.readthedocs.io/en/latest/#googletrans-lan
                     embed = discord.Embed(title = f'Top Post from r/{subreddit} - {timeframe}', color = discord.Colour(0xefe61),
                     description = f'```{submission.title}```\n**Submitted by:** u/{submission.author.name}\n**Date:** {date}\n\
                     **Flair:** {submission.link_flair_text}\n**Score:** {submission.score} karma\n**Comments:** {submission.num_comments}')
-                    embed.set_footer(text = f'KaiserBot | {ctx.guild.name}', icon_url = f'{ctx.guild.icon_url}')           
+                    embed.set_footer(text = f'KaiserBot | {ctx.guild.name}', icon_url = 'https://i.imgur.com/CuNlLOP.png')           
                     embed.timestamp = datetime.datetime.utcnow()
 
                     link = submission.url
@@ -280,7 +280,7 @@ Language codes: https://py-googletrans.readthedocs.io/en/latest/#googletrans-lan
                     **Flair:** {submission.link_flair_text}\n**Score:** {submission.score} karma\n**Comments:** {submission.num_comments}')
                     embed.add_field(name = 'Contents:', value = f'{submission.selftext[:300]}...', inline = False)
                     embed.add_field(name = 'Link to post:', value = f'https://www.reddit.com{submission.permalink}', inline = False)
-                    embed.set_footer(text = f'KaiserBot | {ctx.guild.name}', icon_url = f'{ctx.guild.icon_url}')
+                    embed.set_footer(text = f'KaiserBot | {ctx.guild.name}', icon_url = 'https://i.imgur.com/CuNlLOP.png')
                     embed.timestamp = datetime.datetime.utcnow()
                     await ctx.send(embed = embed)
                     break
@@ -288,7 +288,7 @@ Language codes: https://py-googletrans.readthedocs.io/en/latest/#googletrans-lan
                     embed = discord.Embed(title = f'Newest Post from r/{subreddit}', color = discord.Colour(0xefe61),
                     description = f'```{submission.title}```\n**Submitted by:** u/{submission.author.name}\n**Date:** {date}\n\
                     **Flair:** {submission.link_flair_text}\n**Score:** {submission.score} karma\n**Comments:** {submission.num_comments}')
-                    embed.set_footer(text = f'KaiserBot | {ctx.guild.name}', icon_url = f'{ctx.guild.icon_url}')           
+                    embed.set_footer(text = f'KaiserBot | {ctx.guild.name}', icon_url = 'https://i.imgur.com/CuNlLOP.png')           
                     embed.timestamp = datetime.datetime.utcnow()
 
                     link = submission.url
@@ -357,7 +357,7 @@ Language codes: https://py-googletrans.readthedocs.io/en/latest/#googletrans-lan
                     **Flair:** {submission.link_flair_text}\n**Score:** {submission.score} karma\n**Comments:** {submission.num_comments}')
                     embed.add_field(name = 'Contents:', value = f'{submission.selftext[:300]}...', inline = False)
                     embed.add_field(name = 'Link to post:', value = f'https://www.reddit.com{submission.permalink}', inline = False)
-                    embed.set_footer(text = f'KaiserBot | {ctx.guild.name}', icon_url = f'{ctx.guild.icon_url}')
+                    embed.set_footer(text = f'KaiserBot | {ctx.guild.name}', icon_url = 'https://i.imgur.com/CuNlLOP.png')
                     embed.timestamp = datetime.datetime.utcnow()
                     await ctx.send(embed = embed)
                     break
@@ -365,7 +365,7 @@ Language codes: https://py-googletrans.readthedocs.io/en/latest/#googletrans-lan
                     embed = discord.Embed(title = f'Most Controversial Post from r/{subreddit} - {timeframe}', color = discord.Colour(0xefe61),
                     description = f'```{submission.title}```\n**Submitted by:** u/{submission.author.name}\n**Date:** {date}\n\
                     **Flair:** {submission.link_flair_text}\n**Score:** {submission.score} karma\n**Comments:** {submission.num_comments}')
-                    embed.set_footer(text = f'KaiserBot | {ctx.guild.name}', icon_url = f'{ctx.guild.icon_url}')           
+                    embed.set_footer(text = f'KaiserBot | {ctx.guild.name}', icon_url = 'https://i.imgur.com/CuNlLOP.png')           
                     embed.timestamp = datetime.datetime.utcnow()
 
                     link = submission.url
@@ -540,7 +540,7 @@ Full location list: <https://github.com/Kaiserrollii/KaiserBot/blob/master/Cogs/
                 await ctx.send('No graph is able to be shown. Use an amount > 1, pabo.')
             else:
                 embed = discord.Embed(colour = discord.Colour(0xefe61))
-                embed.set_footer(text = f'KaiserBot | {ctx.guild.name}', icon_url = f'{ctx.guild.icon_url}')
+                embed.set_footer(text = f'KaiserBot | {ctx.guild.name}', icon_url = 'https://i.imgur.com/CuNlLOP.png')
                 embed.timestamp = datetime.datetime.utcnow()
 
                 df.plot(kind = 'line', x ='Topic', y ='Tweet Volume', color = '#1DA1F2')
@@ -585,7 +585,7 @@ Full location list: <https://github.com/Kaiserrollii/KaiserBot/blob/master/Cogs/
             
             query = query.replace('+', ' ')
             embed = discord.Embed(title = f"Twitter Search: {query} - Recent", colour = discord.Colour(0xefe61))
-            embed.set_footer(text = f'KaiserBot | {ctx.guild.name}', icon_url = f'{ctx.guild.icon_url}')
+            embed.set_footer(text = f'KaiserBot | {ctx.guild.name}', icon_url = 'https://i.imgur.com/CuNlLOP.png')
             embed.timestamp = datetime.datetime.utcnow()
 
             for i in tweets:
@@ -618,7 +618,7 @@ Full location list: <https://github.com/Kaiserrollii/KaiserBot/blob/master/Cogs/
                 embed = discord.Embed(title = f"Twitter Search: {query} - {category.capitalize()} - Past {timeframe} days", 
                 colour = discord.Colour(0xefe61))
             
-            embed.set_footer(text = f'KaiserBot | {ctx.guild.name}', icon_url = f'{ctx.guild.icon_url}')
+            embed.set_footer(text = f'KaiserBot | {ctx.guild.name}', icon_url = 'https://i.imgur.com/CuNlLOP.png')
             embed.timestamp = datetime.datetime.utcnow()
 
             for i in tweets:
@@ -648,7 +648,7 @@ k.twitter_search Irene+Red+Velvet recent\n>>> [Recent tweets with the phrase 'Ir
         ts = TimeSeries(key = api_key, output_format= 'pandas')
 
         embed = discord.Embed(colour = discord.Colour(0xefe61))
-        embed.set_footer(text = f'KaiserBot | {ctx.guild.name}', icon_url = f'{ctx.guild.icon_url}')
+        embed.set_footer(text = f'KaiserBot | {ctx.guild.name}', icon_url = 'https://i.imgur.com/CuNlLOP.png')
         embed.timestamp = datetime.datetime.utcnow()
 
         if timeframe == 'short' or timeframe == 's':
@@ -759,7 +759,7 @@ To pull data from outside the USA, please read this info page: <https://github.c
             albums = soup.find_all('div', {'class': 'ellipsis rank03'})
 
             embed = discord.Embed(title = f'Melon - Top Tracks - {timeframe}', colour = discord.Colour(0xefe61))
-            embed.set_footer(text = f'KaiserBot | {ctx.guild.name}', icon_url = f'{ctx.guild.icon_url}')
+            embed.set_footer(text = f'KaiserBot | {ctx.guild.name}', icon_url = 'https://i.imgur.com/CuNlLOP.png')
             embed.timestamp = datetime.datetime.utcnow()
 
             index = 0
@@ -829,7 +829,7 @@ To pull data from outside the USA, please read this info page: <https://github.c
                 if artist == 'yg%20ent':
                     embed = discord.Embed(title = f'Top Charts - YG Entertainment - Realtime', colour = discord.Colour(0xefe61), description = link)
                     embed.set_thumbnail(url = 'https://yt3.ggpht.com/a-/AN66SAxq_HLhOdnNkazOJtXPOR6n6Od9WFxbcXk6cw=s900-mo-c-c0xffffffff-rj-k-no')
-                embed.set_footer(text = f'KaiserBot | {ctx.guild.name}', icon_url = f'{ctx.guild.icon_url}')
+                embed.set_footer(text = f'KaiserBot | {ctx.guild.name}', icon_url = 'https://i.imgur.com/CuNlLOP.png')
                 embed.timestamp = datetime.datetime.utcnow()
                 
                 if melontable is not None:
@@ -900,7 +900,7 @@ To pull data from outside the USA, please read this info page: <https://github.c
                 artistname = soup.find('div', {'class': 'data-artistname'})
                 embed = discord.Embed(title = f'Top Charts - {artistname.text} - Realtime', colour = discord.Colour(0xefe61), description = link)
                 embed.set_thumbnail(url = f'http://www.kpopchart.kr/{image}')
-                embed.set_footer(text = f'KaiserBot | {ctx.guild.name}', icon_url = f'{ctx.guild.icon_url}')
+                embed.set_footer(text = f'KaiserBot | {ctx.guild.name}', icon_url = 'https://i.imgur.com/CuNlLOP.png')
                 embed.timestamp = datetime.datetime.utcnow()
 
                 if melontable is not None:
