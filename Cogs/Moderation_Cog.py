@@ -27,7 +27,9 @@ class Moderation_Cog (commands.Cog):
                 await ctx.send("Enter a positive integer less than or equal to 100, pabo. Don't make me ask you again.")
             else:
                 deleted = await ctx.message.channel.purge(limit = (number + 1))
-                await ctx.send(f':wastebasket: {len(deleted) - 1} messages deleted by {ctx.message.author.name}.')
+                message = await ctx.send(f':wastebasket: {len(deleted) - 1} messages deleted by {ctx.message.author.name}.')
+                await asyncio.sleep(7)
+                await message.delete()
         else:
             await ctx.send("You don't have the perms. GIT GUD.") 
 
