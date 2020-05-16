@@ -30,7 +30,7 @@ async def kill(ctx):
 @bot.command(aliases = ['Cog_online', 'cogon'])
 async def cog_online(ctx, extension):
     if ctx.message.author.id == 496181635952148483:
-        bot.load_extension(f'cogs.{extension}')
+        bot.load_extension(f'Cogs.{extension}')
         await ctx.send(f':white_check_mark: **{extension}** loaded.')
     else:
         await ctx.send("Sorry, but you're not the bot owner.")
@@ -38,7 +38,7 @@ async def cog_online(ctx, extension):
 @bot.command(aliases = ['Cog_offline', 'cogoff'])
 async def cog_offline(ctx, extension):
     if ctx.message.author.id == 496181635952148483:
-        bot.unload_extension (f'cogs.{extension}')
+        bot.unload_extension (f'Cogs.{extension}')
         await ctx.send(f':x: **{extension}** unloaded.')
     else:
         await ctx.send("Sorry, but you're not the bot owner.")
