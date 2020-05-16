@@ -994,7 +994,10 @@ For a full list of artists currently on the charts, check the `All` dropdown men
 
     @commands.command(aliases = ['Youtube_top_ex', 'yt_ex', 'Yt_ex', 'YT_ex'])
     async def youtube_top_ex(self, ctx):
-        await ctx.send('```k.youtube_top Red Velvet\n>>>[Most relevant on YouTube of Red Velvet]```')
+        await ctx.send("```The k.youtube_search and k.youtube_top commands both have a maximum of 100 uses (combined) \
+per 24 hours due to API limitations. Thus, please don't spam these commands. If your query is valid and nothing gets returned after ~15 seconds, \
+it's safe to assume the API limit has been reached for the day. If you're unsure, you can ping me, and I'll check.\n\n\
+k.youtube_top Red Velvet\n>>>[Most relevant on YouTube of Red Velvet]```")
 
     # Consumes query, any type
     # Returns the top 5 relevant searches on YouTube of the specified query
@@ -1077,7 +1080,10 @@ For a full list of artists currently on the charts, check the `All` dropdown men
 
     @commands.command(aliases = ['Youtube_search_ex', 'yt_search_ex', 'Yt_search_ex', 'yts_ex', 'Yts_ex', 'YTS_ex'])
     async def youtube_search_ex(self, ctx):
-        await ctx.send('```k.youtube_search Red Velvet\n>>>[Top 5 videos/channels/playlists on YouTube of Red Velvet]```')
+        await ctx.send("```The k.youtube_search and k.youtube_top commands both have a maximum of 100 uses (combined) \
+per 24 hours due to API limitations. Thus, please don't spam these commands. If your query is valid and nothing gets returned after ~15 seconds, \
+it's safe to assume the API limit has been reached for the day. If you're unsure, you can ping me, and I'll check.\n\n\
+k.youtube_search Red Velvet\n>>>[Top 5 videos/channels/playlists on YouTube of Red Velvet]```")
 
 
 def setup(bot):
