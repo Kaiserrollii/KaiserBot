@@ -4,6 +4,7 @@ import asyncio
 import io
 import praw
 import requests
+import json
 import tweepy as tw
 import pandas as pd 
 import numpy as np
@@ -36,6 +37,8 @@ auth.set_access_token(access_token, access_token_secret)
 api = tw.API(auth, wait_on_rate_limit = True)
 
 api_key = lines[8]
+
+API_KEY = lines[9]
 
 plt.style.use('dark_background')
 
@@ -966,6 +969,115 @@ To pull data from outside the USA, please read this info page: <https://github.c
         await ctx.send('```k.charts Red Velvet\n>>> [Top charts containing Red Velvet tracks]\n\n\
 k.charts SM\n>>> [Top charts containing SM Entertainment tracks]```\n\
 For a full list of artists currently on the charts, check the `All` dropdown menu on <http://www.kpopchart.kr/?a=>')
+
+    # Consumes query, any type
+    # Returns the most relevant searche on YouTube of the specified query    
+    @commands.command(aliases = ['Youtube_top', 'yt', 'Yt', 'YT'])
+    async def youtube_top(self, ctx, *, query = None):
+        if query is None:
+            await ctx.send('You need to specify a query, pabo. Try again.')
+        else:
+            fquery = query.replace(' ', '+')
+            url = f'https://www.googleapis.com/youtube/v3/search?q={fquery}&key={API_KEY}'
+            request = requests.get(url)
+            d = json.loads(request.text)
+
+            for i in d['items']:
+                if i['id']['kind'] == 'youtube#channel' or i['id']['kind'] == 'youtube#playlist':
+                    continue
+                elif i['id']['kind'] == 'youtube#video':
+                    vidID = i['id']['videoId']
+                    await ctx.send(f'https://www.youtube.com/watch?v={vidID}')
+                    return
+                else:
+                    await ctx.send(f"Unable to search for `{query}`. Sorry, bro.")
+
+    @commands.command(aliases = ['Youtube_top_ex', 'yt_ex', 'Yt_ex', 'YT_ex'])
+    async def youtube_top_ex(self, ctx):
+        await ctx.send('```k.youtube_top Red Velvet\n>>>[Most relevant on YouTube of Red Velvet]```')
+
+    # Consumes query, any type
+    # Returns the top 5 relevant searches on YouTube of the specified query
+    @commands.command(aliases = ['Youtube_search', 'yt_search', 'Yt_search', 'yts', 'Yts', 'YTS'])
+    async def youtube_search(self, ctx, *, query = None):
+        if query is None:
+            await ctx.send('You need to specify a query, pabo. Try again.')
+        else:
+            fquery = query.replace(' ', '+')
+            url = f'https://www.googleapis.com/youtube/v3/search?part=snippet&q={fquery}&key={API_KEY}'
+            request = requests.get(url)
+            d = json.loads(request.text)
+            region = d['regionCode']
+
+            embed = discord.Embed(title = f"YouTube Search ({region}) - {query}", color = discord.Colour(0xefe61))
+            embed.set_footer(text = f'KaiserBot | {ctx.guild.name}', icon_url = 'https://i.imgur.com/CuNlLOP.png')           
+            embed.timestamp = datetime.datetime.utcnow()
+
+            L = []
+            for i in d['items']:
+                L.append(i['id']['kind'])
+
+            x = False
+            for i in d['items']:
+                if i['id']['kind'] == 'youtube#channel':
+                    channelID = i['id']['channelId']
+                    channellink = f"https://www.youtube.com/channel/{channelID}"
+                    channelthumbnail = i['snippet']['thumbnails']['default']['url']
+                    timestamp = i['snippet']['publishedAt'].replace('Z', '').replace('T', ' | ')
+                    channeltitle = i['snippet']['title'].replace("&#39;", "'").replace('&quot;', '"')
+                    
+                    if len(channeltitle) > 245:
+                        channeltitle = channeltitle[:245] + '...'
+
+                    if not x:
+                        embed.set_thumbnail(url = channelthumbnail)
+                        x = True
+
+                    embed.add_field(name = f'\u200b',
+                    value = f"**[{channeltitle}]({channellink})**\n**Created on:** {timestamp}", inline = False)
+                elif i['id']['kind'] == 'youtube#playlist':
+                    playlistIDfront = i['snippet']['thumbnails']['default']['url'].split('/')[4]
+                    playlistIDback = i['id']['playlistId']
+                    playlistlink = f"https://www.youtube.com/watch?v={playlistIDfront}&list={playlistIDback}"
+                    playlistthumbnail = i['snippet']['thumbnails']['default']['url']
+                    timestamp = i['snippet']['publishedAt'].replace('Z', '').replace('T', ' | ')
+                    channeltitle = i['snippet']['channelTitle']
+                    playlisttitle = i['snippet']['title'].replace("&#39;", "'").replace('&quot;', '"')
+
+                    if len(playlisttitle) > 245:
+                        playlisttitle = playlisttitle[:245] + '...'
+
+                    if 'youtube#channel' not in L and not x:
+                        embed.set_thumbnail(url = playlistthumbnail)
+                        x = True
+
+                    embed.add_field(name = f'\u200b',
+                    value = f"**[{playlisttitle}]({playlistlink})**\n**Uploaded to:** {channeltitle} on {timestamp}", inline = False)
+                elif i['id']['kind'] == 'youtube#video':
+                    vidID = i['id']['videoId']
+                    videolink = f'https://www.youtube.com/watch?v={vidID}'
+                    videothumbnail = i['snippet']['thumbnails']['default']['url']
+                    timestamp = i['snippet']['publishedAt'].replace('Z', '').replace('T', ' | ')
+                    channeltitle = i['snippet']['channelTitle']
+                    videotitle = i['snippet']['title'].replace("&#39;", "'").replace('&quot;', '"')
+
+                    if len(videotitle) > 245:
+                        videotitle = videotitle[:245] + '...'
+
+                    if 'youtube#channel' not in L and not x:
+                        embed.set_thumbnail(url = videothumbnail)
+                        x = True
+
+                    embed.add_field(name = f'\u200b',
+                    value = f"**[{videotitle}]({videolink})**\n**Uploaded to:** {channeltitle} on {timestamp}", inline = False)
+                else:
+                    continue
+
+            await ctx.send(embed = embed)
+
+    @commands.command(aliases = ['Youtube_search_ex', 'yt_search_ex', 'Yt_search_ex', 'yts_ex', 'Yts_ex', 'YTS_ex'])
+    async def youtube_search_ex(self, ctx):
+        await ctx.send('```k.youtube_search Red Velvet\n>>>[Top 5 videos/channels/playlists on YouTube of Red Velvet]```')
 
 
 def setup(bot):
