@@ -99,6 +99,8 @@ class Games_Cog(commands.Cog):
             await ctx.send('irene')
         elif 'Irene' in choices:
             await ctx.send('Irene')
+        elif 'lrene' in choices:
+            await ctx.send('Irene')
         else:
             await ctx.send(random.choice(choices))
 
