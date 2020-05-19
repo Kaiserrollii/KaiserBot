@@ -1085,7 +1085,7 @@ per 24 hours due to API limitations. Thus, please don't spam these commands. If 
 it's safe to assume the API limit has been reached for the day. If you're unsure, you can ping me, and I'll check.\n\n\
 k.youtube_search Red Velvet\n>>>[Top 5 videos/channels/playlists on YouTube of Red Velvet]```")
 
-    @commands.command('Wotd', 'daily_word', 'Daily_word', 'dailyword', 'Dailyword')
+    @commands.command(aliases = ['Wotd', 'daily_word', 'Daily_word', 'dailyword', 'Dailyword'])
     async def wotd(self, ctx):
         url = 'https://www.merriam-webster.com/word-of-the-day'
         request = requests.get(url)
