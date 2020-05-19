@@ -1085,6 +1085,36 @@ per 24 hours due to API limitations. Thus, please don't spam these commands. If 
 it's safe to assume the API limit has been reached for the day. If you're unsure, you can ping me, and I'll check.\n\n\
 k.youtube_search Red Velvet\n>>>[Top 5 videos/channels/playlists on YouTube of Red Velvet]```")
 
+    @commands.command('Wotd', 'daily_word', 'Daily_word', 'dailyword', 'Dailyword')
+    async def wotd(self, ctx):
+        url = 'https://www.merriam-webster.com/word-of-the-day'
+        request = requests.get(url)
+        soup = BeautifulSoup(request.text, 'html.parser')
+        word = soup.find('h1').text.capitalize()
+        wordtype = soup.find('span', {'class': 'main-attr'}).text.capitalize()
+        wordpronoun = soup.find('span', {'class': 'word-syllables'}).text
+        definition = soup.find('p').text[2:]
+        wotdexample = soup.find('div', {'class': 'wotd-examples'})
+        example = wotdexample.find('p').text
+        didyouknow = soup.find('div', {'class': 'left-content-box'})
+        moreinfo = didyouknow.find('p').text
+
+        if len(example) > 300:
+            example = example[:295] + '...'
+        if len(moreinfo) > 300:
+            moreinfo = moreinfo[:295] + '...'
+
+        embed = discord.Embed(title = f"Word of the Day: {word}", color = discord.Colour(0xefe61),
+        description = f"{wordtype} | ({wordpronoun})")
+        embed.add_field(name = 'Definition:', value = definition, inline = False)
+        embed.add_field(name = 'Example Sentence:', value = example, inline = False)
+        embed.add_field(name = 'Did You Know?', value = moreinfo, inline = False)
+        embed.add_field(name = 'Link:', value = url, inline = False)
+        embed.set_footer(text = f'KaiserBot | {ctx.guild.name}', icon_url = 'https://i.imgur.com/CuNlLOP.png')
+        embed.timestamp = datetime.datetime.utcnow()
+
+        await ctx.send(embed = embed)
+
 
 def setup(bot):
     bot.add_cog(Data_Cog(bot))
