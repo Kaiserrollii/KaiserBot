@@ -22,19 +22,18 @@ class Math_Cog(commands.Cog):
     @commands.command(aliases = ['Evaluate', 'eval', 'Eval', 'simplify', 'Simplify'])
     async def evaluate(self, ctx, *, expression):
         parseable = expression.replace('^', '**').replace(' ', '')
-        if '/0' in parseable:
-            await ctx.send("You can't divide by zero, pabo. Try again.")
+        parsed = parse_expr(parseable)
+        evaluated = str(simplify(parsed)).replace('**', '^')
+        L = list(filter(lambda x: x.isalpha(), list(evaluated)))
+        if L == []:
+            evaluated = float(sum(Fraction(s) for s in evaluated.split()))
+            await ctx.send(f''':question:: Evaluate/simplify `{expression}` ?\n'''
+                    f':pencil:: `{evaluated}`')
+        if evaluated == 'zoo' or evaluated == 'nan':
+            await ctx.send('Unable to evaluate/simplify. Try again, and this time with a proper expression, pabo.')
         else:
-            parsed = parse_expr(parseable)
-            evaluated = str(simplify(parsed)).replace('**', '^')
-            L = list(filter(lambda x: x.isalpha(), list(evaluated)))
-            if L == []:
-                evaluated = float(sum(Fraction(s) for s in evaluated.split()))
-                await ctx.send(f''':question:: Evaluate/simplify `{expression}` ?\n'''
-                        f':pencil:: `{evaluated}`')
-            else:
-                await ctx.send(f''':question:: Evaluate/simplify `{expression}` ?\n'''
-                        f':pencil:: `{evaluated}`')
+            await ctx.send(f''':question:: Evaluate/simplify `{expression}` ?\n'''
+                    f':pencil:: `{evaluated}`')
 
     @commands.command(aliases = ['Evaluate_ex', 'eval_ex', 'Eval_ex'])
     async def evaluate_ex(self, ctx):
