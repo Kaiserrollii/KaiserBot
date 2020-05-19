@@ -1115,6 +1115,36 @@ k.youtube_search Red Velvet\n>>>[Top 5 videos/channels/playlists on YouTube of R
 
         await ctx.send(embed = embed)
 
+    @commands.command(aliases = ['Urban', 'urb', 'Urb'])
+    async def urban(self, ctx, *, query):
+        fquery = query.replace(' ', '+')
+        url = f'https://www.urbandictionary.com/define.php?term={fquery}'
+        request = requests.get(url)
+        soup = BeautifulSoup(request.text, 'html.parser')
+        definition = soup.find('div', {'class': 'meaning'}).text
+        example = soup.find('div', {'class': 'example'}).text
+        contributor = soup.find('div', {'class': 'contributor'}).text
+        upvotes = soup.find('a', {'class': 'up'}).text
+        downvotes = soup.find('a', {'class': 'down'}).text
+
+        if len(definition) > 300:
+            definition = definition[:295] + '...'
+        if len(example) > 300:
+            example = example[:295] + '...'
+
+        embed = discord.Embed(title = f"Urban Dictionary - {query}", color = discord.Colour(0xefe61), description = f"*{contributor}*", url = url)
+        embed.add_field(name = 'Definition:', value = definition, inline = False)
+        embed.add_field(name = 'Example:', value = example, inline = False)
+        embed.add_field(name = 'Score:', value = f'👍 {upvotes} | 👎 {downvotes}', inline = False)
+        embed.set_footer(text = f'KaiserBot | {ctx.guild.name}', icon_url = 'https://i.imgur.com/CuNlLOP.png')
+        embed.timestamp = datetime.datetime.utcnow()
+
+        await ctx.send(embed = embed)
+
+    @commands.command(aliases = ['Urban_ex', 'urb_ex', 'Urb_ex'])
+    async def urban_ex(self, ctx):
+        await ctx.send('```k.urban bae joohyun\n>>> [Urban Dictionary definiton of bae joohyun]```')
+
 
 def setup(bot):
     bot.add_cog(Data_Cog(bot))
