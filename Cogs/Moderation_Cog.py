@@ -124,105 +124,107 @@ class Moderation_Cog (commands.Cog):
     # Returns a kick confirmation embed which times out after 60 seconds
     @commands.command(aliases = ['Kick', 'sadbye', 'Sadbye'])
     async def kick(self, ctx, member : discord.Member, *, reason = None):
-        embed = discord.Embed()
-        if ctx.message.author.guild_permissions.ban_members:
-            if member.guild_permissions.ban_members:
-                await ctx.send("Nice try. You can't kick fellow moderators, pabo.")
-            else:
-                embed.colour = 0xefe61
-                embed.set_thumbnail(url = 
-                'https://cdn.discordapp.com/attachments/665437935088304132/702985712877961266/681305365446787323.png')
-                embed.set_author(name = 'Kick Confirmation', icon_url = f'{member.avatar_url}')
-                embed.title = f'Please confirm kick for {member}.'
-                embed.set_footer(text = f'KaiserBot | {ctx.guild.name}',
-                icon_url = 'https://i.imgur.com/CuNlLOP.png')
-                embed.timestamp = datetime.datetime.utcnow()
-                message = await ctx.send(embed = embed)
-                await message.add_reaction('✅')
-                await message.add_reaction('❌')
-                try: 
-                    reaction, user = await self.bot.wait_for('reaction_add', timeout = 60, check = lambda reaction, 
-                    user: str(reaction.emoji) == '✅' and user == ctx.author or str(reaction.emoji) == '❌' and user == ctx.author)
-                except asyncio.TimeoutError:
-                    await message.clear_reactions()
-                    embed.set_author(name = 'Kick Confirmation', icon_url = f'{member.avatar_url}')
-                    embed.title = f'Attempt to kick {member} has timed out. Slowpoke.'
-                    embed.set_thumbnail(url = 
-                    'https://cdn.discordapp.com/attachments/665437935088304132/702991071382339755/494529930864885760.png')
-                    await message.edit(embed = embed)
-                else:
-                    if str(reaction.emoji) == '✅':
-                        await message.clear_reactions()
-                        embed.title = f'{member} has been kicked. :wave:'
-                        embed.description = f'Reason: {reason}'
-                        await message.edit(embed = embed)
-                        await member.kick(reason = reason)
-                    elif str(reaction.emoji) == '❌':
-                        await message.clear_reactions()
-                        embed.set_author(name = 'Kick Confirmation', icon_url = f'{member.avatar_url}')
-                        embed.title = 'Kick cancelled.'
-                        embed.description = 'Maybe next time.'
-                        await message.edit(embed = embed)
-                    else:
-                        await ctx.send('You need to react with either ✅ or ❌, pabo.')
-        else:
-            await ctx.send("You don't have the perms. GIT GUD.")
+        await ctx.send('Fixing some issues with the ban and kick commands. Disabled for the time being. Sorry!')
+    #     embed = discord.Embed()
+    #     if ctx.message.author.guild_permissions.ban_members:
+    #         if member.guild_permissions.ban_members:
+    #             await ctx.send("Nice try. You can't kick fellow moderators, pabo.")
+    #         else:
+    #             embed.colour = 0xefe61
+    #             embed.set_thumbnail(url = 
+    #             'https://cdn.discordapp.com/attachments/665437935088304132/702985712877961266/681305365446787323.png')
+    #             embed.set_author(name = 'Kick Confirmation', icon_url = f'{member.avatar_url}')
+    #             embed.title = f'Please confirm kick for {member}.'
+    #             embed.set_footer(text = f'KaiserBot | {ctx.guild.name}',
+    #             icon_url = 'https://i.imgur.com/CuNlLOP.png')
+    #             embed.timestamp = datetime.datetime.utcnow()
+    #             message = await ctx.send(embed = embed)
+    #             await message.add_reaction('✅')
+    #             await message.add_reaction('❌')
+    #             try: 
+    #                 reaction, user = await self.bot.wait_for('reaction_add', timeout = 60, check = lambda reaction, 
+    #                 user: str(reaction.emoji) == '✅' and user == ctx.author or str(reaction.emoji) == '❌' and user == ctx.author)
+    #             except asyncio.TimeoutError:
+    #                 await message.clear_reactions()
+    #                 embed.set_author(name = 'Kick Confirmation', icon_url = f'{member.avatar_url}')
+    #                 embed.title = f'Attempt to kick {member} has timed out. Slowpoke.'
+    #                 embed.set_thumbnail(url = 
+    #                 'https://cdn.discordapp.com/attachments/665437935088304132/702991071382339755/494529930864885760.png')
+    #                 await message.edit(embed = embed)
+    #             else:
+    #                 if str(reaction.emoji) == '✅':
+    #                     await message.clear_reactions()
+    #                     embed.title = f'{member} has been kicked. :wave:'
+    #                     embed.description = f'Reason: {reason}'
+    #                     await message.edit(embed = embed)
+    #                     await member.kick(reason = reason)
+    #                 elif str(reaction.emoji) == '❌':
+    #                     await message.clear_reactions()
+    #                     embed.set_author(name = 'Kick Confirmation', icon_url = f'{member.avatar_url}')
+    #                     embed.title = 'Kick cancelled.'
+    #                     embed.description = 'Maybe next time.'
+    #                     await message.edit(embed = embed)
+    #                 else:
+    #                     await ctx.send('You need to react with either ✅ or ❌, pabo.')
+    #     else:
+    #         await ctx.send("You don't have the perms. GIT GUD.")
 
-    @commands.command(aliases = ['Kick_ex', 'sadbye_ex', 'Sadbye_ex'])
-    async def kick_ex(self, ctx):
-        await ctx.send('```k.kick @Kaiserrollii\n>>> [Kick confirmation menu]\n\nk.kick 496181635952148483\n>>> [Kick confirmation menu]```')
+    # @commands.command(aliases = ['Kick_ex', 'sadbye_ex', 'Sadbye_ex'])
+    # async def kick_ex(self, ctx):
+    #     await ctx.send('```k.kick @Kaiserrollii\n>>> [Kick confirmation menu]\n\nk.kick 496181635952148483\n>>> [Kick confirmation menu]```')
 
     # Consumes a parameter, member, which must be a valid user
     # Returns a ban confirmation embed which times out after 60 seconds
     @commands.command(aliases = ['Ban', 'CRIMINAL', 'criminal', 'Criminal'])
     async def ban(self, ctx, member : discord.Member, *, reason = None):
-        embed = discord.Embed()
-        if ctx.message.author.guild_permissions.ban_members:
-            if member.guild_permissions.ban_members:
-                await ctx.send("Nice try. You can't ban fellow moderators, pabo.")
-            else:
-                embed.colour = 0xefe61
-                embed.set_thumbnail(url = 
-                'https://cdn.discordapp.com/attachments/665437935088304132/702985712877961266/681305365446787323.png')
-                embed.set_author(name = '⇽  C R I M I N A L', icon_url = f'{member.avatar_url}')
-                embed.title = f'Please confirm ban for {member}.'
-                embed.set_footer(text = f'KaiserBot | {ctx.guild.name}',
-                icon_url = 'https://i.imgur.com/CuNlLOP.png')
-                embed.timestamp = datetime.datetime.utcnow()
-                message = await ctx.send(embed = embed)
-                await message.add_reaction('✅')
-                await message.add_reaction('❌')
-                try: 
-                    reaction, user = await self.bot.wait_for('reaction_add', timeout = 60, check = lambda reaction, 
-                    user: str(reaction.emoji) == '✅' and user == ctx.author or str(reaction.emoji) == '❌' and user == ctx.author)
-                except asyncio.TimeoutError:
-                    await message.clear_reactions()
-                    embed.set_author(name = '⇽  Still  a  C R I M I N A L', icon_url = f'{member.avatar_url}')
-                    embed.title = f'Attempt to ban {member} has timed out. Slowpoke.'
-                    embed.set_thumbnail(url = 
-                    'https://cdn.discordapp.com/attachments/665437935088304132/702991071382339755/494529930864885760.png')
-                    await message.edit(embed = embed)
-                else:
-                    if str(reaction.emoji) == '✅':
-                        await message.clear_reactions()
-                        embed.title = f'{member} has been banned. :wave:'
-                        embed.description = f'Reason: {reason}'
-                        await message.edit(embed = embed)
-                        await member.ban(reason = reason)
-                    elif str(reaction.emoji) == '❌':
-                        await message.clear_reactions()
-                        embed.set_author(name = '⇽  Still  a  C R I M I N A L', icon_url = f'{member.avatar_url}')
-                        embed.title = 'Ban cancelled.'
-                        embed.description = 'Maybe next time.'
-                        await message.edit(embed = embed)
-                    else:
-                        await ctx.send('You need to react with either ✅ or ❌, pabo.')
-        else:
-            await ctx.send("You don't have the perms. GIT GUD.")
+        await ctx.send('Fixing some issues with the ban and kick commands. Disabled for the time being. Sorry!')
+    #     embed = discord.Embed()
+    #     if ctx.message.author.guild_permissions.ban_members:
+    #         if member.guild_permissions.ban_members:
+    #             await ctx.send("Nice try. You can't ban fellow moderators, pabo.")
+    #         else:
+    #             embed.colour = 0xefe61
+    #             embed.set_thumbnail(url = 
+    #             'https://cdn.discordapp.com/attachments/665437935088304132/702985712877961266/681305365446787323.png')
+    #             embed.set_author(name = '⇽  C R I M I N A L', icon_url = f'{member.avatar_url}')
+    #             embed.title = f'Please confirm ban for {member}.'
+    #             embed.set_footer(text = f'KaiserBot | {ctx.guild.name}',
+    #             icon_url = 'https://i.imgur.com/CuNlLOP.png')
+    #             embed.timestamp = datetime.datetime.utcnow()
+    #             message = await ctx.send(embed = embed)
+    #             await message.add_reaction('✅')
+    #             await message.add_reaction('❌')
+    #             try: 
+    #                 reaction, user = await self.bot.wait_for('reaction_add', timeout = 60, check = lambda reaction, 
+    #                 user: str(reaction.emoji) == '✅' and user == ctx.author or str(reaction.emoji) == '❌' and user == ctx.author)
+    #             except asyncio.TimeoutError:
+    #                 await message.clear_reactions()
+    #                 embed.set_author(name = '⇽  Still  a  C R I M I N A L', icon_url = f'{member.avatar_url}')
+    #                 embed.title = f'Attempt to ban {member} has timed out. Slowpoke.'
+    #                 embed.set_thumbnail(url = 
+    #                 'https://cdn.discordapp.com/attachments/665437935088304132/702991071382339755/494529930864885760.png')
+    #                 await message.edit(embed = embed)
+    #             else:
+    #                 if str(reaction.emoji) == '✅':
+    #                     await message.clear_reactions()
+    #                     embed.title = f'{member} has been banned. :wave:'
+    #                     embed.description = f'Reason: {reason}'
+    #                     await message.edit(embed = embed)
+    #                     await member.ban(reason = reason)
+    #                 elif str(reaction.emoji) == '❌':
+    #                     await message.clear_reactions()
+    #                     embed.set_author(name = '⇽  Still  a  C R I M I N A L', icon_url = f'{member.avatar_url}')
+    #                     embed.title = 'Ban cancelled.'
+    #                     embed.description = 'Maybe next time.'
+    #                     await message.edit(embed = embed)
+    #                 else:
+    #                     await ctx.send('You need to react with either ✅ or ❌, pabo.')
+    #     else:
+    #         await ctx.send("You don't have the perms. GIT GUD.")
 
-    @commands.command(aliases = ['Ban_ex', 'CRIMINAL_ex', 'criminal_ex', 'Criminal_ex'])
-    async def ban_ex(self, ctx):
-        await ctx.send('```k.ban @Kaiserrollii\n>>> [Ban confirmation menu]\n\nk.ban 496181635952148483\n>>> [Ban confirmation menu]```')
+    # @commands.command(aliases = ['Ban_ex', 'CRIMINAL_ex', 'criminal_ex', 'Criminal_ex'])
+    # async def ban_ex(self, ctx):
+    #     await ctx.send('```k.ban @Kaiserrollii\n>>> [Ban confirmation menu]\n\nk.ban 496181635952148483\n>>> [Ban confirmation menu]```')
 
     # Consumes a parameter, member, which consists of username + tag
     # Unbans the specified member
