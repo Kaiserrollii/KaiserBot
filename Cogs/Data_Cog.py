@@ -1144,6 +1144,8 @@ k.youtube_search Red Velvet\n>>>[Top 5 videos/channels/playlists on YouTube of R
     async def urban_ex(self, ctx):
         await ctx.send('```k.urban bae joohyun\n>>> [Urban Dictionary definiton of bae joohyun]```')
 
+    # Consumes query, a string 
+    # Returns the novel that is the closest match to the specified query
     @commands.command(aliases = ['Book'])
     async def book(self, ctx, *, query):
         fquery = query.replace(' ', '%20').replace("'", '%27').replace('"', '%22').replace('?', '%3F').replace(',', '%2C')
@@ -1164,7 +1166,7 @@ k.youtube_search Red Velvet\n>>>[Top 5 videos/channels/playlists on YouTube of R
                 author = 'N/A'
                 publisher = 'N/A'
                 date = 'N/A'
-                thumbnail = None
+                thumbnail = 'https://books.google.ca/googlebooks/images/no_cover_thumb.gif'
                 summary = 'N/A'
                 pagecount = 'N/A'
                 rating = '-'
@@ -1178,7 +1180,7 @@ k.youtube_search Red Velvet\n>>>[Top 5 videos/channels/playlists on YouTube of R
                     publisher = book['publisher']
                 if 'publishedDate' in bookkeys:
                     date = book['publishedDate']
-                if 'thumbnail' in book['imageLinks'].keys():
+                if 'imageLinks' in bookkeys and thumbnail in book['imageLinks'].keys():
                     thumbnail = book['imageLinks']['thumbnail']
                 if 'description' in bookkeys:
                     summary = book['description']
@@ -1196,8 +1198,7 @@ k.youtube_search Red Velvet\n>>>[Top 5 videos/channels/playlists on YouTube of R
 
                 embed = discord.Embed(title = f"Book Search: {title}", colour = discord.Colour(0xefe61), description = f"By: *{author}*\n\
                 Published by: *{publisher}* on {date}", url = link)
-                if thumbnail is not None:
-                    embed.set_thumbnail(url = thumbnail)
+                embed.set_thumbnail(url = thumbnail)
                 embed.add_field(name = 'Summary:', value = summary, inline = False)
                 embed.add_field(name = 'Page Count:', value = f'{pagecount} pages')
                 embed.add_field(name = 'Average Rating:', value = f'⭐ {rating}/5 | {ratingscount} ratings')
