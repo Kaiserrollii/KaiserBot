@@ -1180,8 +1180,9 @@ k.youtube_search Red Velvet\n>>>[Top 5 videos/channels/playlists on YouTube of R
                     publisher = book['publisher']
                 if 'publishedDate' in bookkeys:
                     date = book['publishedDate']
-                if 'imageLinks' in bookkeys and thumbnail in book['imageLinks'].keys():
-                    thumbnail = book['imageLinks']['thumbnail']
+                if 'imageLinks' in bookkeys:
+                    if 'thumbnail' in book['imageLinks'].keys():
+                        thumbnail = book['imageLinks']['thumbnail']
                 if 'description' in bookkeys:
                     summary = book['description']
                 if 'pageCount' in bookkeys:
