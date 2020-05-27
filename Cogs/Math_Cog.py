@@ -187,6 +187,23 @@ class Math_Cog(commands.Cog):
     async def gcd_ex(self, ctx):
         await ctx.send('```k.gcd 8 52\n>>> 4```')
 
+    @commands.command(aliases = ['Convert, conv, Conv'])
+    async def convert(self, ctx, temp):
+        if 'c' in temp.lower():
+            temp = temp.lower().replace('c', ' ').replace(' ', '')
+            farenheit = float(temp) * (9/5) + 32
+            await ctx.send(f'{temp}°C = **{farenheit}**°F')
+        elif 'f' in temp.lower():
+            temp = temp.lower().replace('f', ' ').replace(' ', '')
+            celsius = (float(temp) - 32) * (5/9)
+            await ctx.send(f'{temp}°F = **{celsius}**°C')
+        else:
+            await ctx.send("That's not a valid input, pabo. Use `C` or `F`.")
+
+    @commands.command(aliases = ['Convert_ex, Convert_ex, conv_ex, Conv_ex'])
+    async def convert_ex(self, ctx):
+        await ctx.send('```k.convert 33C\n>>> 33°C = 91.4°F```')
+
 
 def setup(bot):
     bot.add_cog(Math_Cog(bot))
