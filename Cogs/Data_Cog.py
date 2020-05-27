@@ -1010,9 +1010,8 @@ k.youtube_top Red Velvet\n>>>[Most relevant on YouTube of Red Velvet]```")
             url = f'https://www.googleapis.com/youtube/v3/search?part=snippet&q={fquery}&key={API_KEY}'
             request = requests.get(url)
             d = json.loads(request.text)
-            region = d['regionCode']
 
-            embed = discord.Embed(title = f"YouTube Search ({region}) - {query}", color = discord.Colour(0xefe61))
+            embed = discord.Embed(title = f"YouTube Search - {query}", color = discord.Colour(0xefe61))
             embed.set_footer(text = f'KaiserBot | {ctx.guild.name}', icon_url = 'https://i.imgur.com/CuNlLOP.png')           
             embed.timestamp = datetime.datetime.utcnow()
 
@@ -1144,6 +1143,45 @@ k.youtube_search Red Velvet\n>>>[Top 5 videos/channels/playlists on YouTube of R
     @commands.command(aliases = ['Urban_ex', 'urb_ex', 'Urb_ex'])
     async def urban_ex(self, ctx):
         await ctx.send('```k.urban bae joohyun\n>>> [Urban Dictionary definiton of bae joohyun]```')
+
+    @commands.command(aliases = ['Book', 'read', 'Read'])
+    async def book(self, ctx, *, query):
+        query = query.replace(' ', '%20').replace("'", '%27').replace('"', '%22').replace('?', '%3F').replace(',', '%2C')
+        url = f'https://www.googleapis.com/books/v1/volumes?q={query}&key={API_KEY}' 
+        request = requests.get(url)
+        d = json.loads(request.text)
+        book = d['items'][0]['volumeInfo']
+
+        title = book['title']
+        author = ', '.join(book['authors'])
+        publisher = book['publisher']
+        date = book['publishedDate']
+        link = book['infoLink']
+        thumbnail = book['imageLinks']['thumbnail']
+        summary = book['description']
+        pagecount = book['pageCount']
+        rating = book['averageRating']
+        ratingscount = book['ratingsCount']
+        language = book['language'].upper()
+
+        if len(summary) > 800:
+            summary = summary[:800] + '...'
+
+        embed = discord.Embed(title = f"Book Search: {title}", colour = discord.Colour(0xefe61), description = f"By: *{author}*\n\
+        Published by: *{publisher}* on {date}", url = link)
+        embed.set_thumbnail(url = thumbnail)
+        embed.add_field(name = 'Summary:', value = summary, inline = False)
+        embed.add_field(name = 'Page Count:', value = f'{pagecount} pages')
+        embed.add_field(name = 'Average Rating:', value = f'⭐ {rating}/5 | {ratingscount} ratings')
+        embed.add_field(name = 'Language:', value = language)
+        embed.set_footer(text = f'KaiserBot | {ctx.guild.name}', icon_url = 'https://i.imgur.com/CuNlLOP.png')
+        embed.timestamp = datetime.datetime.utcnow()
+        
+        await ctx.send(embed = embed)
+
+    @commands.command(aliases = ['Book_ex', 'read_ex', 'Read_ex'])
+    async def book_ex(self, ctx):
+        await ctx.send('```k.book Harry Potter and the Deathly Hallows\n>>> [Information about Harry Potter and the Deathly Hallows]```')
 
 
 def setup(bot):
