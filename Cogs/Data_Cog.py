@@ -1144,40 +1144,68 @@ k.youtube_search Red Velvet\n>>>[Top 5 videos/channels/playlists on YouTube of R
     async def urban_ex(self, ctx):
         await ctx.send('```k.urban bae joohyun\n>>> [Urban Dictionary definiton of bae joohyun]```')
 
-    @commands.command(aliases = ['Book', 'read', 'Read'])
+    @commands.command(aliases = ['Book'])
     async def book(self, ctx, *, query):
-        query = query.replace(' ', '%20').replace("'", '%27').replace('"', '%22').replace('?', '%3F').replace(',', '%2C')
-        url = f'https://www.googleapis.com/books/v1/volumes?q={query}&key={API_KEY}' 
+        fquery = query.replace(' ', '%20').replace("'", '%27').replace('"', '%22').replace('?', '%3F').replace(',', '%2C')
+        url = f'https://www.googleapis.com/books/v1/volumes?q={fquery}&maxResults=1&key={API_KEY}' 
         request = requests.get(url)
         d = json.loads(request.text)
-        book = d['items'][0]['volumeInfo']
+        if d['totalItems'] == 0:
+            await ctx.send(f'Sorry, but `{query}` is too nugu. Try again.')
+        else:
 
-        title = book['title']
-        author = ', '.join(book['authors'])
-        publisher = book['publisher']
-        date = book['publishedDate']
-        link = book['infoLink']
-        thumbnail = book['imageLinks']['thumbnail']
-        summary = book['description']
-        pagecount = book['pageCount']
-        rating = book['averageRating']
-        ratingscount = book['ratingsCount']
-        language = book['language'].upper()
+            book = d['items'][0]['volumeInfo']
+            bookkeys = book.keys()
 
-        if len(summary) > 800:
-            summary = summary[:800] + '...'
+            if 'title' not in bookkeys or 'infoLink' not in bookkeys:
+                await ctx.send(f'Sorry, but `{query}` is too nugu. Try again.')
+            else:
+                title = book['title']
+                author = 'N/A'
+                publisher = 'N/A'
+                date = 'N/A'
+                thumbnail = None
+                summary = 'N/A'
+                pagecount = 'N/A'
+                rating = '-'
+                ratingscount = '-'
+                language = 'N/A'
+                link = book['infoLink']
 
-        embed = discord.Embed(title = f"Book Search: {title}", colour = discord.Colour(0xefe61), description = f"By: *{author}*\n\
-        Published by: *{publisher}* on {date}", url = link)
-        embed.set_thumbnail(url = thumbnail)
-        embed.add_field(name = 'Summary:', value = summary, inline = False)
-        embed.add_field(name = 'Page Count:', value = f'{pagecount} pages')
-        embed.add_field(name = 'Average Rating:', value = f'⭐ {rating}/5 | {ratingscount} ratings')
-        embed.add_field(name = 'Language:', value = language)
-        embed.set_footer(text = f'KaiserBot | {ctx.guild.name}', icon_url = 'https://i.imgur.com/CuNlLOP.png')
-        embed.timestamp = datetime.datetime.utcnow()
-        
-        await ctx.send(embed = embed)
+                if 'authors' in bookkeys:
+                    author = ', '.join(book['authors'])
+                if 'publisher' in bookkeys:
+                    publisher = book['publisher']
+                if 'publishedDate' in bookkeys:
+                    date = book['publishedDate']
+                if 'thumbnail' in book['imageLinks'].keys():
+                    thumbnail = book['imageLinks']['thumbnail']
+                if 'description' in bookkeys:
+                    summary = book['description']
+                if 'pageCount' in bookkeys:
+                    pagecount = book['pageCount']
+                if 'averageRating' in bookkeys:
+                    rating = book['averageRating']
+                if 'ratingsCount' in bookkeys:
+                    ratingscount = book['ratingsCount']
+                if 'language' in bookkeys:
+                    language = book['language'].upper()
+
+                if len(summary) > 800:
+                    summary = summary[:800] + '...'
+
+                embed = discord.Embed(title = f"Book Search: {title}", colour = discord.Colour(0xefe61), description = f"By: *{author}*\n\
+                Published by: *{publisher}* on {date}", url = link)
+                if thumbnail is not None:
+                    embed.set_thumbnail(url = thumbnail)
+                embed.add_field(name = 'Summary:', value = summary, inline = False)
+                embed.add_field(name = 'Page Count:', value = f'{pagecount} pages')
+                embed.add_field(name = 'Average Rating:', value = f'⭐ {rating}/5 | {ratingscount} ratings')
+                embed.add_field(name = 'Language:', value = language)
+                embed.set_footer(text = f'KaiserBot | {ctx.guild.name}', icon_url = 'https://i.imgur.com/CuNlLOP.png')
+                embed.timestamp = datetime.datetime.utcnow()
+                
+                await ctx.send(embed = embed)
 
     @commands.command(aliases = ['Book_ex', 'read_ex', 'Read_ex'])
     async def book_ex(self, ctx):
