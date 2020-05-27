@@ -202,7 +202,7 @@ class Math_Cog(commands.Cog):
         else:
             await ctx.send("That's not a valid input, pabo. Use `C` or `F`.")
 
-    @commands.command(aliases = ['Convert_ex', 'Convert_ex', 'conv_ex', 'Conv_ex'])
+    @commands.command(aliases = ['Convert_ex', 'conv_ex', 'Conv_ex'])
     async def convert_ex(self, ctx):
         await ctx.send('```k.convert 33C\n>>> 33°C = 91.4°F\n\nk.convert 75.8161814F\n>>> 75.8161814°F = 24.342323°C```')
 
