@@ -1248,7 +1248,7 @@ k.youtube_search Red Velvet\n>>>[Top 5 videos/channels/playlists on YouTube of R
 
     @commands.command(aliases = ['Si_ex', 'ksi_ex', 'Ksi_ex'])
     async def si_ex(self, ctx):
-        await ctx.send('```k.si Red Velvet\n>>> [Kpop servers related to Red Velvet]')
+        await ctx.send('```k.si Red Velvet\n>>> [Kpop servers related to Red Velvet]```')
 
     # Consumes query, which must be a valid query
     # Returns information from Steam about the most relevant search to the specified query
