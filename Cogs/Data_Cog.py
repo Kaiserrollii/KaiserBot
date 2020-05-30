@@ -1293,14 +1293,14 @@ k.youtube_search Red Velvet\n>>>[Top 5 videos/channels/playlists on YouTube of R
                     summary = 'N/A'
                 else:
                     summary = summary.text.strip()
-                if discountpct is None and discountOG is None and discountfinal is None:
-                    pass
-                if discountpct is not None and discountOG is not None and discountfinal is not None:
-                    price = f"{discountpct.text.replace('-', '')} off! ➞ ~~{discountOG.text}~~ **{discountfinal.text}**"
                 if price is None:
                     price = 'N/A'
                 else:
                     price = price.text.strip()
+                if discountpct is None and discountOG is None and discountfinal is None:
+                    pass
+                if discountpct is not None and discountOG is not None and discountfinal is not None:
+                    price = f"{discountpct.text.replace('-', '')} off! ➞ ~~{discountOG.text}~~ **{discountfinal.text}**"
                 if metacritic is None:
                     metacritic = '-'
 
