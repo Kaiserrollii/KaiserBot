@@ -789,7 +789,8 @@ To pull data from outside the USA, please read this info page: <https://github.c
     @commands.command(aliases = ['Charts', 'chart', 'Chart'])
     async def charts(self, ctx, *, artist = None):
         if artist is None:
-            await ctx.send("You need to specify an artist, pabo. Try again, and make sure it's a valid artist on the charts. For a full list, check the `All` dropdown menu from <http://www.kpopchart.kr/?a=>.")
+            await ctx.send("You need to specify an artist, pabo. Try again, and make sure it's a valid artist on the charts. \
+For a full list, check the `All` dropdown menu from <http://www.kpopchart.kr/?a=>.")
         else:
             artist = artist.lower()
             if artist == 'sm':
@@ -1212,6 +1213,198 @@ k.youtube_search Red Velvet\n>>>[Top 5 videos/channels/playlists on YouTube of R
     @commands.command(aliases = ['Book_ex', 'read_ex', 'Read_ex'])
     async def book_ex(self, ctx):
         await ctx.send('```k.book Harry Potter and the Deathly Hallows\n>>> [Information about Harry Potter and the Deathly Hallows]```')
+
+    # Consumes query, which must be a string of len three minimum
+    # Returns relevant kpop servers according to the specified query
+    @commands.command(aliases = ['Si', 'ksi', 'Ksi'])
+    async def si(self, ctx, *, query):
+        if len(query) <= 2:
+            await ctx.send(f"Be a little more specific in your search, pabo. Three characters minimum.")
+        else:
+            fin = open('Saved/ServerLinks.txt', encoding = 'utf8')
+            line = fin.readline()
+            L = []
+            x = False
+            while line != '':
+                start = line.find('https')
+                name = line[:(start - 2)]
+                if query.lower() in name.lower():
+                    x = True
+                    L.append(line)
+                    line = fin.readline()
+                else:
+                    line = fin.readline()
+            fin.close()
+
+            if not x:
+                await ctx.send(f"I couldn't find any servers related to `{query}`. Nugu.")
+            else:
+                description = f'*Servers Found: {len(L)}*' + '\n\n' + '\n'.join(L)
+                embed = discord.Embed(title = f"Kpop Server Search - {query}", colour = discord.Colour(0xefe61), description = description)
+                embed.set_thumbnail(url = 'https://cdn.discordapp.com/icons/265901004548079626/f6da337e987069fa8f6b50f395874c6b.png?size=512')
+                embed.set_footer(text = f'KaiserBot | {ctx.guild.name}', icon_url = 'https://i.imgur.com/CuNlLOP.png')
+                embed.timestamp = datetime.datetime.utcnow()
+                await ctx.send(embed = embed)
+
+    @commands.command(aliases = ['Si_ex', 'ksi_ex', 'Ksi_ex'])
+    async def si_ex(self, ctx):
+        await ctx.send('```k.si Red Velvet\n>>> [Kpop servers related to Red Velvet]')
+
+    # Consumes query, which must be a valid query
+    # Returns information from Steam about the most relevant search to the specified query
+    @commands.command(aliases = ['Steam', 'game', 'Game'])
+    async def steam(self, ctx, *, query):
+        async with ctx.typing():
+            fquery = query.replace(' ', '+').lower()
+            url = f'https://store.steampowered.com/search/?term={fquery}'
+            user_agent = {'User-Agent': 'Mozilla/5.0'}
+            searchrequest = requests.get(url, headers = user_agent)
+            searchsoup = BeautifulSoup(searchrequest.text, 'html.parser')
+            topsearch = searchsoup.find('div', {'id': 'search_resultsRows'})
+
+            if topsearch is None:
+                await ctx.send(f"I couldn't find anything in Steam related to `{query}`. Nugu.")
+            else:
+                message = await ctx.send('*Searching Steam...*')
+                
+                pagelink = topsearch.find('a')['href']
+                inforequest = requests.get(pagelink)
+                infosoup = BeautifulSoup(inforequest.text, 'html.parser')
+
+                name = infosoup.find('div', {'class': 'apphub_AppName'})
+                image = infosoup.find('img', {'class': 'game_header_image_full'})['src'] 
+                summary = infosoup.find('div', {'class': 'game_description_snippet'})
+                price = infosoup.find('div', {'class': 'game_purchase_price'})
+                discountpct = infosoup.find('div', {'class': 'discount_pct'})
+                discountOG = infosoup.find('div', {'class': 'discount_original_price'})
+                discountfinal = infosoup.find('div', {'class': 'discount_final_price'})
+                ratings_dev = infosoup.find_all('div', {'class', 'summary column'}) 
+                metacritic = infosoup.find('div', {'id': 'game_area_metascore'})
+                genreblock = infosoup.find('div', {'class': 'block_content_inner'})
+                genre_release = genreblock.find('div', {'class': 'details_block'}) 
+
+                if name is None:
+                    name = query
+                else:
+                    name = name.text.strip()
+                if image is None:
+                    image = 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Steam_icon_logo.svg/1200px-Steam_icon_logo.svg.png'
+                if summary is None:
+                    summary = 'N/A'
+                else:
+                    summary = summary.text.strip()
+                if price is None:
+                    price = 'N/A'
+                else:
+                    price = price.text.strip()
+                if discountpct is None and discountOG is None and discountfinal is None:
+                    pass
+                if discountpct is not None and discountOG is not None and discountfinal is not None:
+                    price = f"{discountpct.text.replace('-', '')} off! ➞ ~~{discountOG.text}~~ **{discountfinal.text}**"
+                if metacritic is None:
+                    metacritic = '-'
+
+                if metacritic == '-':
+                    metascore = ''
+                else:
+                    metascore = int(metacritic.find('div', {'class': 'score'}).text.strip())
+                    if metascore >= 90:
+                        metascore = f'🌟 {metascore} Metacritic'
+                    elif metascore >= 80:
+                        metascore = f'⭐ {metascore} Metacritic'
+                    elif metascore >= 70:
+                        metascore = f'✅ {metascore} Metacritic'
+                    elif metascore >= 60:
+                        metascore = f'👌 {metascore} Metacritic'
+                    elif metascore >= 50:
+                        metascore = f'👎 {metascore} Metacritic'
+                    elif metascore >= 30:
+                        metascore = f'❌ {metascore} Metacritic'
+                    elif metascore >= 10:
+                        metascore = f'⛔ {metascore} Metacritic'
+                    elif metascore >= 0:
+                        metascore = f'🖕 {metascore} Metacritic'
+                    else:
+                        await ctx.send(f'An unexpected error has occurred. FIX IT <@496181635952148483>.')
+                        return
+
+                ratingslist = []
+                devpublist = []
+                for i in ratings_dev:
+                    replaced = i.text.replace('\t', '').replace('\r', '').replace('\n\n', '').replace('\n', '')
+                    ratingonly = replaced.split('-')[0]
+                    ratingsinfo = ' ('.join(ratingonly.split('('))
+                    if 'Overwhelmingly Positive' in ratingsinfo:
+                        ratingslist.append(f'🌟 {ratingsinfo}')
+                    elif 'Very Positive' in ratingsinfo:
+                        ratingslist.append(f'⭐ {ratingsinfo}')
+                    elif 'Positive' in ratingsinfo and 'Overwhelmingly Positive' not in ratingsinfo and 'Very Positive' not in ratingsinfo and \
+                        'Mostly Positive' not in ratingsinfo:
+                        ratingslist.append(f'✅ {ratingsinfo}')
+                    elif 'Mostly Positive' in ratingsinfo:
+                        ratingslist.append(f'👍 {ratingsinfo}')
+                    elif 'Mixed' in ratingsinfo:
+                        ratingslist.append(f'👌 {ratingsinfo}')
+                    elif 'Mostly Negative' in ratingsinfo:
+                        ratingslist.append(f'👎 {ratingsinfo}')
+                    elif 'Negative' in ratingsinfo and 'Overwhelmingly Negative' not in ratingsinfo and 'Very Negative' not in ratingsinfo and \
+                        'Mostly Negative' not in ratingsinfo:
+                        ratingslist.append(f'❌ {ratingsinfo}')
+                    elif 'Very Negative' in ratingsinfo:
+                        ratingslist.append(f'⛔ {ratingsinfo}')
+                    elif 'Overwhelmingly Negative' in ratingsinfo:
+                        ratingslist.append(f'🖕 {ratingsinfo}')
+                    else:
+                        devpublist.append(i.text.strip())
+
+                if len(ratingslist) == 2:
+                    ratingsrecent = f'{ratingslist[0]} - Recent'
+                    ratingsall = f'{ratingslist[1]} - All'
+                    ratingslist.clear()
+                    ratingslist.append(ratingsrecent)
+                    ratingslist.append(ratingsall)
+                    fratings = '\n'.join(ratingslist)
+                elif len(ratingslist) == 1:
+                    ratingsall = f'{ratingslist[0]} - All'
+                    ratingslist.clear()
+                    ratingslist.append(ratingsall)
+                    fratings = '\n'.join(ratingslist)
+                else:
+                    fratings = 'N/A'
+                
+                if len(devpublist) == 2 or len(devpublist) == 1:
+                    fdevpub = '\n'.join(devpublist)
+                else:
+                    fdevpub = 'N/A'
+
+                lst = list(filter(lambda x: x != '', genre_release.text.split('\n')))
+                genreleaselist = []
+                for i in lst:
+                    if 'Genre:' in i or 'Release Date:'in i:
+                        i = i.split(': ')
+                        tab = f"**{i[0]}**: {i[1]}"
+                        genreleaselist.append(tab)
+                fgenre_release = '\n'.join(genreleaselist)
+
+                await message.edit(content = '*Searching Steam... ✅*')
+
+                description = f"**Price:** {price}\n{fgenre_release}"
+                embed = discord.Embed(title = f"Steam Search - {name}", colour = discord.Colour(0xefe61), 
+                description = description, url = pagelink)
+                embed.add_field(name = 'Description:', value = summary, inline = False)
+                embed.add_field(name = 'Ratings:', value = f'{fratings}' + '\n' + metascore)
+                embed.add_field(name = 'Developer | Publisher:', value = fdevpub)
+                embed.set_thumbnail(url = image)
+                embed.set_footer(text = f'KaiserBot | {ctx.guild.name}', icon_url = 'https://i.imgur.com/CuNlLOP.png')
+                embed.timestamp = datetime.datetime.utcnow()
+
+                await asyncio.sleep(1)
+                await message.delete()
+                await ctx.send(embed = embed)
+
+    @commands.command(aliases = ['Steam_ex', 'game_ex', 'Game_ex'])
+    async def steam_ex(self, ctx):
+        await ctx.send('```k.steam GTA Vice City\n>>> [Information from Steam about GTA Vice City]```')
 
 
 def setup(bot):
