@@ -1226,7 +1226,7 @@ k.youtube_search Red Velvet\n>>>[Top 5 videos/channels/playlists on YouTube of R
             L = []
             x = False
             while line != '':
-                start = line.find('https')
+                start = line.find('http')
                 name = line[:(start - 2)]
                 if query.lower() in name.lower():
                     x = True
