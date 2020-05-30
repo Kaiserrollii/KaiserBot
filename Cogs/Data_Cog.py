@@ -1334,7 +1334,9 @@ k.youtube_search Red Velvet\n>>>[Top 5 videos/channels/playlists on YouTube of R
                     replaced = i.text.replace('\t', '').replace('\r', '').replace('\n\n', '').replace('\n', '')
                     ratingonly = replaced.split('-')[0]
                     ratingsinfo = ' ('.join(ratingonly.split('('))
-                    if 'Overwhelmingly Positive' in ratingsinfo:
+                    if 'No user reviews' in ratingsinfo:
+                        continue
+                    elif 'Overwhelmingly Positive' in ratingsinfo:
                         ratingslist.append(f'🌟 {ratingsinfo}')
                     elif 'Very Positive' in ratingsinfo:
                         ratingslist.append(f'⭐ {ratingsinfo}')
