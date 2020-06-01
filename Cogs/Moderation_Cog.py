@@ -124,10 +124,10 @@ class Moderation_Cog (commands.Cog):
     # Returns a kick confirmation embed which times out after 60 seconds
     @commands.command(aliases = ['Kick', 'sadbye', 'Sadbye'])
     async def kick(self, ctx, member : discord.Member, *, reason = None):
-        await ctx.send('Fixing some issues with the ban and kick commands. Disabled for the time being. Sorry!')
     #     embed = discord.Embed()
-    #     if ctx.message.author.guild_permissions.ban_members:
-    #         if member.guild_permissions.ban_members:
+        if ctx.message.author.guild_permissions.ban_members:
+            await ctx.send('Fixing some issues with the ban and kick commands. Disabled for the time being. Sorry!')
+            # if member.guild_permissions.ban_members:
     #             await ctx.send("Nice try. You can't kick fellow moderators, pabo.")
     #         else:
     #             embed.colour = 0xefe61
@@ -166,20 +166,20 @@ class Moderation_Cog (commands.Cog):
     #                     await message.edit(embed = embed)
     #                 else:
     #                     await ctx.send('You need to react with either ✅ or ❌, pabo.')
-    #     else:
-    #         await ctx.send("You don't have the perms. GIT GUD.")
+        else:
+            await ctx.send("You don't have the perms. GIT GUD.")
 
-    # @commands.command(aliases = ['Kick_ex', 'sadbye_ex', 'Sadbye_ex'])
-    # async def kick_ex(self, ctx):
-    #     await ctx.send('```k.kick @Kaiserrollii\n>>> [Kick confirmation menu]\n\nk.kick 496181635952148483\n>>> [Kick confirmation menu]```')
+    @commands.command(aliases = ['Kick_ex', 'sadbye_ex', 'Sadbye_ex'])
+    async def kick_ex(self, ctx):
+        await ctx.send('```k.kick @Kaiserrollii\n>>> [Kick confirmation menu]\n\nk.kick 496181635952148483\n>>> [Kick confirmation menu]```')
 
     # Consumes a parameter, member, which must be a valid user
     # Returns a ban confirmation embed which times out after 60 seconds
     @commands.command(aliases = ['Ban', 'CRIMINAL', 'criminal', 'Criminal'])
     async def ban(self, ctx, member : discord.Member, *, reason = None):
-        await ctx.send('Fixing some issues with the ban and kick commands. Disabled for the time being. Sorry!')
-    #     embed = discord.Embed()
-    #     if ctx.message.author.guild_permissions.ban_members:
+        #embed = discord.Embed()
+        if ctx.message.author.guild_permissions.ban_members:
+            await ctx.send('Fixing some issues with the ban and kick commands. Disabled for the time being. Sorry!')
     #         if member.guild_permissions.ban_members:
     #             await ctx.send("Nice try. You can't ban fellow moderators, pabo.")
     #         else:
@@ -219,12 +219,12 @@ class Moderation_Cog (commands.Cog):
     #                     await message.edit(embed = embed)
     #                 else:
     #                     await ctx.send('You need to react with either ✅ or ❌, pabo.')
-    #     else:
-    #         await ctx.send("You don't have the perms. GIT GUD.")
+        else:
+            await ctx.send("You don't have the perms. GIT GUD.")
 
-    # @commands.command(aliases = ['Ban_ex', 'CRIMINAL_ex', 'criminal_ex', 'Criminal_ex'])
-    # async def ban_ex(self, ctx):
-    #     await ctx.send('```k.ban @Kaiserrollii\n>>> [Ban confirmation menu]\n\nk.ban 496181635952148483\n>>> [Ban confirmation menu]```')
+    @commands.command(aliases = ['Ban_ex', 'CRIMINAL_ex', 'criminal_ex', 'Criminal_ex'])
+    async def ban_ex(self, ctx):
+        await ctx.send('```k.ban @Kaiserrollii\n>>> [Ban confirmation menu]\n\nk.ban 496181635952148483\n>>> [Ban confirmation menu]```')
 
     # Consumes a parameter, member, which consists of username + tag
     # Unbans the specified member
