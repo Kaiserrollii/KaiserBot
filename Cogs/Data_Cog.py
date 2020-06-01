@@ -462,7 +462,7 @@ Language codes: https://py-googletrans.readthedocs.io/en/latest/#googletrans-lan
                 else:
                     if aside is not None:
                         paragraph = aside.find_next('p')
-                        if paragraph is not None:
+                        if len(paragraph) > 1:
                             description = paragraph.text.strip()
                         else:
                             description = 'N/A'
