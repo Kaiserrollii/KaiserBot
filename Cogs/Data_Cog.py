@@ -408,55 +408,413 @@ Language codes: https://py-googletrans.readthedocs.io/en/latest/#googletrans-lan
         await ctx.send(f'```Full list of timeframes:\n\n{df}\n\nk.reddit_controversial politics Day \n\
 >>> [Most controversial post in r/politics within the past day]```')
 
-    # Consumes one parameter, search, which must be a valid group/soloist on kprofiles (works for some group members as well)
-    # Returns the profile of the specified search
-    @commands.command(aliases = ['Pop', 'profiles', 'Profiles', 'profile', 'Profile', 'pro', 'Pro'])
-    async def pop(self, ctx, *, search):
-        if search.lower() == 'blackpink':
-            await ctx.send('https://kprofiles.com/black-pink-members-profile/')
-        if search.lower() == 'bts':
-            await ctx.send('https://kprofiles.com/bts-bangtan-boys-members-profile/')
-        if search.lower() == 'leebada':
-            await ctx.send('https://kprofiles.com/lee-ba-da-profile-facts/')
+    # Consumes query, which must be a valid search on the kpop wiki
+    # Returns the profile of the specified query
+    @commands.command(aliases = ['Pop', 'kpop', 'Kpop'])
+    async def pop(self, ctx, *, query = None):
+        if query is None:
+            await ctx.send('You need to specify a query, pabo. Try again.')
         else:
-            gg = requests.get('https://kprofiles.com/k-pop-girl-groups/')
-            bg = requests.get('https://kprofiles.com/k-pop-boy-groups/')
-            solo = requests.get('https://kprofiles.com/kpop-solo-singers/')
-            gg_soup = BeautifulSoup(gg.text, 'html.parser')
-            bg_soup = BeautifulSoup(bg.text, 'html.parser')
-            solo_soup = BeautifulSoup(solo.text, 'html.parser')
-            gg_links = gg_soup.findAll('a')
-            bg_links = bg_soup.findAll('a')
-            solo_links = solo_soup.findAll('a')
+            if 'gidle' in query.lower():
+                query = '(G)I-DLE'
+            fquery = query.replace(' ', '+').lower()
 
-            for link in gg_links:
-                link = str(link).split('"')
-                last = link[-1]
-                new = last[1:(len(last) - 4)]
-                if search.lower() == new.lower():
-                    await ctx.send(link[1])
-                    return
-            for link in bg_links:
-                link = str(link).split('"')
-                last = link[-1]
-                new = last[1:(len(last) - 4)]
-                if search.lower() == new.lower():
-                    await ctx.send(link[1])
-                    return
-            for link in solo_links:
-                link = str(link).split('"')
-                last = link[-1]
-                new = last[1:(len(last) - 4)]
-                if search.lower() == new.lower():
-                    await ctx.send(link[1])
-                    return
+            url = f'https://kpop.fandom.com/wiki/Special:Search?search={fquery}&fulltext=Search&scope=internal&ns0=1&ns14=1#'
+            user_agent = {'User-Agent': 'Mozilla/5.0'}
+            searchrequest = requests.get(url, headers = user_agent)
+            searchsoup = BeautifulSoup(searchrequest.text, 'html.parser')
 
-    @commands.command(aliases = ['Pop_ex', 'profiles_ex', 'Profiles_ex', 'profile_ex', 'Profile_ex', 'pro_ex', 'Pro_ex'])
+            notfound = searchsoup.find('p', {'class': 'no-result'})
+            if notfound is not None:
+                await ctx.send(f"I couldn't find anything related to `{query}`. Nugu.")
+            else:
+                message = await ctx.send('*Searching the kpop wiki...*')
+
+                results = searchsoup.find('ul', {'class': 'Results'})
+                topresult = results.find('li', {'class': 'result'})
+                profilepreview = topresult.find('li')
+                profilelink = profilepreview.find('a')['href']
+
+                profilerequest = requests.get(profilelink, headers = user_agent)
+                profilesoup = BeautifulSoup(profilerequest.text, 'html.parser')
+
+                groupcategory = profilesoup.find('div', {'class': 'page-header__categories-links'})
+
+                if 'Disambiguations' in groupcategory.text:
+                    second = results.find_all('li', {'class': 'result'})[1]
+                    sec = second.find('li')
+                    link = sec.find('a')['href']
+                    profilelink = link
+                    profilerequest = requests.get(profilelink, headers = user_agent)
+                    profilesoup = BeautifulSoup(profilerequest.text, 'html.parser')
+                    groupcategory = profilesoup.find('div', {'class': 'page-header__categories-links'})
+
+                title = profilesoup.find('h1', {'class': 'page-header__title'})
+                image = profilesoup.find('figure', {'class': 'pi-item pi-image'})
+                infoheaders = profilesoup.find_all('h3', {'class': 'pi-data-label pi-secondary-font'})
+                infovalues = profilesoup.find_all('div', {'class': 'pi-data-value pi-font'})
+                aside = profilesoup.find('aside')
+                
+                if 'bts' == query.lower():
+                    description = "BTS (Korean: 방탄소년단; Japanese: 防弾少年团; also known as Bangtan Boys and Beyond the Scene)\
+                         is a seven-member boy group under Big Hit Entertainment. They debuted on June 13, 2013 with their first \
+                             single 2 Cool 4 Skool."
+                else:
+                    if aside is not None:
+                        paragraph = aside.find_next('p')
+                        if paragraph is not None:
+                            description = paragraph.text.strip()
+                        else:
+                            description = 'N/A'
+                    else:
+                        description = 'N/A'
+
+                d = {}
+                if infoheaders is not None and infovalues is not None:
+                    for header, value in zip(infoheaders, infovalues):
+                        d[header.text] = value.text.strip() 
+                else:
+                    pass
+
+                if title is None:
+                    title = query
+                else:
+                    if 'Hangul' in d.keys():
+                        title = title.text.strip() + ' ' + f"({d['Hangul']})"
+                    else:
+                        title = title.text.strip()
+
+                if image is None:
+                    thumbnail = 'https://www.logolynx.com/images/logolynx/97/973922683e2bef373d662c29680247ac.png'
+                else:
+                    thumbnail = image.find('img')['src']
+
+                if 'Groups' in groupcategory.text or 'Duos' in groupcategory.text or 'Subunits' in groupcategory.text:
+                    if 'Debut' in d.keys():
+                        value = d['Debut']
+                        if ')' in value:
+                            debut = value.replace(')', ') | ')[:-2]
+                        else:
+                            debut = value
+                    else:
+                        debut = 'N/A'
+
+                    if 'Label(s)' in d.keys():
+                        value = d['Label(s)']
+                        if ')' in value:
+                            labels = value.replace(')', ') | ')[:-2]
+                        else:
+                            labels = value
+                    else:
+                        labels = 'N/A'
+
+                    memberlist = []
+                    current = profilesoup.find(text = 'Current')
+                    if current is not None:
+                        firstmember = current.find_next('li')
+                        allmembers = firstmember.find_next_siblings('li')
+                        memberlist.append(firstmember.text.strip())
+                        if allmembers is not None:
+                            for i in allmembers:
+                                memberlist.append(i.text.strip())
+                        members = ', '.join(memberlist)
+                    else:
+                        members = 'N/A'
+
+                    embeddesc = f"**Debut:** {debut}\n**Label(s):** {labels}\n**Active members:** {members}" 
+                    embed = discord.Embed(title = f"Kpop Wiki Search - {title}", colour = discord.Colour(0xefe61), 
+                    description = embeddesc, url = profilelink)
+                    embed.set_thumbnail(url = thumbnail)
+                    embed.add_field(name = 'General Info:', value = description)
+                    embed.set_footer(text = f'KaiserBot | {ctx.guild.name}', icon_url = 'https://i.imgur.com/CuNlLOP.png')
+                    embed.timestamp = datetime.datetime.utcnow()
+
+                    await message.edit(content = '*Searching the kpop wiki... ✅*')
+                    await asyncio.sleep(1)
+                    await message.delete()
+                    await ctx.send(embed = embed)
+
+                elif 'Companies' in groupcategory.text:
+                    if 'Founded' in d.keys():
+                        value = d['Founded']
+                        if ')' in value:
+                            founded = value.replace(')', ') | ')[:-2]
+                        else:
+                            founded = value
+                    else:
+                        founded = 'N/A'
+
+                    if 'cube' in query.lower():
+                        founders = 'Hong Seung Sung, Shin Jung Hwa'
+                    else:
+                        if 'Founder(s)' in d.keys():
+                            founders = d['Founder(s)']
+                        else:
+                            founders = 'N/A'
+
+                    embeddesc = f"**Founded:** {founded}\n**Founder(s):** {founders}" 
+                    embed = discord.Embed(title = f"Kpop Wiki Search - {title}", colour = discord.Colour(0xefe61), 
+                    description = embeddesc, url = profilelink)
+                    embed.set_thumbnail(url = thumbnail)
+                    embed.add_field(name = 'General Info:', value = description)
+                    embed.set_footer(text = f'KaiserBot | {ctx.guild.name}', icon_url = 'https://i.imgur.com/CuNlLOP.png')
+                    embed.timestamp = datetime.datetime.utcnow()
+
+                    await message.edit(content = '*Searching the kpop wiki... ✅*')
+                    await asyncio.sleep(1)
+                    await message.delete()
+                    await ctx.send(embed = embed)
+
+                elif 'Television article stubs' in groupcategory.text or 'Survival shows' in groupcategory.text:
+                    if 'Episodes' in d.keys():
+                        episodes = d['Episodes']
+                    else:
+                        episodes = 'N/A'
+
+                    if 'Running time' in d.keys():
+                        runtime = d['Running time']
+                    else:
+                        runtime = 'N/A'
+
+                    if 'Network' in d.keys():
+                        network = d['Network']
+                    else:
+                        network = 'N/A'
+
+                    embeddesc = f"**Episodes:** {episodes}\n**Runtime:** {runtime}\n**Network:** {network}" 
+                    embed = discord.Embed(title = f"Kpop Wiki Search - {title}", colour = discord.Colour(0xefe61), 
+                    description = embeddesc, url = profilelink)
+                    embed.set_thumbnail(url = thumbnail)
+                    embed.add_field(name = 'General Info:', value = description)
+                    embed.set_footer(text = f'KaiserBot | {ctx.guild.name}', icon_url = 'https://i.imgur.com/CuNlLOP.png')
+                    embed.timestamp = datetime.datetime.utcnow()
+
+                    await message.edit(content = '*Searching the kpop wiki... ✅*')
+                    await asyncio.sleep(1)
+                    await message.delete()
+                    await ctx.send(embed = embed)
+                
+                elif 'Discography' in groupcategory.text or 'Albums' in groupcategory.text or 'singles' in groupcategory.text.lower():
+                    if 'Artist' in d.keys():
+                        artist = d['Artist']
+                    else:
+                        artist = 'N/A'
+
+                    if 'Length' in d.keys():
+                        value = d['Length']
+                        if value.count(':') > 1:
+                            index = []
+                            for i in list(range(len(value))):
+                                if value[i] == ':':
+                                    index.append(i)
+                            counter = 0
+                            for i in index[1:]:
+                                if counter > 0:
+                                    i += counter * 3
+                                length = value[:i-2] + ' | ' + value[i-2:]
+                                value = length
+                                counter += 1
+                        else:
+                            length = value
+                    else:
+                        length = 'N/A'
+
+                    if 'Released' in d.keys():
+                        value = d['Released']
+                        if value.count(',') > 1:
+                            index = []
+                            for i in list(range(len(value))):
+                                if value[i] == ',':
+                                    index.append(i)
+                            counter = 0
+                            for i in index[1:]:
+                                if counter > 0:
+                                    i += counter * 3
+                                reverse = value[:i-3][::-1]
+                                for j in list(range(len(reverse))):
+                                    if reverse[j].isnumeric() or reverse[j] == ')':
+                                        pos = j
+                                        break
+                                breakpos = len(value[:i-3]) - pos
+                                release = value[:breakpos] + ' | ' + value[breakpos:]
+                                value = release
+                                counter += 1
+                        else:
+                            release = value
+                    else:
+                        release = 'N/A'
+
+                    if 'Label(s)' in d.keys():
+                        labels = d['Label(s)']
+                    else:
+                        labels = 'N/A'
+
+                    tlist = profilesoup.find(text = 'Track list')
+                    ol = tlist.find_next('ol')
+                    if ol is None:
+                        fulltracks = 'N/A'
+                    else:
+                        tracklist = ol.find_all('li')
+                        if tracklist is None:
+                            fulltracks = 'N/A'
+                        else:
+                            tracks = []
+                            counter = 1
+                            for i in tracklist:
+                                tracks.append(f"{counter}. {i.text.strip()}")
+                                counter += 1
+                            fulltracks = '\n'.join(tracks)
+                            
+                    embeddesc = f"**Artist:** {artist}\n**Release date:** {release}\n**Length:** {length}\n**Label(s):** {labels}" 
+                    embed = discord.Embed(title = f"Kpop Wiki Search - {title}", colour = discord.Colour(0xefe61), 
+                    description = embeddesc, url = profilelink)
+                    embed.add_field(name = 'Tracklist:', value = fulltracks)
+                    embed.add_field(name = 'General Info:', value = description)
+                    embed.set_thumbnail(url = thumbnail)
+                    embed.set_footer(text = f'KaiserBot | {ctx.guild.name}', icon_url = 'https://i.imgur.com/CuNlLOP.png')
+                    embed.timestamp = datetime.datetime.utcnow()
+
+                    await message.edit(content = '*Searching the kpop wiki... ✅*')
+                    await asyncio.sleep(1)
+                    await message.delete()
+                    await ctx.send(embed = embed)
+
+                else:
+                    if 'Birth date' in d.keys():
+                        DOB = d['Birth date']
+                    else:
+                        DOB = 'N/A'
+
+                    stats = []
+                    if 'Height' in d.keys():
+                        stats.append(d['Height'])
+                    else:
+                        stats.append('N/A')
+                    if 'Weight' in d.keys():
+                        stats.append(d['Weight'])
+                    else:
+                        stats.append('N/A')
+                    heightweight = ' | '.join(stats)
+
+                    if 'Solo debut' in d.keys():
+                        value = d['Solo debut']
+                        if ')' in value:
+                            solodebut = value.replace(')', ') | ')[:-2]
+                        else:
+                            solodebut = value
+                    else:
+                        solodebut = 'N/A'
+
+                    if 'Agency' in d.keys():
+                        value = d['Agency']
+                        if ')' in value:
+                            company = value.replace(')', ') | ')[:-2]
+                        else:
+                            company = value
+                    else:
+                        company = 'N/A'
+
+                    grouplist = []
+                    associations = profilesoup.find(text = 'Associations')
+                    if associations is not None:
+                        firstgroup = associations.find_next('a')
+                        allgroups = firstgroup.find_next_siblings('a')
+                        grouplist.append(firstgroup.text.strip())
+                        if allgroups is not None:
+                            for i in allgroups:
+                                grouplist.append(i.text.strip())
+                        groups = ', '.join(grouplist)
+                    else:
+                        groups = 'N/A'
+
+                    embeddesc = f"**DOB:** {DOB}\n**Stats:** {heightweight}\n**Solo debut:** {solodebut}\n**Company:** {company}\n\
+                        **Associated with:** {groups}" 
+                    embed = discord.Embed(title = f"Kpop Wiki Search - {title}", colour = discord.Colour(0xefe61), 
+                    description = embeddesc, url = profilelink)
+                    embed.set_thumbnail(url = thumbnail)
+                    embed.add_field(name = 'General Info:', value = description)
+                    embed.set_footer(text = f'KaiserBot | {ctx.guild.name}', icon_url = 'https://i.imgur.com/CuNlLOP.png')
+                    embed.timestamp = datetime.datetime.utcnow()
+
+                    await message.edit(content = '*Searching the kpop wiki... ✅*')
+                    await asyncio.sleep(1)
+                    await message.delete()
+                    await ctx.send(embed = embed)
+
+    @commands.command(aliases = ['Pop_ex', 'kpop_ex', 'Kpop_ex'])
     async def pop_ex(self, ctx):
-        await ctx.send("```Please don't spam this command, and be patient if the links take a while to retrieve. \
-If nothing is returned after ~15 seconds, it's safe to assume either the group/soloist requested is invalid or something else has gone wrong.\n\n\
-k.pop Red Velvet\n>>> https://kprofiles.com/irene-facts-profile-irene-ideal-type/\n\n\
-k.pop Kim Chungha\n>>> https://kprofiles.com/kim-chungha-profile-facts/```")
+        await ctx.send('```This command can retrieve data from (most) groups, soloists, individual members, entertainment companies, \
+discographies, and kpop-related television shows. Everything is pulled directly from the Kpop Wiki.\n\n\
+k.pop Red Velvet\n>>> [Information about Red Velvet]```')
+
+    # Consumes query, which must be a valid group/soloist on Kprofiles (works for some group members as well)
+    # Returns the profile of the specified query
+    @commands.command(aliases = ['Profile', 'profiles', 'Profiles', 'pro', 'Pro'])
+    async def profile(self, ctx, *, query = None):
+        if query is None:
+            await ctx.send('You need to specify a query, pabo. Try again.')
+        else:
+            if query.lower() == 'blackpink':
+                await ctx.send('https://kprofiles.com/black-pink-members-profile/')
+            if query.lower() == 'bts':
+                await ctx.send('https://kprofiles.com/bts-bangtan-boys-members-profile/')
+            if query.lower() == 'leebada':
+                await ctx.send('https://kprofiles.com/lee-ba-da-profile-facts/')
+            else:
+                message = await ctx.send('*Searching KProfiles...*')
+
+                gg = requests.get('https://kprofiles.com/k-pop-girl-groups/')
+                bg = requests.get('https://kprofiles.com/k-pop-boy-groups/')
+                solo = requests.get('https://kprofiles.com/kpop-solo-singers/')
+                gg_soup = BeautifulSoup(gg.text, 'html.parser')
+                bg_soup = BeautifulSoup(bg.text, 'html.parser')
+                solo_soup = BeautifulSoup(solo.text, 'html.parser')
+                gg_links = gg_soup.findAll('a')
+                bg_links = bg_soup.findAll('a')
+                solo_links = solo_soup.findAll('a')
+
+                x = False
+                for link in gg_links:
+                    link = str(link).split('"')
+                    last = link[-1]
+                    new = last[1:(len(last) - 4)]
+                    if query.lower() == new.lower():
+                        x = True
+                        await message.edit(content = '*Searching KProfiles... ✅*')
+                        await asyncio.sleep(1)
+                        await message.delete()
+                        await ctx.send(link[1])
+                        return
+                for link in bg_links:
+                    link = str(link).split('"')
+                    last = link[-1]
+                    new = last[1:(len(last) - 4)]
+                    if query.lower() == new.lower():
+                        x = True
+                        await message.edit(content = '*Searching KProfiles... ✅*')
+                        await asyncio.sleep(1)
+                        await message.delete()
+                        await ctx.send(link[1])
+                        return
+                for link in solo_links:
+                    link = str(link).split('"')
+                    last = link[-1]
+                    new = last[1:(len(last) - 4)]
+                    if query.lower() == new.lower():
+                        x = True
+                        await message.edit(content = '*Searching KProfiles... ✅*')
+                        await asyncio.sleep(1)
+                        await message.delete()
+                        await ctx.send(link[1])
+                        return
+
+                if not x:
+                    await message.delete()
+                    await ctx.send(f"I wasn't able to find anything related to `{query}` on Kprofiles. Nugu.")
+
+    @commands.command(aliases = ['Profile_ex', 'profiles_ex', 'Profiles_ex', 'pro_ex', 'Pro_ex'])
+    async def profile_ex(self, ctx):
+        await ctx.send('```k.profile Red Velvet\n>>> https://kprofiles.com/irene-facts-profile-irene-ideal-type/```')
 
     # Consumes amount, an int between 1-25, and location, which must be a valid location (see WOEIDs.md for full list)
     # Returns a dataframe of the trending topics on Twitter according to the specified amount and location
