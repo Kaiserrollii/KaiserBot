@@ -653,20 +653,23 @@ Language codes: https://py-googletrans.readthedocs.io/en/latest/#googletrans-lan
                         labels = 'N/A'
 
                     tlist = profilesoup.find(text = 'Track list')
-                    ol = tlist.find_next('ol')
-                    if ol is None:
+                    if tlist is None:
                         fulltracks = 'N/A'
                     else:
-                        tracklist = ol.find_all('li')
-                        if tracklist is None:
+                        ol = tlist.find_next('ol')
+                        if ol is None:
                             fulltracks = 'N/A'
                         else:
-                            tracks = []
-                            counter = 1
-                            for i in tracklist:
-                                tracks.append(f"{counter}. {i.text.strip()}")
-                                counter += 1
-                            fulltracks = '\n'.join(tracks)
+                            tracklist = ol.find_all('li')
+                            if tracklist is None:
+                                fulltracks = 'N/A'
+                            else:
+                                tracks = []
+                                counter = 1
+                                for i in tracklist:
+                                    tracks.append(f"{counter}. {i.text.strip()}")
+                                    counter += 1
+                                fulltracks = '\n'.join(tracks)
                             
                     embeddesc = f"**Artist:** {artist}\n**Release date:** {release}\n**Length:** {length}\n**Label(s):** {labels}" 
                     embed = discord.Embed(title = f"Kpop Wiki Search - {title}", colour = discord.Colour(0xefe61), 
