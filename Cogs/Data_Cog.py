@@ -15,6 +15,7 @@ from datetime import timedelta
 from googletrans import Translator
 from PyDictionary import PyDictionary as pyd
 from alpha_vantage.timeseries import TimeSeries
+from forex_python.converter import CurrencyRates as fxp
 from bs4 import BeautifulSoup
 from discord.ext import commands 
 
@@ -111,6 +112,7 @@ Scrapes definitions from https://wordnet.princeton.edu/')
     # Returns the translated message according to the specified start and end languages
     @commands.command(aliases = ['Translate', 'trans', 'Trans', 'tr', 'Tr'])
     async def translate(self, ctx, start, end, *, message):
+        message = message.replace('\n', ' ')
         translated = Translator().translate(message, src = start, dest = end)
         formatted = str(translated).split(',')[2][6:]
         await ctx.send(f'**Source ({start})**: {message}\n**Translation ({end})**: {formatted}')
@@ -123,8 +125,11 @@ Language codes: https://py-googletrans.readthedocs.io/en/latest/#googletrans-lan
     # Consumes a str, subreddit, which must be a valid SFW subreddit
     # Returns the current hot post from the specified subreddit, along with submission author, flair, score, and amount of comments
     # Skips over pinned posts
-    @commands.command(aliases = ['rh', 'RH', 'Rh', 'rH'])
-    async def reddit_hot(self, ctx, subreddit):
+    @commands.command(aliases = ['Reddit_hot', 'rh', 'RH', 'Rh', 'rH'])
+    async def reddit_hot(self, ctx, subreddit = None):
+        if subreddit is None:
+            await ctx.send('You need to specifiy a subreddit, pabo. Try again.')
+            return
         if reddit.subreddit(f'{subreddit}').over18:
             await ctx.send(f"**r/{subreddit}** is NSFW. Choose an SFW one, pabo. We aren't about breaking rool2 in here, smh.")
         else:
@@ -137,9 +142,9 @@ Language codes: https://py-googletrans.readthedocs.io/en/latest/#googletrans-lan
                     if submission.selftext != '':
                         embed = discord.Embed(title = f'Current Hot Post from r/{subreddit}', color = discord.Colour(0xefe61),
                         description = f'```{submission.title}```\n**Submitted by:** u/{submission.author.name}\n**Date:** {date}\n\
-                        **Flair:** {submission.link_flair_text}\n**Score:** {submission.score} karma\n**Comments:** {submission.num_comments}')
-                        embed.add_field(name = 'Contents:', value = f'{submission.selftext[:300]}...', inline = False)
-                        embed.add_field(name = 'Link to post:', value = f'https://www.reddit.com{submission.permalink}', inline = False)
+                        **Flair:** {submission.link_flair_text}\n**Score:** {submission.score} karma\n**Comments:** {submission.num_comments}', 
+                        url = f'https://www.reddit.com{submission.permalink}')
+                        embed.add_field(name = 'Post Content:', value = f'{submission.selftext[:600]}...', inline = False)
                         embed.set_footer(text = f'KaiserBot | {ctx.guild.name}', icon_url = 'https://i.imgur.com/CuNlLOP.png')
                         embed.timestamp = datetime.datetime.utcnow()
                         await ctx.send(embed = embed)
@@ -147,7 +152,8 @@ Language codes: https://py-googletrans.readthedocs.io/en/latest/#googletrans-lan
                     else:
                         embed = discord.Embed(title = f'Current Hot Post from r/{subreddit}', color = discord.Colour(0xefe61),
                         description = f'```{submission.title}```\n**Submitted by:** u/{submission.author.name}\n**Date:** {date}\n\
-                        **Flair:** {submission.link_flair_text}\n**Score:** {submission.score} karma\n**Comments:** {submission.num_comments}')
+                        **Flair:** {submission.link_flair_text}\n**Score:** {submission.score} karma\n**Comments:** {submission.num_comments}', 
+                        url = f'https://www.reddit.com{submission.permalink}')
                         embed.set_footer(text = f'KaiserBot | {ctx.guild.name}', icon_url = 'https://i.imgur.com/CuNlLOP.png')           
                         embed.timestamp = datetime.datetime.utcnow()
 
@@ -155,7 +161,6 @@ Language codes: https://py-googletrans.readthedocs.io/en/latest/#googletrans-lan
                         linksplit = submission.url.split('.')
                         if 'png' in linksplit or 'jpg' in linksplit or 'jpeg' in linksplit or 'jfif' in linksplit:
                             embed.set_image(url = f'{submission.url}')
-                            embed.add_field(name = 'Link to Post:', value = f'https://www.reddit.com{submission.permalink}', inline = False)
                             await ctx.send(embed = embed)
                             break
                         elif ('https://imgur.com/' in link) and ('gif' not in linksplit) and ('gifv' not in linksplit):
@@ -163,34 +168,32 @@ Language codes: https://py-googletrans.readthedocs.io/en/latest/#googletrans-lan
                             soup = BeautifulSoup(url.text, 'html.parser')
                             directlink = soup.select('link[rel = image_src]')[0]['href']
                             embed.set_image(url = directlink)
-                            embed.add_field(name = 'Link to Post:', value = f'https://www.reddit.com{submission.permalink}', inline = False)
                             await ctx.send(embed = embed)
                             break
                         elif 'https://gfycat.com/' in link or 'https://tenor.com/' in link or 'gif' in linksplit or 'gifv' in linksplit\
                             or 'webm' in linksplit or 'mp4' in linksplit or 'mov' in linksplit or 'https://www.youtube.com/' in link\
                             or 'https://youtu.be/' in link or 'https://streamable.com/' in link:
-                            embed.add_field(name = 'Link to Post:', value = f'https://www.reddit.com{submission.permalink}', inline = False)
                             await ctx.send(embed = embed)
                             await ctx.send(f'**Post Content:** {link}')
                             break
                         else:
                             embed.add_field(name = 'Post Content:', value = f'{submission.url}', inline = False)
-                            embed.add_field(name = 'Link to Post:', value = f'https://www.reddit.com{submission.permalink}', inline = False)
                             await ctx.send(embed = embed)
                             break
 
-    @commands.command(aliases = ['rh_ex', 'RH_ex', 'Rh_ex', 'rH_ex'])
+    @commands.command(aliases = ['Reddit_hot_ex', 'rh_ex', 'RH_ex', 'Rh_ex', 'rH_ex'])
     async def reddit_hot_ex(self, ctx):
         await ctx.send("```k.reddit_hot movies\n>>> [Current hot post in r/movies]```")
 
     # Consumes a str, subreddit, which must be a valid SFW subreddit
     # Returns the all-time top post from the specified subreddit, along with submission author, flair, score, and amount of comments
-    @commands.command(aliases = ['rt', 'RT', 'Rt', 'rT'])
+    @commands.command(aliases = ['Reddit_top', 'rt', 'RT', 'Rt', 'rT'])
     async def reddit_top(self, ctx, subreddit, timeframe = None):
+        if timeframe is None:
+            await ctx.send('Make sure you have all the necessary parameters, pabo. Check `k.reddit_top_ex` for an example.')
+            return
         if reddit.subreddit(f'{subreddit}').over18:
             await ctx.send(f"**r/{subreddit}** is NSFW. Choose an SFW one, pabo. We aren't about breaking rool2 in here, smh.")
-        elif timeframe is None:
-            await ctx.send('You need to pick a timeframe, pabo. Check `k.reddit_top_ex` for a full list.')
         else:
             timeframe = timeframe.lower()
             if timeframe == 'hour' or timeframe == 'h':
@@ -216,9 +219,9 @@ Language codes: https://py-googletrans.readthedocs.io/en/latest/#googletrans-lan
                 if submission.selftext != '':
                     embed = discord.Embed(title = f'Top Post from r/{subreddit} - {timeframe}', color = discord.Colour(0xefe61),
                     description = f'```{submission.title}```\n**Submitted by:** u/{submission.author.name}\n**Date:** {date}\n\
-                    **Flair:** {submission.link_flair_text}\n**Score:** {submission.score} karma\n**Comments:** {submission.num_comments}')
-                    embed.add_field(name = 'Contents:', value = f'{submission.selftext[:300]}...', inline = False)
-                    embed.add_field(name = 'Link to post:', value = f'https://www.reddit.com{submission.permalink}', inline = False)
+                    **Flair:** {submission.link_flair_text}\n**Score:** {submission.score} karma\n**Comments:** {submission.num_comments}', 
+                    url = f'https://www.reddit.com{submission.permalink}')
+                    embed.add_field(name = 'Post Content:', value = f'{submission.selftext[:300]}...', inline = False)
                     embed.set_footer(text = f'KaiserBot | {ctx.guild.name}', icon_url = 'https://i.imgur.com/CuNlLOP.png')
                     embed.timestamp = datetime.datetime.utcnow()
                     await ctx.send(embed = embed)
@@ -226,7 +229,8 @@ Language codes: https://py-googletrans.readthedocs.io/en/latest/#googletrans-lan
                 else:
                     embed = discord.Embed(title = f'Top Post from r/{subreddit} - {timeframe}', color = discord.Colour(0xefe61),
                     description = f'```{submission.title}```\n**Submitted by:** u/{submission.author.name}\n**Date:** {date}\n\
-                    **Flair:** {submission.link_flair_text}\n**Score:** {submission.score} karma\n**Comments:** {submission.num_comments}')
+                    **Flair:** {submission.link_flair_text}\n**Score:** {submission.score} karma\n**Comments:** {submission.num_comments}', 
+                    url = f'https://www.reddit.com{submission.permalink}')
                     embed.set_footer(text = f'KaiserBot | {ctx.guild.name}', icon_url = 'https://i.imgur.com/CuNlLOP.png')           
                     embed.timestamp = datetime.datetime.utcnow()
 
@@ -234,7 +238,6 @@ Language codes: https://py-googletrans.readthedocs.io/en/latest/#googletrans-lan
                     linksplit = submission.url.split('.')
                     if 'png' in linksplit or 'jpg' in linksplit or 'jpeg' in linksplit or 'jfif' in linksplit:
                         embed.set_image(url = f'{submission.url}')
-                        embed.add_field(name = 'Link to Post:', value = f'https://www.reddit.com{submission.permalink}', inline = False)
                         await ctx.send(embed = embed)
                         break
                     elif ('https://imgur.com/' in link) and ('gif' not in linksplit) and ('gifv' not in linksplit):
@@ -242,35 +245,34 @@ Language codes: https://py-googletrans.readthedocs.io/en/latest/#googletrans-lan
                         soup = BeautifulSoup(url.text, 'html.parser')
                         directlink = soup.select('link[rel = image_src]')[0]['href']
                         embed.set_image(url = directlink)
-                        embed.add_field(name = 'Link to Post:', value = f'https://www.reddit.com{submission.permalink}', inline = False)
                         await ctx.send(embed = embed)
                         break
                     elif 'https://gfycat.com/' in link or 'https://tenor.com/' in link or 'gif' in linksplit or 'gifv' in linksplit\
                         or 'webm' in linksplit or 'mp4' in linksplit or 'mov' in linksplit or 'https://www.youtube.com/' in link\
                         or 'https://youtu.be/' in link or 'https://streamable.com/' in link:
-                        embed.add_field(name = 'Link to Post:', value = f'https://www.reddit.com{submission.permalink}', inline = False)
                         await ctx.send(embed = embed)
                         await ctx.send(f'**Post Content:** {link}')
                         break
                     else:
                         embed.add_field(name = 'Post Content:', value = f'{submission.url}', inline = False)
-                        embed.add_field(name = 'Link to Post:', value = f'https://www.reddit.com{submission.permalink}', inline = False)
                         await ctx.send(embed = embed)
                         break
 
-    @commands.command(aliases = ['rt_ex', 'RT_ex', 'Rt_ex', 'rT_ex'])
+    @commands.command(aliases = ['Reddit_top_ex', 'rt_ex', 'RT_ex', 'Rt_ex', 'rT_ex'])
     async def reddit_top_ex(self, ctx):
         d = {'Timeframe': ['Hour', 'Day', 'Week', 'Month', 'Year', 'All'], 'Alias': ['h', 'd', 'w', 'm', 'y', 'a']}
         index = [1, 2, 3, 4, 5, 6]
         df = pd.DataFrame(data = d, index = index)
-
         await ctx.send(f'```Full list of timeframes:\n\n{df}\n\nk.reddit_top jailbreak All \n\
 >>> [All-time top post in r/jailbreak]```')
 
     # Consumes a str, subreddit, which must be a valid SFW subreddit
     # Returns the newest post from the specified subreddit, along with submission author, flair, score, and amount of comments
-    @commands.command(aliases = ['rn', 'RN', 'Rn', 'rN'])
-    async def reddit_new(self, ctx, subreddit):
+    @commands.command(aliases = ['Reddit_new', 'rn', 'RN', 'Rn', 'rN'])
+    async def reddit_new(self, ctx, subreddit = None):
+        if subreddit is None:
+            await ctx.send('You need to specifiy a subreddit, pabo. Try again.')
+            return
         if reddit.subreddit(f'{subreddit}').over18:
             await ctx.send(f"**r/{subreddit}** is NSFW. Choose an SFW one, pabo. We aren't about breaking rool2 in here, smh.")
         else:
@@ -280,9 +282,9 @@ Language codes: https://py-googletrans.readthedocs.io/en/latest/#googletrans-lan
                 if submission.selftext != '':
                     embed = discord.Embed(title = f'Newest Post from r/{subreddit}', color = discord.Colour(0xefe61),
                     description = f'```{submission.title}```\n**Submitted by:** u/{submission.author.name}\n**Date:** {date}\n\
-                    **Flair:** {submission.link_flair_text}\n**Score:** {submission.score} karma\n**Comments:** {submission.num_comments}')
-                    embed.add_field(name = 'Contents:', value = f'{submission.selftext[:300]}...', inline = False)
-                    embed.add_field(name = 'Link to post:', value = f'https://www.reddit.com{submission.permalink}', inline = False)
+                    **Flair:** {submission.link_flair_text}\n**Score:** {submission.score} karma\n**Comments:** {submission.num_comments}', 
+                    url = f'https://www.reddit.com{submission.permalink}')
+                    embed.add_field(name = 'Post Content:', value = f'{submission.selftext[:300]}...', inline = False)
                     embed.set_footer(text = f'KaiserBot | {ctx.guild.name}', icon_url = 'https://i.imgur.com/CuNlLOP.png')
                     embed.timestamp = datetime.datetime.utcnow()
                     await ctx.send(embed = embed)
@@ -290,7 +292,8 @@ Language codes: https://py-googletrans.readthedocs.io/en/latest/#googletrans-lan
                 else:
                     embed = discord.Embed(title = f'Newest Post from r/{subreddit}', color = discord.Colour(0xefe61),
                     description = f'```{submission.title}```\n**Submitted by:** u/{submission.author.name}\n**Date:** {date}\n\
-                    **Flair:** {submission.link_flair_text}\n**Score:** {submission.score} karma\n**Comments:** {submission.num_comments}')
+                    **Flair:** {submission.link_flair_text}\n**Score:** {submission.score} karma\n**Comments:** {submission.num_comments}', 
+                    url = f'https://www.reddit.com{submission.permalink}')
                     embed.set_footer(text = f'KaiserBot | {ctx.guild.name}', icon_url = 'https://i.imgur.com/CuNlLOP.png')           
                     embed.timestamp = datetime.datetime.utcnow()
 
@@ -298,7 +301,6 @@ Language codes: https://py-googletrans.readthedocs.io/en/latest/#googletrans-lan
                     linksplit = submission.url.split('.')
                     if 'png' in linksplit or 'jpg' in linksplit or 'jpeg' in linksplit or 'jfif' in linksplit:
                         embed.set_image(url = f'{submission.url}')
-                        embed.add_field(name = 'Link to Post:', value = f'https://www.reddit.com{submission.permalink}', inline = False)
                         await ctx.send(embed = embed)
                         break
                     elif ('https://imgur.com/' in link) and ('gif' not in linksplit) and ('gifv' not in linksplit):
@@ -306,34 +308,32 @@ Language codes: https://py-googletrans.readthedocs.io/en/latest/#googletrans-lan
                         soup = BeautifulSoup(url.text, 'html.parser')
                         directlink = soup.select('link[rel = image_src]')[0]['href']
                         embed.set_image(url = directlink)
-                        embed.add_field(name = 'Link to Post:', value = f'https://www.reddit.com{submission.permalink}', inline = False)
                         await ctx.send(embed = embed)
                         break
                     elif 'https://gfycat.com/' in link or 'https://tenor.com/' in link or 'gif' in linksplit or 'gifv' in linksplit\
                         or 'webm' in linksplit or 'mp4' in linksplit or 'mov' in linksplit or 'https://www.youtube.com/' in link\
                         or 'https://youtu.be/' in link or 'https://streamable.com/' in link:
-                        embed.add_field(name = 'Link to Post:', value = f'https://www.reddit.com{submission.permalink}', inline = False)
                         await ctx.send(embed = embed)
                         await ctx.send(f'**Post Content:** {link}')
                         break
                     else:
                         embed.add_field(name = 'Content:', value = f'{submission.url}', inline = False)
-                        embed.add_field(name = 'Link to Post:', value = f'https://www.reddit.com{submission.permalink}', inline = False)
                         await ctx.send(embed = embed)
                         break
 
-    @commands.command(aliases = ['rn_ex', 'RN_ex', 'Rn_ex', 'rN_ex'])
+    @commands.command(aliases = ['Reddit_new_ex', 'rn_ex', 'RN_ex', 'Rn_ex', 'rN_ex'])
     async def reddit_new_ex(self, ctx):
         await ctx.send('```k.reddit_new books \n>>> [Newest post in r/books]```')
 
     # Consumes a str, subreddit, which must be a valid SFW subreddit, and a str, timeframe, which must be a valid timeframe (k.rc_ex for full list)
     # Returns the most controversial post from the specified subreddit, along with submission author, flair, score, and amount of comments
-    @commands.command(aliases = ['rc', 'RC', 'Rc', 'rC'])
+    @commands.command(aliases = ['Reddit_controversial', 'rc', 'RC', 'Rc', 'rC'])
     async def reddit_controversial(self, ctx, subreddit, timeframe = None):
+        if timeframe is None:
+            await ctx.send('You need to pick a timeframe, pabo. Check `k.reddit_controversial_ex` for a full list.')
+            return
         if reddit.subreddit(f'{subreddit}').over18:
             await ctx.send(f"**r/{subreddit}** is NSFW. Choose an SFW one, pabo. We aren't about breaking rool2 in here, smh.")
-        elif timeframe is None:
-            await ctx.send('You need to pick a timeframe, pabo. Check `k.reddit_controversial_ex` for a full list.')
         else:
             timeframe = timeframe.lower()
             if timeframe == 'hour' or timeframe == 'h':
@@ -357,9 +357,9 @@ Language codes: https://py-googletrans.readthedocs.io/en/latest/#googletrans-lan
                 if submission.selftext != '':
                     embed = discord.Embed(title = f'Most Controversial Post from r/{subreddit} - {timeframe}', color = discord.Colour(0xefe61),
                     description = f'```{submission.title}```\n**Submitted by:** u/{submission.author.name}\n**Date:** {date}\n\
-                    **Flair:** {submission.link_flair_text}\n**Score:** {submission.score} karma\n**Comments:** {submission.num_comments}')
-                    embed.add_field(name = 'Contents:', value = f'{submission.selftext[:300]}...', inline = False)
-                    embed.add_field(name = 'Link to post:', value = f'https://www.reddit.com{submission.permalink}', inline = False)
+                    **Flair:** {submission.link_flair_text}\n**Score:** {submission.score} karma\n**Comments:** {submission.num_comments}', 
+                    url = f'https://www.reddit.com{submission.permalink}')
+                    embed.add_field(name = 'Post Content:', value = f'{submission.selftext[:300]}...', inline = False)
                     embed.set_footer(text = f'KaiserBot | {ctx.guild.name}', icon_url = 'https://i.imgur.com/CuNlLOP.png')
                     embed.timestamp = datetime.datetime.utcnow()
                     await ctx.send(embed = embed)
@@ -367,7 +367,8 @@ Language codes: https://py-googletrans.readthedocs.io/en/latest/#googletrans-lan
                 else:
                     embed = discord.Embed(title = f'Most Controversial Post from r/{subreddit} - {timeframe}', color = discord.Colour(0xefe61),
                     description = f'```{submission.title}```\n**Submitted by:** u/{submission.author.name}\n**Date:** {date}\n\
-                    **Flair:** {submission.link_flair_text}\n**Score:** {submission.score} karma\n**Comments:** {submission.num_comments}')
+                    **Flair:** {submission.link_flair_text}\n**Score:** {submission.score} karma\n**Comments:** {submission.num_comments}', 
+                    url = f'https://www.reddit.com{submission.permalink}')
                     embed.set_footer(text = f'KaiserBot | {ctx.guild.name}', icon_url = 'https://i.imgur.com/CuNlLOP.png')           
                     embed.timestamp = datetime.datetime.utcnow()
 
@@ -375,7 +376,6 @@ Language codes: https://py-googletrans.readthedocs.io/en/latest/#googletrans-lan
                     linksplit = submission.url.split('.')
                     if 'png' in linksplit or 'jpg' in linksplit or 'jpeg' in linksplit or 'jfif' in linksplit:
                         embed.set_image(url = f'{submission.url}')
-                        embed.add_field(name = 'Link to Post:', value = f'https://www.reddit.com{submission.permalink}', inline = False)
                         await ctx.send(embed = embed)
                         break
                     elif ('https://imgur.com/' in link) and ('gif' not in linksplit) and ('gifv' not in linksplit):
@@ -383,30 +383,81 @@ Language codes: https://py-googletrans.readthedocs.io/en/latest/#googletrans-lan
                         soup = BeautifulSoup(url.text, 'html.parser')
                         directlink = soup.select('link[rel = image_src]')[0]['href']
                         embed.set_image(url = directlink)
-                        embed.add_field(name = 'Link to Post:', value = f'https://www.reddit.com{submission.permalink}', inline = False)
                         await ctx.send(embed = embed)
                         break
                     elif 'https://gfycat.com/' in link or 'https://tenor.com/' in link or 'gif' in linksplit or 'gifv' in linksplit\
                         or 'webm' in linksplit or 'mp4' in linksplit or 'mov' in linksplit or 'https://www.youtube.com/' in link\
                         or 'https://youtu.be/' in link or 'https://streamable.com/' in link:
-                        embed.add_field(name = 'Link to Post:', value = f'https://www.reddit.com{submission.permalink}', inline = False)
                         await ctx.send(embed = embed)
                         await ctx.send(f'**Post Content:** {link}')
                         break
                     else:
                         embed.add_field(name = 'Content:', value = f'{submission.url}', inline = False)
-                        embed.add_field(name = 'Link to Post:', value = f'https://www.reddit.com{submission.permalink}', inline = False)
                         await ctx.send(embed = embed)
                         break
 
-    @commands.command(aliases = ['rc_ex', 'RC_ex', 'Rc_ex', 'rC_ex'])
+    @commands.command(aliases = ['Reddit_controversial_ex', 'rc_ex', 'RC_ex', 'Rc_ex', 'rC_ex'])
     async def reddit_controversial_ex(self, ctx):
         d = {'Timeframe': ['Hour', 'Day', 'Week', 'Month', 'Year'], 'Alias': ['h', 'd', 'w', 'm', 'y']}
         index = [1, 2, 3, 4, 5]
         df = pd.DataFrame(data = d, index = index)
-
         await ctx.send(f'```Full list of timeframes:\n\n{df}\n\nk.reddit_controversial politics Day \n\
 >>> [Most controversial post in r/politics within the past day]```')
+
+    # Consumes a str, subreddit, which must be a valid SFW subreddit
+    # Returns the random post from the specified subreddit, generally within the past 5 days if the sub is active. If not, returns a
+    #   random post from the most recent posts
+    # Only works for subreddits with random on
+    @commands.command(aliases = ['Reddit_random', 'rr', 'RR', 'Rr'])
+    async def reddit_random(self, ctx, *, subreddit = None):
+        if subreddit is None:
+            await ctx.send('You need to specifiy a subreddit, pabo. Try again.')
+            return
+        if reddit.subreddit(f'{subreddit}').over18:
+            await ctx.send(f"**r/{subreddit}** is NSFW. Choose an SFW one, pabo. We aren't about breaking rool2 in here, smh.")
+        else:
+            submission = reddit.subreddit(subreddit).random()
+            date = str(datetime.datetime.fromtimestamp(submission.created)).replace(' ', ' | ') + ' | ' + 'EST'
+            if submission.selftext != '':
+                embed = discord.Embed(title = f"Random Post from r/{subreddit}", color = discord.Colour(0xefe61),
+                description = f"```{submission.title}```\n**Submitted by:** u/{submission.author.name}\n**Date:** {date}\n\
+                **Flair:** {submission.link_flair_text}\n**Score:** {submission.score} karma\n**Comments:** {submission.num_comments}", 
+                url = f'https://www.reddit.com{submission.permalink}')
+                embed.add_field(name = 'Contents:', value = f"{submission.selftext[:600]}...", inline = False)
+                embed.set_footer(text = f'KaiserBot | {ctx.guild.name}', icon_url = 'https://i.imgur.com/CuNlLOP.png')
+                embed.timestamp = datetime.datetime.utcnow()
+                await ctx.send(embed = embed)
+            else:
+                embed = discord.Embed(title = f"Random Post from r/{subreddit}", color = discord.Colour(0xefe61),
+                description = f"```{submission.title}```\n**Submitted by:** u/{submission.author.name}\n**Date:** {date}\n\
+                **Flair:** {submission.link_flair_text}\n**Score:** {submission.score} karma\n**Comments:** {submission.num_comments}",
+                url = f'https://www.reddit.com{submission.permalink}')
+                embed.set_footer(text = f'KaiserBot | {ctx.guild.name}', icon_url = 'https://i.imgur.com/CuNlLOP.png')           
+                embed.timestamp = datetime.datetime.utcnow()
+
+                link = submission.url
+                linksplit = submission.url.split('.')
+                if 'png' in linksplit or 'jpg' in linksplit or 'jpeg' in linksplit or 'jfif' in linksplit:
+                    embed.set_image(url = f'{submission.url}')
+                    await ctx.send(embed = embed)
+                elif ('https://imgur.com/' in link) and ('gif' not in linksplit) and ('gifv' not in linksplit):
+                    url = requests.get(f'{link}')
+                    soup = BeautifulSoup(url.text, 'html.parser')
+                    directlink = soup.select('link[rel = image_src]')[0]['href']
+                    embed.set_image(url = directlink)
+                    await ctx.send(embed = embed)
+                elif 'https://gfycat.com/' in link or 'https://tenor.com/' in link or 'gif' in linksplit or 'gifv' in linksplit\
+                    or 'webm' in linksplit or 'mp4' in linksplit or 'mov' in linksplit or 'https://www.youtube.com/' in link\
+                    or 'https://youtu.be/' in link or 'https://streamable.com/' in link:
+                    await ctx.send(embed = embed)
+                    await ctx.send(f'**Post Content:** {link}')
+                else:
+                    embed.add_field(name = 'Post Content:', value = f'{submission.url}', inline = False)
+                    await ctx.send(embed = embed)
+
+    @commands.command(aliases = ['Reddit_random_ex', 'rr_ex', 'RR_ex', 'Rr_ex'])
+    async def reddit_random_ex(self, ctx, subreddit):
+        await ctx.send('```k.reddit_random kpics\n>>> [Random post from r/kpics (within the past ~5 days of posts)]```')
 
     # Consumes query, which must be a valid search on the kpop wiki
     # Returns the profile of the specified query
@@ -825,7 +876,10 @@ k.pop Red Velvet\n>>> [Information about Red Velvet]```')
     # Consumes amount, an int between 1-25, and location, which must be a valid location (see WOEIDs.md for full list)
     # Returns a dataframe of the trending topics on Twitter according to the specified amount and location
     @commands.command(aliases = ['Twitter_trends', 'twt', 'Twt', 'twitter_trending', 'Twitter_trending'])
-    async def twitter_trends(self, ctx, amount, *, location):
+    async def twitter_trends(self, ctx, amount, *, location = None):
+        if location is None:
+            await ctx.send('Make sure you have all the necessary parameters, pabo. Check `k.twitter_trends_ex` for an example.')
+            return
         if int(amount) < 1 or int(amount) > 25:
             await ctx.send('Amount should be an integer between 1 - 25, pabo. Choose something within that range.')
         else:
@@ -871,7 +925,10 @@ Full location list: <https://github.com/Kaiserrollii/KaiserBot/blob/master/Cogs/
     # Consumes amount, an int between 1-25, and location, which must be a valid location (see WOEIDs.md for full list)
     # Returns a plot of the tweet volume of trending topics on Twitter, according to the specified amount and location
     @commands.command(aliases = ['Twitter_graph', 'twg', 'Twg', 'trend_graph', 'Trend_graph', 'trends_graph', 'Trends_graph'])
-    async def twitter_graph(self, ctx, amount, *, location):
+    async def twitter_graph(self, ctx, amount, *, location = None):
+        if location is None:
+            await ctx.send('Make sure you have all the necessary parameters, pabo. Check `k.twitter_graph_ex` for an example.')
+            return
         if int(amount) < 1 or int(amount) > 25:
             await ctx.send('Amount should be an integer between 1 - 25, pabo. Choose something within that range.')
         else:
@@ -1009,7 +1066,10 @@ k.twitter_search Irene+Red+Velvet recent\n>>> [Recent tweets with the phrase 'Ir
     # Consumes ticker, which must be a valid ticker symbol (read StockInfo.md for details), and timeframe, which must be one of s/m/l
     # Returns a plot of closing price data according to the specified equity and timeframe
     @commands.command(aliases = ['Stock', 'stonk', 'Stonk', 'stonks', 'Stonks'])
-    async def stock(self, ctx, ticker, timeframe):
+    async def stock(self, ctx, ticker, timeframe = None):
+        if timeframe is None:
+            await ctx.send('Make sure you have all the necessary parameters, pabo. Check `k.stock_ex` for an example.')
+            return
         ticker = ticker.upper()
         timeframe = timeframe.lower()
         ts = TimeSeries(key = api_key, output_format= 'pandas')
@@ -1469,41 +1529,49 @@ k.youtube_search Red Velvet\n>>>[Top 5 videos/channels/playlists on YouTube of R
             moreinfo = moreinfo[:295] + '...'
 
         embed = discord.Embed(title = f"Word of the Day: {word}", color = discord.Colour(0xefe61),
-        description = f"{wordtype} | ({wordpronoun})")
+        description = f"{wordtype} | ({wordpronoun})", url = url)
         embed.add_field(name = 'Definition:', value = definition, inline = False)
         embed.add_field(name = 'Example Sentence:', value = example, inline = False)
         embed.add_field(name = 'Did You Know?', value = moreinfo, inline = False)
-        embed.add_field(name = 'Link:', value = url, inline = False)
         embed.set_footer(text = f'KaiserBot | {ctx.guild.name}', icon_url = 'https://i.imgur.com/CuNlLOP.png')
         embed.timestamp = datetime.datetime.utcnow()
 
         await ctx.send(embed = embed)
 
     @commands.command(aliases = ['Urban', 'urb', 'Urb'])
-    async def urban(self, ctx, *, query):
-        fquery = query.replace(' ', '+')
-        url = f'https://www.urbandictionary.com/define.php?term={fquery}'
-        request = requests.get(url)
-        soup = BeautifulSoup(request.text, 'html.parser')
-        definition = soup.find('div', {'class': 'meaning'}).text
-        example = soup.find('div', {'class': 'example'}).text
-        contributor = soup.find('div', {'class': 'contributor'}).text
-        upvotes = soup.find('a', {'class': 'up'}).text
-        downvotes = soup.find('a', {'class': 'down'}).text
+    async def urban(self, ctx, *, query = None):
+        if query is None:
+            await ctx.send('You need to specify a query, pabo. Try again.')
+        else:
+            fquery = query.replace(' ', '+')
+            url = f'https://www.urbandictionary.com/define.php?term={fquery}'
+            request = requests.get(url)
+            soup = BeautifulSoup(request.text, 'html.parser')
+            definition = soup.find('div', {'class': 'meaning'})
 
-        if len(definition) > 300:
-            definition = definition[:295] + '...'
-        if len(example) > 300:
-            example = example[:295] + '...'
+            if definition is None:
+                await ctx.send(f"I couldn't find any definitions related to `{query}`. Nugu.")
+                return
+                
+            example = soup.find('div', {'class': 'example'})
+            contributor = soup.find('div', {'class': 'contributor'})
+            upvotes = soup.find('a', {'class': 'up'})
+            downvotes = soup.find('a', {'class': 'down'})
 
-        embed = discord.Embed(title = f"Urban Dictionary - {query}", color = discord.Colour(0xefe61), description = f"*{contributor}*", url = url)
-        embed.add_field(name = 'Definition:', value = definition, inline = False)
-        embed.add_field(name = 'Example:', value = example, inline = False)
-        embed.add_field(name = 'Score:', value = f'👍 {upvotes} | 👎 {downvotes}', inline = False)
-        embed.set_footer(text = f'KaiserBot | {ctx.guild.name}', icon_url = 'https://i.imgur.com/CuNlLOP.png')
-        embed.timestamp = datetime.datetime.utcnow()
+            if len(definition) > 600:
+                definition = definition[:595] + '...'
+            if len(example) > 600:
+                example = example[:595] + '...'
 
-        await ctx.send(embed = embed)
+            embed = discord.Embed(title = f"Urban Dictionary - {query}", color = discord.Colour(0xefe61), 
+            description = f"*{contributor.text}*", url = url)
+            embed.add_field(name = 'Definition:', value = definition.text, inline = False)
+            embed.add_field(name = 'Example:', value = example.text, inline = False)
+            embed.add_field(name = 'Score:', value = f'👍 {upvotes.text} | 👎 {downvotes.text}', inline = False)
+            embed.set_footer(text = f'KaiserBot | {ctx.guild.name}', icon_url = 'https://i.imgur.com/CuNlLOP.png')
+            embed.timestamp = datetime.datetime.utcnow()
+
+            await ctx.send(embed = embed)
 
     @commands.command(aliases = ['Urban_ex', 'urb_ex', 'Urb_ex'])
     async def urban_ex(self, ctx):
@@ -1512,7 +1580,10 @@ k.youtube_search Red Velvet\n>>>[Top 5 videos/channels/playlists on YouTube of R
     # Consumes query, a string 
     # Returns the novel that is the closest match to the specified query
     @commands.command(aliases = ['Book'])
-    async def book(self, ctx, *, query):
+    async def book(self, ctx, *, query = None):
+        if query is None:
+            await ctx.send('You need to specify a query, pabo. Try again.')
+            return
         fquery = query.replace(' ', '%20').replace("'", '%27').replace('"', '%22').replace('?', '%3F').replace(',', '%2C')
         url = f'https://www.googleapis.com/books/v1/volumes?q={fquery}&maxResults=1&key={API_KEY}' 
         request = requests.get(url)
@@ -1581,7 +1652,10 @@ k.youtube_search Red Velvet\n>>>[Top 5 videos/channels/playlists on YouTube of R
     # Consumes query, which must be a string of len three minimum
     # Returns relevant kpop servers according to the specified query
     @commands.command(aliases = ['Si', 'ksi', 'Ksi'])
-    async def si(self, ctx, *, query):
+    async def si(self, ctx, *, query = None):
+        if query is None:
+            await ctx.send('You need to specify a query, pabo. Try again.')
+            return
         if len(query) <= 2:
             await ctx.send(f"Be a little more specific in your search, pabo. Three characters minimum.")
         else:
@@ -1617,156 +1691,168 @@ k.youtube_search Red Velvet\n>>>[Top 5 videos/channels/playlists on YouTube of R
     # Consumes query, which must be a valid query
     # Returns information from Steam about the most relevant search to the specified query
     @commands.command(aliases = ['Steam', 'game', 'Game'])
-    async def steam(self, ctx, *, query):
-        async with ctx.typing():
-            fquery = query.replace(' ', '+').lower()
-            url = f'https://store.steampowered.com/search/?term={fquery}'
-            user_agent = {'User-Agent': 'Mozilla/5.0'}
-            searchrequest = requests.get(url, headers = user_agent)
-            searchsoup = BeautifulSoup(searchrequest.text, 'html.parser')
-            topsearch = searchsoup.find('div', {'id': 'search_resultsRows'})
+    async def steam(self, ctx, *, query = None):
+        if query is None:
+            await ctx.send('You need to specify a query, pabo. Try again.')
+            return
+        fquery = query.replace(' ', '+').lower()
+        url = f'https://store.steampowered.com/search/?term={fquery}'
+        user_agent = {'User-Agent': 'Mozilla/5.0'}
+        searchrequest = requests.get(url, headers = user_agent)
+        searchsoup = BeautifulSoup(searchrequest.text, 'html.parser')
+        topsearch = searchsoup.find('div', {'id': 'search_resultsRows'})
 
-            if topsearch is None:
-                await ctx.send(f"I couldn't find anything in Steam related to `{query}`. Nugu.")
+        if topsearch is None:
+            await ctx.send(f"I couldn't find anything in Steam related to `{query}`. Nugu.")
+        else:
+            message = await ctx.send('*Searching Steam...*')
+            
+            pagelink = topsearch.find('a')['href']
+            inforequest = requests.get(pagelink)
+            infosoup = BeautifulSoup(inforequest.text, 'html.parser')
+
+            name = infosoup.find('div', {'class': 'apphub_AppName'})
+            image = infosoup.find('img', {'class': 'game_header_image_full'})['src'] 
+            summary = infosoup.find('div', {'class': 'game_description_snippet'})
+            price = infosoup.find('div', {'class': 'game_purchase_price'})
+            discountpct = infosoup.find('div', {'class': 'discount_pct'})
+            discountOG = infosoup.find('div', {'class': 'discount_original_price'})
+            discountfinal = infosoup.find('div', {'class': 'discount_final_price'})
+            ratings_dev = infosoup.find_all('div', {'class', 'summary column'}) 
+            metacritic = infosoup.find('div', {'id': 'game_area_metascore'})
+            genreblock = infosoup.find('div', {'class': 'block_content_inner'})
+            genre_release = genreblock.find('div', {'class': 'details_block'}) 
+
+            if name is None:
+                name = query
             else:
-                message = await ctx.send('*Searching Steam...*')
-                
-                pagelink = topsearch.find('a')['href']
-                inforequest = requests.get(pagelink)
-                infosoup = BeautifulSoup(inforequest.text, 'html.parser')
+                name = name.text.strip()
+            if image is None:
+                image = 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Steam_icon_logo.svg/1200px-Steam_icon_logo.svg.png'
+            if summary is None:
+                summary = 'N/A'
+            else:
+                summary = summary.text.strip()
 
-                name = infosoup.find('div', {'class': 'apphub_AppName'})
-                image = infosoup.find('img', {'class': 'game_header_image_full'})['src'] 
-                summary = infosoup.find('div', {'class': 'game_description_snippet'})
-                price = infosoup.find('div', {'class': 'game_purchase_price'})
-                discountpct = infosoup.find('div', {'class': 'discount_pct'})
-                discountOG = infosoup.find('div', {'class': 'discount_original_price'})
-                discountfinal = infosoup.find('div', {'class': 'discount_final_price'})
-                ratings_dev = infosoup.find_all('div', {'class', 'summary column'}) 
-                metacritic = infosoup.find('div', {'id': 'game_area_metascore'})
-                genreblock = infosoup.find('div', {'class': 'block_content_inner'})
-                genre_release = genreblock.find('div', {'class': 'details_block'}) 
+            if price is None:
+                price = 'N/A'
+            else:
+                CDNprice = float(price.text.strip()[5:])
+                conversion = float(fxp().get_rate('CAD', 'USD'))
+                USDprice = '{:.2f}'.format(CDNprice * conversion)
+                price = 'USD$' + ' ' + USDprice
 
-                if name is None:
-                    name = query
+            if discountpct is None and discountOG is None and discountfinal is None:
+                pass
+            if discountpct is not None and discountOG is not None and discountfinal is not None:
+                CDNpriceOG = float(discountOG.text.strip()[5:])
+                CDNpricefinal = float(discountfinal.text.strip()[5:])
+                conversion = float(fxp().get_rate('CAD', 'USD'))
+                USDpriceOG = '{:.2f}'.format(CDNpriceOG * conversion)
+                USDpricefinal = '{:.2f}'.format(CDNpricefinal * conversion)
+                discountOG = 'USD$' + ' ' + USDpriceOG
+                discountfinal = 'USD$' + ' ' + USDpricefinal
+                price = f"{discountpct.text.replace('-', '')} off! ➞ ~~{discountOG}~~ **{discountfinal}**"
+
+            if metacritic is None:
+                metascore = ''
+            else:
+                metascore = int(metacritic.find('div', {'class': 'score'}).text.strip())
+                if metascore >= 90:
+                    metascore = f'🌟 {metascore} Metacritic'
+                elif metascore >= 80:
+                    metascore = f'⭐ {metascore} Metacritic'
+                elif metascore >= 70:
+                    metascore = f'✅ {metascore} Metacritic'
+                elif metascore >= 60:
+                    metascore = f'👌 {metascore} Metacritic'
+                elif metascore >= 50:
+                    metascore = f'👎 {metascore} Metacritic'
+                elif metascore >= 30:
+                    metascore = f'❌ {metascore} Metacritic'
+                elif metascore >= 10:
+                    metascore = f'⛔ {metascore} Metacritic'
+                elif metascore >= 0:
+                    metascore = f'🖕 {metascore} Metacritic'
                 else:
-                    name = name.text.strip()
-                if image is None:
-                    image = 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Steam_icon_logo.svg/1200px-Steam_icon_logo.svg.png'
-                if summary is None:
-                    summary = 'N/A'
+                    await ctx.send(f'An unexpected error has occurred. FIX IT <@496181635952148483>.')
+                    return
+
+            ratingslist = []
+            devpublist = []
+            for i in ratings_dev:
+                replaced = i.text.replace('\t', '').replace('\r', '').replace('\n\n', '').replace('\n', '')
+                ratingonly = replaced.split('-')[0]
+                ratingsinfo = ' ('.join(ratingonly.split('('))
+                if 'No user reviews' in ratingsinfo:
+                    continue
+                elif 'Overwhelmingly Positive' in ratingsinfo:
+                    ratingslist.append(f'🌟 {ratingsinfo}')
+                elif 'Very Positive' in ratingsinfo:
+                    ratingslist.append(f'⭐ {ratingsinfo}')
+                elif 'Positive' in ratingsinfo and 'Overwhelmingly Positive' not in ratingsinfo and 'Very Positive' not in ratingsinfo and \
+                    'Mostly Positive' not in ratingsinfo:
+                    ratingslist.append(f'✅ {ratingsinfo}')
+                elif 'Mostly Positive' in ratingsinfo:
+                    ratingslist.append(f'👍 {ratingsinfo}')
+                elif 'Mixed' in ratingsinfo:
+                    ratingslist.append(f'👌 {ratingsinfo}')
+                elif 'Mostly Negative' in ratingsinfo:
+                    ratingslist.append(f'👎 {ratingsinfo}')
+                elif 'Negative' in ratingsinfo and 'Overwhelmingly Negative' not in ratingsinfo and 'Very Negative' not in ratingsinfo and \
+                    'Mostly Negative' not in ratingsinfo:
+                    ratingslist.append(f'❌ {ratingsinfo}')
+                elif 'Very Negative' in ratingsinfo:
+                    ratingslist.append(f'⛔ {ratingsinfo}')
+                elif 'Overwhelmingly Negative' in ratingsinfo:
+                    ratingslist.append(f'🖕 {ratingsinfo}')
                 else:
-                    summary = summary.text.strip()
-                if price is None:
-                    price = 'N/A'
-                else:
-                    price = price.text.strip()
-                if discountpct is None and discountOG is None and discountfinal is None:
-                    pass
-                if discountpct is not None and discountOG is not None and discountfinal is not None:
-                    price = f"{discountpct.text.replace('-', '')} off! ➞ ~~{discountOG.text}~~ **{discountfinal.text}**"
-                if metacritic is None:
-                    metacritic = '-'
+                    devpublist.append(i.text.strip())
 
-                if metacritic == '-':
-                    metascore = ''
-                else:
-                    metascore = int(metacritic.find('div', {'class': 'score'}).text.strip())
-                    if metascore >= 90:
-                        metascore = f'🌟 {metascore} Metacritic'
-                    elif metascore >= 80:
-                        metascore = f'⭐ {metascore} Metacritic'
-                    elif metascore >= 70:
-                        metascore = f'✅ {metascore} Metacritic'
-                    elif metascore >= 60:
-                        metascore = f'👌 {metascore} Metacritic'
-                    elif metascore >= 50:
-                        metascore = f'👎 {metascore} Metacritic'
-                    elif metascore >= 30:
-                        metascore = f'❌ {metascore} Metacritic'
-                    elif metascore >= 10:
-                        metascore = f'⛔ {metascore} Metacritic'
-                    elif metascore >= 0:
-                        metascore = f'🖕 {metascore} Metacritic'
-                    else:
-                        await ctx.send(f'An unexpected error has occurred. FIX IT <@496181635952148483>.')
-                        return
+            if len(ratingslist) == 2:
+                ratingsrecent = f'{ratingslist[0]} - Recent'
+                ratingsall = f'{ratingslist[1]} - All'
+                ratingslist.clear()
+                ratingslist.append(ratingsrecent)
+                ratingslist.append(ratingsall)
+                fratings = '\n'.join(ratingslist)
+            elif len(ratingslist) == 1:
+                ratingsall = f'{ratingslist[0]} - All'
+                ratingslist.clear()
+                ratingslist.append(ratingsall)
+                fratings = '\n'.join(ratingslist)
+            else:
+                fratings = 'N/A'
+            
+            if len(devpublist) == 2 or len(devpublist) == 1:
+                fdevpub = '\n'.join(devpublist)
+            else:
+                fdevpub = 'N/A'
 
-                ratingslist = []
-                devpublist = []
-                for i in ratings_dev:
-                    replaced = i.text.replace('\t', '').replace('\r', '').replace('\n\n', '').replace('\n', '')
-                    ratingonly = replaced.split('-')[0]
-                    ratingsinfo = ' ('.join(ratingonly.split('('))
-                    if 'No user reviews' in ratingsinfo:
-                        continue
-                    elif 'Overwhelmingly Positive' in ratingsinfo:
-                        ratingslist.append(f'🌟 {ratingsinfo}')
-                    elif 'Very Positive' in ratingsinfo:
-                        ratingslist.append(f'⭐ {ratingsinfo}')
-                    elif 'Positive' in ratingsinfo and 'Overwhelmingly Positive' not in ratingsinfo and 'Very Positive' not in ratingsinfo and \
-                        'Mostly Positive' not in ratingsinfo:
-                        ratingslist.append(f'✅ {ratingsinfo}')
-                    elif 'Mostly Positive' in ratingsinfo:
-                        ratingslist.append(f'👍 {ratingsinfo}')
-                    elif 'Mixed' in ratingsinfo:
-                        ratingslist.append(f'👌 {ratingsinfo}')
-                    elif 'Mostly Negative' in ratingsinfo:
-                        ratingslist.append(f'👎 {ratingsinfo}')
-                    elif 'Negative' in ratingsinfo and 'Overwhelmingly Negative' not in ratingsinfo and 'Very Negative' not in ratingsinfo and \
-                        'Mostly Negative' not in ratingsinfo:
-                        ratingslist.append(f'❌ {ratingsinfo}')
-                    elif 'Very Negative' in ratingsinfo:
-                        ratingslist.append(f'⛔ {ratingsinfo}')
-                    elif 'Overwhelmingly Negative' in ratingsinfo:
-                        ratingslist.append(f'🖕 {ratingsinfo}')
-                    else:
-                        devpublist.append(i.text.strip())
+            lst = list(filter(lambda x: x != '', genre_release.text.split('\n')))
+            genreleaselist = []
+            for i in lst:
+                if 'Genre:' in i or 'Release Date:'in i:
+                    i = i.split(': ')
+                    tab = f"**{i[0]}**: {i[1]}"
+                    genreleaselist.append(tab)
+            fgenre_release = '\n'.join(genreleaselist)
 
-                if len(ratingslist) == 2:
-                    ratingsrecent = f'{ratingslist[0]} - Recent'
-                    ratingsall = f'{ratingslist[1]} - All'
-                    ratingslist.clear()
-                    ratingslist.append(ratingsrecent)
-                    ratingslist.append(ratingsall)
-                    fratings = '\n'.join(ratingslist)
-                elif len(ratingslist) == 1:
-                    ratingsall = f'{ratingslist[0]} - All'
-                    ratingslist.clear()
-                    ratingslist.append(ratingsall)
-                    fratings = '\n'.join(ratingslist)
-                else:
-                    fratings = 'N/A'
-                
-                if len(devpublist) == 2 or len(devpublist) == 1:
-                    fdevpub = '\n'.join(devpublist)
-                else:
-                    fdevpub = 'N/A'
+            await message.edit(content = '*Searching Steam... ✅*')
 
-                lst = list(filter(lambda x: x != '', genre_release.text.split('\n')))
-                genreleaselist = []
-                for i in lst:
-                    if 'Genre:' in i or 'Release Date:'in i:
-                        i = i.split(': ')
-                        tab = f"**{i[0]}**: {i[1]}"
-                        genreleaselist.append(tab)
-                fgenre_release = '\n'.join(genreleaselist)
+            description = f"**Price:** {price}\n{fgenre_release}"
+            embed = discord.Embed(title = f"Steam Search - {name}", colour = discord.Colour(0xefe61), 
+            description = description, url = pagelink)
+            embed.add_field(name = 'Description:', value = summary, inline = False)
+            embed.add_field(name = 'Ratings:', value = f'{fratings}' + '\n' + metascore)
+            embed.add_field(name = 'Developer | Publisher:', value = fdevpub)
+            embed.set_thumbnail(url = image)
+            embed.set_footer(text = f'KaiserBot | {ctx.guild.name}', icon_url = 'https://i.imgur.com/CuNlLOP.png')
+            embed.timestamp = datetime.datetime.utcnow()
 
-                await message.edit(content = '*Searching Steam... ✅*')
-
-                description = f"**Price:** {price}\n{fgenre_release}"
-                embed = discord.Embed(title = f"Steam Search - {name}", colour = discord.Colour(0xefe61), 
-                description = description, url = pagelink)
-                embed.add_field(name = 'Description:', value = summary, inline = False)
-                embed.add_field(name = 'Ratings:', value = f'{fratings}' + '\n' + metascore)
-                embed.add_field(name = 'Developer | Publisher:', value = fdevpub)
-                embed.set_thumbnail(url = image)
-                embed.set_footer(text = f'KaiserBot | {ctx.guild.name}', icon_url = 'https://i.imgur.com/CuNlLOP.png')
-                embed.timestamp = datetime.datetime.utcnow()
-
-                await asyncio.sleep(1)
-                await message.delete()
-                await ctx.send(embed = embed)
+            await asyncio.sleep(1)
+            await message.delete()
+            await ctx.send(embed = embed)
 
     @commands.command(aliases = ['Steam_ex', 'game_ex', 'Game_ex'])
     async def steam_ex(self, ctx):
