@@ -456,7 +456,7 @@ Language codes: https://py-googletrans.readthedocs.io/en/latest/#googletrans-lan
                     await ctx.send(embed = embed)
 
     @commands.command(aliases = ['Reddit_random_ex', 'rr_ex', 'RR_ex', 'Rr_ex'])
-    async def reddit_random_ex(self, ctx, subreddit):
+    async def reddit_random_ex(self, ctx):
         await ctx.send('```k.reddit_random kpics\n>>> [Random post from r/kpics (within the past ~5 days of posts)]```')
 
     # Consumes query, which must be a valid search on the kpop wiki
