@@ -42,7 +42,9 @@ class Games_Cog(commands.Cog):
                        'https://twitter.com/baelkie/status/1173066011265949696',
                        'https://cdn.discordapp.com/attachments/623770537340174336/707742026728341594/IMG_1648.JPG',
                        'https://cdn.discordapp.com/attachments/623770537340174336/707870719714918421/unknown.png',
-                       'https://cdn.discordapp.com/attachments/630633322686578689/708470605556613140/afzxwn0il7221.png']
+                       'https://cdn.discordapp.com/attachments/630633322686578689/708470605556613140/afzxwn0il7221.png',
+                       'https://cdn.discordapp.com/attachments/630633322686578689/717638617928957972/unknown.png',
+                       'https://cdn.discordapp.com/attachments/630633322686578689/717638790335823892/unknown.png']
                     
         await ctx.send(f'{random.choice(cringe_list)}')
 
@@ -163,10 +165,7 @@ class Games_Cog(commands.Cog):
         embed2.set_footer(text = f'KaiserBot | {ctx.guild.name}',
         icon_url = 'https://i.imgur.com/CuNlLOP.png')
         embed2.timestamp = datetime.datetime.utcnow()
-        
-        message = await ctx.send('*Calculating compatibility...*')
-        await asyncio.sleep(3)
-        await message.delete()
+
         if compatibility < 60:
             await ctx.send (embed = embed1)
         else:
