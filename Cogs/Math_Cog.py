@@ -21,7 +21,7 @@ class Math_Cog(commands.Cog):
     # Returns the evaluated expression 
     @commands.command(aliases = ['Evaluate', 'eval', 'Eval', 'simplify', 'Simplify'])
     async def evaluate(self, ctx, *, expression):
-        parseable = expression.replace('^', '**').replace(' ', '')
+        parseable = expression.replace('^', '**').replace(' ', '').replace(',', '')
         parsed = parse_expr(parseable)
         evaluated = str(simplify(parsed)).replace('**', '^')
         if evaluated == 'zoo' or evaluated == 'nan':
