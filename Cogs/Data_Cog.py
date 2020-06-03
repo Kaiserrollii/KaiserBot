@@ -1736,6 +1736,8 @@ k.youtube_search Red Velvet\n>>>[Top 5 videos/channels/playlists on YouTube of R
 
             if price is None:
                 price = 'N/A'
+            elif 'free' in price.text.strip().lower():
+                price = 'Free'
             else:
                 CDNprice = float(price.text.strip()[5:])
                 conversion = float(fxp().get_rate('CAD', 'USD'))
