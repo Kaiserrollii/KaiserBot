@@ -209,16 +209,31 @@ class Games_Cog(commands.Cog):
     async def spongebobify2_ex(self, ctx):
         await ctx.send('```k.scuffed sai more like cry\n>>> sAAII MMorEE liKKEE cRRYY```')
 
-    # Consumes a str, message
-    # Returns an uwufied version of the specified message
+    # Consumes a str, message, and returns an uwufied version of the specified message
+    # if message is not given, will uwufy the latest text message in the current channel
     @commands.command(aliases = ['Uwufy', 'uwufier', 'Uwufier', 'uwu', 'Uwu'])
-    async def uwufy(self, ctx, *, message):
+    async def uwufy(self, ctx, *, message = None):
+        if message is None:
+            recent = await ctx.channel.history(limit = 25).flatten()
+            counter = 0
+            for i in recent[1:]:
+                counter += 1
+                if i.attachments == [] and i.embeds == []:
+                    message = i.content
+                    if len(message) > 2000:
+                        await ctx.send('Message is too long!')
+                        return
+                    break
+            if counter == 0:
+                await ctx.send('Could not find any text messages to uwufy.')
         wd = message.replace('r', 'w').replace('R', 'W').replace('l', 'w').replace('L', 'W')
-        punctuation = wd.replace('!', '!!!!! owo').replace('?', '?!??!!?')
+        punctuation = wd.replace('!', '!!! owo').replace('?', '?!??!?')
         emojis = punctuation.replace('❤️', '<3').replace('♥️', '<3').replace('💕', '<3 <3').replace('😊', '>w<')
-        no = emojis.replace('no', 'nyo').replace('No', 'Nyo')
-        uwu = no.replace('you', 'youwu').replace('You', 'Youwu')
-        await ctx.send(uwu)
+        uwu = emojis.replace('no', 'nyo').replace('No', 'Nyo')
+        if len(uwu) > 2000:
+            await ctx.send('Message is too long!')
+        else:
+            await ctx.send(uwu)
 
     @commands.command(aliases = ['Uwufy_ex', 'uwufier_ex', 'Uwufier_ex', 'uwu_ex', 'Uwu_ex'])
     async def uwufy_ex(self, ctx):
@@ -227,7 +242,8 @@ class Games_Cog(commands.Cog):
 :PepeLove: 😊 Take care and gave a great day/night! ♥️\n\n\
 >>> gn evewyone <3 wemembew to stay hydwated & pwease make suwe youwuwe washing youwuw hands & staying cwean of gewms ~ <3 <3 Take cawe, we'we \
 hawf way thwough the week!!!!! owo Stay in thewe but wemembew I'm awways hewe if youwu want someone to tawk to about anything :PepeWove: >w<\
-Take cawe and gave a gweat day/night!!!!! owo <3```")
+Take cawe and gave a gweat day/night!!!!! owo <3\n\n\
+k.uwufy \n>>> [Uwufies the most recent text message in the current channel]```")
 
     # Consumes a str, message
     # Returns a scrambled version of the specified message with a 15% chance of a word getting dropped
