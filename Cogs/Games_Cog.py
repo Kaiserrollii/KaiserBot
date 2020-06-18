@@ -185,6 +185,7 @@ class Games_Cog(commands.Cog):
                 i = i.upper()
                 L.append(i)
             else:
+                i.lower()
                 L.append(i)
         await ctx.send(''.join(L))
 
@@ -202,7 +203,9 @@ class Games_Cog(commands.Cog):
             if random.choice([True, False]):
                 i = i.upper()
                 L.append(i)
-            L.append(i)
+            else:
+                i.lower()
+                L.append(i)
         await ctx.send(''.join(L))
 
     @commands.command(aliases = ['Spongebobify2_ex', 'scuffed_ex', 'Scuffed_ex'])
