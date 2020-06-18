@@ -185,7 +185,7 @@ class Games_Cog(commands.Cog):
                 i = i.upper()
                 L.append(i)
             else:
-                i.lower()
+                i = i.lower()
                 L.append(i)
         await ctx.send(''.join(L))
 
@@ -204,7 +204,7 @@ class Games_Cog(commands.Cog):
                 i = i.upper()
                 L.append(i)
             else:
-                i.lower()
+                i = i.lower()
                 L.append(i)
         await ctx.send(''.join(L))
 
