@@ -93,7 +93,20 @@ class Math_Cog(commands.Cog):
     # Consumes a str, message, and an int, increment
     # Returns the encrypted message by shifting each character by the specified increment
     @commands.command(aliases = ['Cipher', 'encrypt', 'Encrypt'])
-    async def cipher(self, ctx, increment, *, message):
+    async def cipher(self, ctx, increment, *, message = None):
+        if message is None:
+            recent = await ctx.channel.history(limit = 25).flatten()
+            counter = 0
+            for i in recent[1:]:
+                counter += 1
+                if i.attachments == [] and i.embeds == []:
+                    message = i.content
+                    if len(message) > 2000:
+                        await ctx.send('Message is too long!')
+                        return
+                    break
+            if counter == 0:
+                await ctx.send('Could not find any text messages to encrypt.')
         increment = int(round(float(increment)))
         if increment == 0:
             await ctx.send(message)
