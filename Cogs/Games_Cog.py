@@ -449,13 +449,13 @@ find that your journey in the Games will end sooner than you think.",
                 'Sua', 'Siyeon', 'Handong', 'Gahyeon', 'Yoohyeon', 'Dami', 'Jiu',
                 'Haseul', 'Heejin', 'Hyunjin (LOONA)', 'Yeojin', 'Vivi', 'Jinsoul', 'Kim Lip', 'Yves', 'Gowon', 'Olivia Hye', 'Choerry', 'Chuu',
                 'Solar', 'Moonbyul', 'Wheein', 'Hwasa',
-                'Sowon', 'Yerin', 'Eunha', 'Yuju', 'SinB', 'Umji',
+                'Sowon', 'Yerin', 'Eunha', 'Yuju (GFriend)', 'SinB', 'Umji',
                 'E:U', 'Aisha', 'Mia', 'Yiren', 'Onda', 'Sihyeon',
                 'Wonyoung', 'Sakura', 'Nako', 'Yuri', 'Eunbi', 'Hyewon', 'Yena', 'Chaeyeon', 'Chaewon', 'Minju', 'Hitomi', 'Yujin (IZ)',
                 'Suyeon', 'Elly', 'Yoojung', 'Doyeon', 'Sei', 'Lua', 'Rina', 'Lucy',
                 'Hyojung', 'Mimi', 'Yooa', 'Seunghee (OMG)', 'Jiho', 'Binnie', 'Arin',
                 'Hyebin', 'Jane', 'Nayun', 'Jooe', 'Ahin', 'Nancy',
-                'Haeyoon', 'Yuju', 'Bora', 'Jiwon (CB)', 'Remi', 'Chaerin', 'May',
+                'Haeyoon', 'Yuju (CB)', 'Bora', 'Jiwon (CB)', 'Remi', 'Chaerin', 'May',
                 'Baby Soul', 'Jiae', 'Jisoo (Lovelyz)', 'Mijoo', 'Kei', 'Jin (Lovelyz)', 'Sujeong', 'Yein',
                 'Seola', 'Bona', 'Exy', 'Soobin (WJSN)', 'Luda', 'Dawon (WJSN)', 'Eunseo', 'Yeoreum', 'Dayoung', 'Yeonjung',
                 'Léa', 'Dita', 'Jinny', 'Soodam', 'Denise',
@@ -696,8 +696,8 @@ find that your journey in the Games will end sooner than you think.",
                             multiply2 = f"{random.randint(2, 12)} * {random.randint(2, 12)}"
                             emultiply1 = str(simplify(multiply1))
                             emultiply2 = str(simplify(multiply2))
-                            exponent1 = f"{random.randint(1, 8)} ** {random.randint(1, 8)}"
-                            exponent2 = f"{random.randint(1, 8)} ** {random.randint(1, 8)}"
+                            exponent1 = f"{random.randint(2, 10)} ** {random.randint(0, 3)}"
+                            exponent2 = f"{random.randint(2, 10)} ** {random.randint(0, 3)}"
                             eexponent1 = str(simplify(exponent1))
                             eexponent2 = str(simplify(exponent2))
                             remainder1 = f"{random.randint(50, 100)} % {random.randint(1, 49)}"
@@ -712,7 +712,7 @@ find that your journey in the Games will end sooner than you think.",
 
                             sptasks2 = {f"Solve: `{plusminus2}`": eplusminus2, 
                                         f"Solve: `{multiply2.replace('*', 'x')}`": emultiply2, 
-                                        f"Solve: `{exponent2.replace('**', '^')}`": eexponent2, 
+                                        f"Solve: `{exponent2.replace('**', '^')}`": eexponent2,  
                                         f"Find the remainder: `{remainder2.replace('%', '/')}`": eremainder2}
 
                             randomsptask = random.randint(0, len(sptasks1) - 1)
@@ -977,7 +977,6 @@ find that your journey in the Games will end sooner than you think.",
                             dmatchanswer = await self.bot.wait_for('message', timeout = 90, check = checkdmatch)
                         except asyncio.TimeoutError:
                             pickrng = True
-                            await dmatchmessage.delete()
                             await ctx.send('Deathmatch trivia timed out. Be faster next time, pabo.')
                             await ctx.send(f"The correct answers are: `{admtask1}` and `{admtask2}`.")
                             RNG = await ctx.send('Now picking via RNG...')
@@ -1021,31 +1020,8 @@ find that your journey in the Games will end sooner than you think.",
                 victorembed.set_footer(text = f'KaiserBot | {ctx.guild.name}', icon_url = 'https://i.imgur.com/CuNlLOP.png')
                 victorembed.timestamp = datetime.datetime.utcnow()
 
-                if not pickrng:
-                    await dmatchmessage.delete()
-
                 victorembed = await ctx.send(embed = victorembed)
-                await victorembed.add_reaction('▶️')
-                await victorembed.add_reaction('❌')
-
-                try: 
-                    reaction, user = await self.bot.wait_for('reaction_add', timeout = 180, check = lambda reaction, 
-                    user: (((str(reaction.emoji) == '▶️' and user == ctx.author and user != ctx.bot.user) or\
-                            (str(reaction.emoji) == '❌' and user == ctx.author and user != ctx.bot.user)) and\
-                            reaction.message.id == victorembed.id))
-                except asyncio.TimeoutError:
-                    await victorembed.delete()
-                    await ctx.send('Hunger Games timed out. Be faster next time, pabo.')
-                    return
-                else:
-                    if str(reaction.emoji) == '❌':
-                        await victorembed.delete()
-                        cancelled = await ctx.send('Hunger Games cancelled.')
-                        await asyncio.sleep(10)
-                        await cancelled.delete()
-                        return
-                    elif str(reaction.emoji) == '▶️':
-                        await victorembed.clear_reactions()
+                await asyncio.sleep(3)
 
                 victorkills = dstats[victor][0]
                 if victorkills >= 5:
