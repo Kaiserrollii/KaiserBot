@@ -111,16 +111,60 @@ Scrapes definitions from https://wordnet.princeton.edu/')
     # Consumes parameters start and end, which must be valid language codes, and message, a string
     # Returns the translated message according to the specified start and end languages
     @commands.command(aliases = ['Translate', 'trans', 'Trans', 'tr', 'Tr'])
-    async def translate(self, ctx, start, end, *, message):
-        message = message.replace('\n', ' ')
-        translated = Translator().translate(message, src = start, dest = end)
-        formatted = str(translated).split(',')[2][6:]
-        await ctx.send(f'**Source ({start})**: {message}\n**Translation ({end})**: {formatted}')
+    async def translate(self, ctx, codes = None, *, message = None):
+        if codes is None:
+            await ctx.send('You need to specify language codes, pabo. Check the full list at `k.translate_ex` \
+or use `auto` for auto-detection.')
+            return
+        if message is None:
+            recent = await ctx.channel.history(limit = 25).flatten()
+            counter = 0
+            for i in recent[1:]:
+                counter += 1
+                if i.attachments == [] and i.embeds == []:
+                    message = i.content
+                    if len(message) > 2000:
+                        await ctx.send('Message is too long!')
+                        return
+                    break
+            if counter == 0:
+                await ctx.send('Could not find any text messages to translate.')
+                return
+        if codes.lower() == 'auto':
+            message = message.replace('\n', ' ')
+            translated = Translator().translate(message, src = 'auto', dest = 'en')
+            formatted = str(translated).split(',')[2][6:]
+            detector = str(Translator().detect(message))
+            start = detector[14: len(detector) - 1].replace('=', ' = ')
+            await ctx.send(f'**Source ({start})**: {message}\n**Translation (en)**: {formatted}')
+        else:
+
+            langcodes = ['af', 'sq', 'am', 'ar', 'hy', 'az', 'eu', 'be', 'bn', 'bs', 'bg', 'ca', 'ceb', 'ny', 
+                         'zh-cn', 'zh-tw', 'co', 'hr', 'cs', 'da', 'nl', 'en', 'eo', 'et', 'tl', 'fi', 'fr',
+                         'fy', 'gl', 'ka', 'de', 'el', 'gu', 'ht', 'ha', 'haw', 'iw', 'hi', 'hmn', 'hu', 'is',
+                         'ig', 'id', 'ga', 'it', 'ja', 'jw', 'kn', 'kk', 'km', 'ko', 'ku', 'ky', 'lo', 'la', 'lv',
+                         'lt', 'lb', 'mk', 'mg', 'ms', 'ml', 'mt', 'mi', 'mr', 'mn', 'my', 'ne', 'no', 'ps', 'fa',
+                         'pl', 'pt', 'pa', 'ro', 'ru', 'sm', 'gd', 'sr', 'sd', 'sn', 'st', 'si', 'sk', 'sl', 'so',
+                         'es', 'su', 'sw', 'sv', 'tg', 'ta', 'te', 'th', 'tr', 'uk', 'ur', 'uz', 'vi', 'cy', 'xh',
+                         'yi', 'yo', 'zu', 'fil', 'he']
+
+            message = message.replace('\n', ' ')
+            langs = codes.split('/')
+            langs[0] = langs[0].lower()
+            langs[1] = langs[1].lower()
+            if langs[0] not in langcodes or langs[1] not in langcodes:
+                await ctx.send("That's not a proper language code, pabo. Check the full list at `k.translate_ex`.")
+                return
+            translated = Translator().translate(message, src = langs[0], dest = langs[1])
+            formatted = str(translated).split(',')[2][6:]
+            await ctx.send(f'**Source ({langs[0]})**: {message}\n**Translation ({langs[1]})**: {formatted}')
 
     @commands.command(aliases = ['Translate_ex', 'trans_ex', 'Trans_ex', 'tr_ex', 'Tr_ex'])
     async def translate_ex(self, ctx):
-        await ctx.send('''```k.tr en ko Irene is the best. \n>>> 아이린은 최고입니다.```
-Language codes: https://py-googletrans.readthedocs.io/en/latest/#googletrans-languages''')
+        await ctx.send('''```If using language codes, you must use "/" to separate the two. Otherwise, use "auto" for auto-detection.\n\n\
+k.tr en/ko Irene is the best.\n>>> 아이린은 최고입니다.\n\n\
+k.tr auto Bonjour\n>>> Hello```
+Language codes: <https://developers.google.com/admin-sdk/directory/v1/languages>''')
 
     # Consumes a str, subreddit, which must be a valid SFW subreddit
     # Returns the current hot post from the specified subreddit, along with submission author, flair, score, and amount of comments
