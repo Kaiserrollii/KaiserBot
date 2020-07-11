@@ -104,14 +104,11 @@ class Games_Cog(commands.Cog):
     # Returns a randomized choice from choices
     @commands.command(aliases = ['Choose', 'choice', 'Choice'])
     async def choose(self, ctx, *choices: str):
-        if 'irene' in choices:
-            await ctx.send('irene')
-        elif 'Irene' in choices:
-            await ctx.send('Irene')
-        elif 'lrene' in choices:
-            await ctx.send('Irene')
-        else:
-            await ctx.send(random.choice(choices))
+        for i in choices:
+            if i.lower() == 'irene' or i.lower() == 'lrene':
+                await ctx.send('Irene.')
+                return
+        await ctx.send(random.choice(choices))
 
     @commands.command(aliases = ['Choose_ex', 'choice_ex', 'Choice_ex'])
     async def choose_ex(self, ctx):
