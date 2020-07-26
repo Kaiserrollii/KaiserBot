@@ -38,9 +38,8 @@ auth.set_access_token(access_token, access_token_secret)
 api = tw.API(auth, wait_on_rate_limit = True)
 
 api_key = lines[8]
-
 API_KEY = lines[9]
-
+apikey = lines[12]
 plt.style.use('dark_background')
 
 class Data_Cog(commands.Cog):
@@ -1903,6 +1902,63 @@ k.youtube_search Red Velvet\n>>>[Top 5 videos/channels/playlists on YouTube of R
     @commands.command(aliases = ['Steam_ex', 'game_ex', 'Game_ex'])
     async def steam_ex(self, ctx):
         await ctx.send('```k.steam GTA Vice City\n>>> [Information from Steam about GTA Vice City]```')
+
+    @commands.command(aliases = ['Movie', 'mov', 'Mov'])
+    async def movie(self, ctx, *, query = None):
+        if query == None:
+            await ctx.send('You need to provide a query, pabo. Try again.')
+        else:
+            fquery = query.replace(' ', '+')
+            url = f'http://www.omdbapi.com/?apikey={apikey}&t={fquery}&plot=full'
+            request = requests.get(url)
+            movie = json.loads(request.text)
+            moviekeys = movie.keys()
+
+            if 'Title' not in moviekeys:
+                await ctx.send(f'Sorry, but `{query}` is too nugu. Try again.')
+            else:
+                title = movie['Title']
+                date = 'N/A'
+                image = 'https://imgur.com/KooZoXg'
+                summary = 'N/A'
+                score = 'N/A'
+                director = 'N/A'
+                stars = 'N/A'
+                runtime = 'N/A'
+
+                if 'Released' in moviekeys:
+                    date = movie['Released']
+                if 'Poster' in moviekeys:
+                    image = movie['Poster']
+                if 'Plot' in moviekeys:
+                    summary = movie['Plot']
+                if 'Ratings' in moviekeys:
+                    score = movie['Ratings'][0]['Value']
+                if 'Director' in moviekeys:
+                    director = movie['Director']
+                if 'Actors' in moviekeys:
+                    stars = movie['Actors']
+                if 'Runtime' in moviekeys:
+                    runtime = movie['Runtime']
+
+                if len(summary) > 800:
+                    summary = summary[:800] + '...'
+
+                embed = discord.Embed(title = f"Movie Search: {title}", colour = discord.Colour(0xefe61), 
+                description = f"**Director(s):** {director}\n**Stars:** {stars}")
+                embed.set_thumbnail(url = image)
+                embed.add_field(name = 'Summary:', value = summary, inline = False)
+                embed.add_field(name = 'Released:', value = date)
+                embed.add_field(name = 'Runtime:', value = runtime)
+                embed.add_field(name = 'Score:', value = f'⭐ {score}')
+                embed.set_footer(text = f'KaiserBot | {ctx.guild.name}', icon_url = 'https://i.imgur.com/CuNlLOP.png')
+                embed.timestamp = datetime.datetime.utcnow()
+                
+                await ctx.send(embed = embed)
+
+    @commands.command(aliases = ['Movie_ex', 'mov_ex', 'Mov_ex'])
+    async def movie_ex(self, ctx):
+        await ctx.send('```k.movie Interstellar\n>>> [Information from IMDB about Interstellar]```')
 
 
 def setup(bot):
