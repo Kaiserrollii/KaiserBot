@@ -14,6 +14,7 @@ class Events_Cog(commands.Cog):
         print('Events: Online')
 
     # Welcome message, autorole, and bot DM when a new user joins Kaisercord
+    # Hardcoded welcome message for Joycord as well as per request
     @commands.Cog.listener()
     async def on_member_join(self, member): 
         if member.guild.id == 604539500223397898:
@@ -29,13 +30,30 @@ class Events_Cog(commands.Cog):
             embed.set_thumbnail(url = f'{member.avatar_url}')
             embed.set_author(name = f'Welcome to {member.guild.name}!', url = 'https://discord.gg/kjuX5TZ', icon_url = f'{member.avatar_url}')
             embed.set_footer(text = f'Member #{len(list(member.guild.members))} | KaiserBot | {member.guild.name}',
-            icon_url = 'https://i.imgur.com/bgneUkj.gifv')
+            icon_url = 'https://i.imgur.com/CuNlLOP.png')
             embed.timestamp = datetime.datetime.utcnow()
 
             await channel.send(embed = embed)
             await member.add_roles(autorole)
             await member.send(f"Welcome to {member.guild.name}! I'm KaiserBot: the server's personal bot.\nFor more information about me, head to \
     https://kaiserbotwebsite--kaiserrollii.repl.co/")
+
+        elif member.guild.id == 437895879643365376: #joycord id
+            autorole = discord.utils.get(member.guild.roles, name = 'Joyful') #joycord autorole
+            channel = self.bot.get_channel(id = 437895879643365379) # joycord general
+            welcome_channel = self.bot.get_channel(id = 437953446784532492) #joycord welcome
+            roles_channel = self.bot.get_channel(id = 437959289206865952) # joycord roles
+            bot_channel = self.bot.get_channel(id = 437954532169744384) # joycord botland
+
+            embed = discord.Embed(title = 'A new member has arrived!', colour = discord.Colour(0x00d741),
+            description = f"Welcome to the Joy discord server, {member.mention}!\n\n\
+Please check out {welcome_channel.mention} for rules and important information!\n\
+You can add special Joy themed roles in {roles_channel.mention}!\n\
+If you're here for the card game, please check out {bot_channel.mention}!")
+            embed.set_thumbnail(url = f'{member.avatar_url}')
+            embed.set_footer(text = f'Member #{len(list(member.guild.members))}!')
+            await channel.send(embed = embed)
+            await member.add_roles(autorole)
 
         else:
             return
