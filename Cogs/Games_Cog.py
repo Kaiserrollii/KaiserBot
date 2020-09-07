@@ -51,7 +51,8 @@ class Games_Cog(commands.Cog):
                        'https://cdn.discordapp.com/attachments/623770537340174336/707870719714918421/unknown.png',
                        'https://cdn.discordapp.com/attachments/630633322686578689/708470605556613140/afzxwn0il7221.png',
                        'https://cdn.discordapp.com/attachments/630633322686578689/717638617928957972/unknown.png',
-                       'https://cdn.discordapp.com/attachments/630633322686578689/717638790335823892/unknown.png']
+                       'https://cdn.discordapp.com/attachments/630633322686578689/717638790335823892/unknown.png',
+                       'https://imgur.com/rxfQ3XQ.png']
                     
         await ctx.send(f'{random.choice(cringe_list)}')
 
@@ -196,6 +197,7 @@ class Games_Cog(commands.Cog):
                     break
             if counter == 0:
                 await ctx.send('Could not find any text messages to spongebobify.')
+                return
         L = []
         for i in message:
             if random.choice([True, False]):
@@ -228,6 +230,7 @@ class Games_Cog(commands.Cog):
                     break
             if counter == 0:
                 await ctx.send('Could not find any text messages to scuff.')
+                return
         L = []
         for i in message:
             if random.choice([True, False]):
@@ -257,6 +260,7 @@ class Games_Cog(commands.Cog):
                     break
             if counter == 0:
                 await ctx.send('Could not find any text messages to uwufy.')
+                return
         wd = message.replace('r', 'w').replace('R', 'W').replace('l', 'w').replace('L', 'W')
         punctuation = wd.replace('!', '!!! owo').replace('?', '?!??!?')
         emojis = punctuation.replace('❤️', '<3').replace('♥️', '<3').replace('💕', '<3 <3').replace('😊', '>w<')
@@ -293,6 +297,7 @@ k.uwufy \n>>> [Uwufies the most recent text message in the current channel]```")
                     break
             if counter == 0:
                 await ctx.send('Could not find any text messages to cloutify.')
+                return
         lst = message.strip().split(' ')
         lst = list(filter(lambda x: (random.randint(1, 100) >= 15), lst))
         random.shuffle(lst)
@@ -964,9 +969,9 @@ find that your journey in the Games will end sooner than you think.",
                         dmatchmessage = await ctx.send(embed = dmatchembed)
                 
                         def checkdmatch(dmatchanswer: discord.Message): 
-                            return (dmatchanswer.channel == dmatchmessage.channel and dmatchanswer.content == admtask1 and 
+                            return (dmatchanswer.channel == dmatchmessage.channel and dmatchanswer.content.lower() == admtask1.lower() and 
                                     dmatchanswer.author.id != ctx.bot.user.id) or\
-                                   (dmatchanswer.channel == dmatchmessage.channel and dmatchanswer.content == admtask2 and 
+                                   (dmatchanswer.channel == dmatchmessage.channel and dmatchanswer.content.lower() == admtask2.lower() and 
                                     dmatchanswer.author.id != ctx.bot.user.id)
                         try:
                             dmatchanswer = await self.bot.wait_for('message', timeout = 90, check = checkdmatch)
@@ -989,12 +994,12 @@ find that your journey in the Games will end sooner than you think.",
                     else:
                         dstats[alive[0]][1] = day
                         runnerup = alive[0]
-                elif dmatchanswer.content == admtask1:
+                elif dmatchanswer.content.lower() == admtask1.lower():
                     victor = alive[0]
                     runnerup = alive[1]
                     dstats[victor][0] += 1
                     dstats[alive[1]][1] = day
-                elif dmatchanswer.content == admtask2:
+                elif dmatchanswer.content.lower() == admtask2.lower():
                     victor = alive[1]
                     runnerup = alive[0]
                     dstats[victor][0] += 1
