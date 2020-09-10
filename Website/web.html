@@ -113,6 +113,12 @@
         MasterTable += "<td><div class = 'tablealiases'>k.BMI</div></td>";
         MasterTable += '<td></td></tr>';
 
+        MasterTable += "<tr><td><div class = 'tablecommands'>k.book <div class = 'tooltip'>[Query]\
+        <span class = 'tooltiptext'>Any type</div></span></div></td>";
+        MasterTable += "<td>Returns the novel that is the closet match to the specified query.</td>";
+        MasterTable += "<td><div class = 'tablealiases'>k.read</div></td>";
+        MasterTable += '<td></td></tr>';
+
         MasterTable += "<tr><td><div class = 'tablecommands'>k.boticon</div></td>";
         MasterTable += "<td>Returns the KaiserBot icon.</td>";
         MasterTable += "<td><div class = 'tablealiases'>k.bot_icon</div></td>";
@@ -147,6 +153,12 @@
         <span class = 'tooltiptext'>Any type</div></span></div></td>";
         MasterTable += '<td>Returns a cloutified version of the specified message.</td>';
         MasterTable += "<td><div class = 'tablealiases'>k.scramble<br>k.jumble</div></td>";
+        MasterTable += '<td></td></tr>';
+
+        MasterTable += "<tr><td><div class = 'tablecommands'>k.convert <div class = 'tooltip'>[Temperature]\
+        <span class = 'tooltiptext'>Number+[C or F]</div></span></div></td>";
+        MasterTable += "<td>Converts the specified temperature to either C or F.</td>";
+        MasterTable += "<td><div class = 'tablealiases'>k.conv</div></td>";
         MasterTable += '<td></td></tr>';
 
         MasterTable += "<tr><td><div class = 'tablecommands'>k.cringe <i class='fa fa-commenting'></div></td>";
@@ -193,6 +205,12 @@
         MasterTable += "<tr><td><div class = 'tablecommands'>k.help</div></td>";
         MasterTable += "<td>Returns a general help page for KaiserBot.</td>";
         MasterTable += "<td><div class = 'tablealiases'>k.pabo</div></td>";
+        MasterTable += '<td></td></tr>';
+
+        MasterTable += "<tr><td><div class = 'tablecommands'>k.hungergames <div class = 'tooltip'>[Category]\
+        <span class = 'tooltiptext'>Male/female/mixed</div></span></div></td>";
+        MasterTable += '<td>Runs a Hunger Games simulator.</td>';
+        MasterTable += "<td><div class = 'tablealiases'>k.hg</div></td>";
         MasterTable += '<td></td></tr>';
 
         MasterTable += "<tr><td><div class = 'tablecommands'>k.img_analyze <div class = 'tooltip'>[Link]\
@@ -268,6 +286,12 @@
         MasterTable += "<td><div class = 'tablealiases'>k.mel</div></td>";
         MasterTable += '<td></td></tr>';
 
+        MasterTable += "<tr><td><div class = 'tablecommands'>k.movie <div class = 'tooltip'>[Query]\
+        <span class = 'tooltiptext'>Valid query</div></span></div></td>";
+        MasterTable += '<td>Returns the top search from IMDB.</td>';
+        MasterTable += "<td><div class = 'tablealiases'>k.mov</div></td>";
+        MasterTable += '<td></td></tr>';
+
         MasterTable += "<tr><td><div class = 'tablecommands'>k.mute <div class = 'tooltip'>[User]\
         <span class = 'tooltiptext'>@ or ID</div></span></div></td>";
         MasterTable += "<td>Mutes the specified user.</td>";
@@ -285,7 +309,13 @@
         MasterTable += '<td></td></tr>';
 
         MasterTable += "<tr><td><div class = 'tablecommands'>k.pop <div class = 'tooltip'>[Query]\
-        <span class = 'tooltiptext'>Valid group/soloist on kprofiles</div></span></div></td>";
+        <span class = 'tooltiptext'>Group / soloist / group member, etc.</div></span></div></td>";
+        MasterTable += "<td>Retrieves info on groups, soloists, companies, shows, albums, and singles. Information from Kpop Wiki.</td>";
+        MasterTable += "<td><div class = 'tablealiases'>k.kpop</div></td>";
+        MasterTable += '<td></td></tr>';
+
+        MasterTable += "<tr><td><div class = 'tablecommands'>k.profile <div class = 'tooltip'>[Query]\
+        <span class = 'tooltiptext'>Valid group/soloist on Kprofiles</div></span></div></td>";
         MasterTable += "<td>Retrieves info on any group or soloist.</td>";
         MasterTable += "<td><div class = 'tablealiases'>k.profile</div></td>";
         MasterTable += '<td></td></tr>';
@@ -309,10 +339,16 @@
         MasterTable += "<td><div class = 'tablealiases'>k.rn</div></td>";
         MasterTable += '<td></td></tr>';
 
+        MasterTable += "<tr><td><div class = 'tablecommands'>k.reddit_random <div class = 'tooltip'>[Subreddit]\
+        <span class = 'tooltiptext'>Do <strong>not </strong>include 'r/'</div></span></div></td>";
+        MasterTable += '<td>Returns a random post from an SFW subreddit (within the past ~5 days of posts).</td>';
+        MasterTable += "<td><div class = 'tablealiases'>k.rr</div></td>";
+        MasterTable += '<td></td></tr>';
+
         MasterTable += "<tr><td><div class = 'tablecommands'>k.reddit_top <div class = 'tooltip'>[Subreddit] [Timeframe]\
         <span class = 'tooltiptext'>[Subreddit]: Do <strong>not </strong>include 'r/'<br>[Timeframe]: must be a valid timeframe\
         </div></span></div></td>";
-        MasterTable += '<td>Returns the all-time top post from an SFW subreddit.</td>';
+        MasterTable += '<td>Returns the top post from an SFW subreddit according to the specified timeframe.</td>';
         MasterTable += "<td><div class = 'tablealiases'>k.rt</div></td>";
         MasterTable += '<td></td></tr>';
 
@@ -331,6 +367,12 @@
         <span class = 'tooltiptext'>[1]: Any type<br>[2]: Any type</div></span> <i class='fa fa-commenting'></div></td>";
         MasterTable += "<td>Ship any two things together and find out their compatibility, as well as recommended next steps.</td>";
         MasterTable += "<td><div class = 'tablealiases'>k.compatibility</div></td>";
+        MasterTable += '<td></td></tr>';
+
+        MasterTable += "<tr><td><div class = 'tablecommands'>k.si <div class = 'tooltip'>[Query]\
+        <span class = 'tooltiptext'>Any type</div></span></div></td>";
+        MasterTable += "<td>Returns relevant kpop servers according to the specified query.</td>";
+        MasterTable += "<td><div class = 'tablealiases'>k.ksi</div></td>";
         MasterTable += '<td></td></tr>';
 
         MasterTable += "<tr><td><div class = 'tablecommands'>k.slowmode <div class = 'tooltip'>[Duration] [Units]\
@@ -352,6 +394,12 @@
         MasterTable += "<td><div class = 'tablealiases'>k.scuffed</div></td>";
         MasterTable += '<td></td></tr>';
 
+        MasterTable += "<tr><td><div class = 'tablecommands'>k.steam <div class = 'tooltip'>[Query]\
+        <span class = 'tooltiptext'>Any type</div></span></div></td>";
+        MasterTable += "<td>Returns the most relevant Steam search result according to the specified query.</td>";
+        MasterTable += "<td><div class = 'tablealiases'>k.game</div></td>";
+        MasterTable += '<td></td></tr>';
+
         MasterTable += "<tr><td><div class = 'tablecommands'>k.stock <div class = 'tooltip'>[Ticker] [Timeframe]\
         <span class = 'tooltiptext'>[Ticker]: Valid ticker symbol<br>[Timeframe]: s/m/l</div></span></div></td>";
         MasterTable += "<td>Retrieves closing price data of the specified equity within the specified timeframe and presents a graphical \
@@ -361,7 +409,7 @@
         MasterTable += "<td><div class = 'tablealiases'>k.stonks</div></td>";
         MasterTable += '<td></td></tr>';
 
-        MasterTable += "<tr><td><div class = 'tablecommands'>k.translate <div class = 'tooltip'>[Start] [End] [Message]\
+        MasterTable += "<tr><td><div class = 'tablecommands'>k.translate <div class = 'tooltip'>[Start]/[End] [Message]\
         <span class = 'tooltiptext'>[Start]: Valid language code<br>[End]: Valid language code<br>[Message]: Any type</div></span></div></td>";
         MasterTable += "<td>Translates the message according to the specified language codes.</td>";
         MasterTable += "<td><div class = 'tablealiases'>k.tr</div></td>";
@@ -404,6 +452,12 @@
         MasterTable += "<td><div class = 'tablealiases'>k.reverseshh</div></td>";
         MasterTable += "<td><div class = 'tableperms'>Mute Members</div></td></tr>";
 
+        MasterTable += "<tr><td><div class = 'tablecommands'>k.urban <div class = 'tooltip'>[Query]\
+        <span class = 'tooltiptext'>Any type</div></span></div></td>";
+        MasterTable += '<td>Returns the Urban Dictionary definition of the specified query.</td>';
+        MasterTable += "<td><div class = 'tablealiases'>k.urb</div></td>";
+        MasterTable += '<td></td></tr>';
+
         MasterTable += "<tr><td><div class = 'tablecommands'>k.uwufy <div class = 'tooltip'>[Message]\
         <span class = 'tooltiptext'>Any type</div></span></div></td>";
         MasterTable += '<td>Returns an uwufied version of the specified message.</td>';
@@ -413,6 +467,23 @@
         MasterTable += "<tr><td><div class = 'tablecommands'>k.website</div></td>";
         MasterTable += "<td>Returns the bot's website.</td>";
         MasterTable += "<td><div class = 'tablealiases'>k.site</div></td>";
+        MasterTable += '<td></td></tr>';
+
+        MasterTable += "<tr><td><div class = 'tablecommands'>k.wotd</div></td>";
+        MasterTable += "<td>Returns the word of the day, courtesy of Merriam Webster.</td>";
+        MasterTable += "<td><div class = 'tablealiases'>k.dailyword</div></td>";
+        MasterTable += '<td></td></tr>';
+
+        MasterTable += "<tr><td><div class = 'tablecommands'>k.youtube_search <div class = 'tooltip'>[Query]\
+        <span class = 'tooltiptext'>Valid YouTube search query</div></span></div></td>";
+        MasterTable += "<td>Returns the top five most relevant YouTube videos/channels/playlists of the specified query.</td>";
+        MasterTable += "<td><div class = 'tablealiases'>k.yts</div></td>";
+        MasterTable += '<td></td></tr>';
+
+        MasterTable += "<tr><td><div class = 'tablecommands'>k.youtube_top <div class = 'tooltip'>[Query]\
+        <span class = 'tooltiptext'>Valid YouTube search query</div></span></div></td>";
+        MasterTable += "<td>Returns the most relevant YouTube video of the specified query.</td>";
+        MasterTable += "<td><div class = 'tablealiases'>k.yt</div></td>";
         MasterTable += '<td></td></tr>';
 
         MasterTable += '</table>'
@@ -426,7 +497,7 @@
 
     <div class = 'navbar'>
       <a href = 'https://github.com/Kaiserrollii/KaiserBot' target = '_blank'>
-        <img src = 'https://cdn.discordapp.com/attachments/665437935088304132/703051597504053278/iu.png' width = '20' height = '20'>
+        <img src = 'https://cdn0.iconfinder.com/data/icons/shift-logotypes/32/Github-512.png' width = '20' height = '20'>
       </a>
       <a href = 'https://discord.gg/kjuX5TZ' target = '_blank' class = 'glow'>Kaisercord</a>
       <a href = 'https://www.patreon.com/kaiserbot' target = '_blank'>Patreon</a> 
@@ -468,7 +539,7 @@
       <div class = 'row'>
         <div class = 'column'>
           <span style = "font-family: 'Staatliches', cursive; font-size: 40px">Music</span><br>
-          <img src = 'https://cdn.discordapp.com/attachments/665437935088304132/699169824353288222/music.png' style = 'width: 85%'>
+          <img src = 'https://i.imgur.com/IryfM4T.png' style = 'width: 85%'>
           <br><br>
           <span style = 'font-size: 12px'>Basic music functionality.<br>
             Plays anything YouTube has to offer.<br>
@@ -476,7 +547,7 @@
         </div>
         <div class = 'column'>
           <span style = "font-family: 'Bebas Neue', cursive; font-size: 38px">Levelling System</span><br>
-          <img src = 'https://cdn.discordapp.com/attachments/665437935088304132/699454529992654868/levellingsystem.png' style = 'width: 85%'>
+          <img src = 'https://imgur.com/APqf7ox.png' style = 'width: 85%'>
           <br><br>
           <span style = 'font-size: 12px'>Watch as I struggle with databases.<br>
             Track how much time you've wasted on Discord.<br>
@@ -484,7 +555,7 @@
         </div>
         <div class = 'column'>
           <span style = "font-family: 'Great Vibes', cursive; font-size: 38px">Simple RPG</span><br>
-          <img src = 'https://cdn.discordapp.com/attachments/665437935088304132/699455826347294720/rpg.png' style = 'width: 85%'>
+          <img src = 'https://imgur.com/lazJvzb.png' style = 'width: 85%'>
           <br><br>
           <span style = 'font-size: 12px'>Watch as I continue to struggle with databases.<br>
             Maybe experience points or something.<br>
@@ -699,6 +770,37 @@
               - Up to 20 years of stock market data from 17 different exchanges/indexes<br><br>
               <strong>Coming Soon:</strong><br>
               - New command category: Music
+            </p>
+          </div>
+        </div>
+        <div class = 'changelogbox left'>
+          <div class = 'changelog_content'>
+            <h2>1.1.0 - Midway Update</h2>
+            <p>
+              <i>25/06/20</i><br><br>
+              No music yet, but a whole host of new commands, fixes, and features.<br><br>
+              <strong>What's New:</strong><br>
+              - Hunger Games simulator - play against your friends and/or idols!<br>
+              - Steam game searcher - check new games, discounts, and ratings<br>
+              - Book searcher - find relevant books, complete with rating and summary<br>
+              - Charts command - for finding the most up-to-date k charts information<br>
+              - Melon command - similar to charts, but Melon exclusively<br>
+              - Two new Reddit commands: reddit_new and reddit_controversial<br>
+              - Youtube commands: youtube_top and youtube_search<br>
+              - Word-of-the-day, courtesy of Merriam Webster<br>
+              - Urban dictionary searcher<br>
+              - Uwufier and cloutifier - for transforming text<br>
+              - Patreon and website commands<br><br>
+              <strong>What's Updated:</strong><br>
+              - Fixed division by 0 issues in the eval command<br>
+              - Changed welcome message to include user avatar<br>
+              - Fixed cipher 0 issues in cipher command<br>
+              - Made all Reddit commands Imgur-compatible for better image display<br>
+              - Added recent-message capabilities to all text transform commands<br>
+              - And countless other fixes<br><br>
+              <strong>Coming Soon:</strong><br>
+              - New command category: Music (really)<br>
+              - (Potentially) Twitter auto-updates
             </p>
           </div>
         </div>
