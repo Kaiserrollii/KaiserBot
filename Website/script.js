@@ -7,6 +7,11 @@ var DataTable = "<table id = 'DataTable'><tr class = 'header'>\
 <th><div class = 'tabletitle'>&#x200b;</div></th>\
 <th><div class = 'tabletitle'>&#x200b;</div></th>";
 
+    DataTable += "<tr><td><div class = 'tablecommands'>k.book <div class = 'tooltip'>[Query]\
+    <span class = 'tooltiptext'>Any type</div></span></div></td>";
+    DataTable += "<td>Returns the novel that is the closet match to the specified query.</td>";
+    DataTable += "<td><div class = 'tablealiases'>k.read</div></td></tr>";
+
     DataTable += "<tr><td><div class = 'tablecommands'>k.charts <div class = 'tooltip'>[Artist]\
     <span class = 'tooltiptext'>[Artist]: Valid artist on the charts (see k.chart_ex for full list)</div></span></div></td>";
     DataTable += '<td>Returns the chart positions for the specified artist. Supports Melon, Flo, Bugs, genie, soribada,\
@@ -23,20 +28,56 @@ var DataTable = "<table id = 'DataTable'><tr class = 'header'>\
     DataTable += '<td>Returns the top ten songs on the Melon charts according to the specified timeframe.</td>';
     DataTable += "<td><div class = 'tablealiases'>k.mel</div></td></tr>";
 
+    DataTable += "<tr><td><div class = 'tablecommands'>k.movie <div class = 'tooltip'>[Query]\
+    <span class = 'tooltiptext'>Valid query</div></span></div></td>";
+    DataTable += '<td>Returns the top search from IMDB.</td>';
+    DataTable += "<td><div class = 'tablealiases'>k.mov</div></td></tr>";
+
     DataTable += "<tr><td><div class = 'tablecommands'>k.pop <div class = 'tooltip'>[Query]\
-    <span class = 'tooltiptext'>Valid group/soloist on kprofiles</div></span></div></td>";
+    <span class = 'tooltiptext'>Group / soloist / group member, etc.</div></span></div></td>";
+    DataTable += "<td>Retrieves info on groups, soloists, companies, shows, albums, and singles. Information from Kpop Wiki.</td>";
+    DataTable += "<td><div class = 'tablealiases'>k.kpop</div></td></tr>";
+
+    DataTable += "<tr><td><div class = 'tablecommands'>k.profile <div class = 'tooltip'>[Query]\
+    <span class = 'tooltiptext'>Valid group/soloist on Kprofiles</div></span></div></td>";
     DataTable += "<td>Retrieves info on any group or soloist.</td>";
     DataTable += "<td><div class = 'tablealiases'>k.profile</div></td></tr>";
+
+    DataTable += "<tr><td><div class = 'tablecommands'>k.reddit_controversial <div class = 'tooltip'>[Subreddit] [Timeframe]\
+    <span class = 'tooltiptext'>[Subreddit]: Do <strong>not </strong>include 'r/'<br>[Timeframe]: must be a valid timeframe\
+    (see k.rc_ex for full list)</div></span></div></td>";
+    DataTable += '<td>Returns the most controversial post from an SFW subreddit according to the specified timeframe.</td>';
+    DataTable += "<td><div class = 'tablealiases'>k.rc</div></td></tr>";
 
     DataTable += "<tr><td><div class = 'tablecommands'>k.reddit_hot <div class = 'tooltip'>[Subreddit]\
     <span class = 'tooltiptext'>Do <strong>not</strong> include 'r/'</div></span></div></td>";
     DataTable += '<td>Retrieves the current hot post from an SFW subreddit.</td>';
     DataTable += "<td><div class = 'tablealiases'>k.rh</div></td></tr>";
 
+    DataTable += "<tr><td><div class = 'tablecommands'>k.reddit_new <div class = 'tooltip'>[Subreddit]\
+    <span class = 'tooltiptext'>Do <strong>not </strong>include 'r/'</div></span></div></td>";
+    DataTable += '<td>Returns the newest post from an SFW subreddit.</td>';
+    DataTable += "<td><div class = 'tablealiases'>k.rn</div></td></tr>";
+
+    DataTable += "<tr><td><div class = 'tablecommands'>k.reddit_random <div class = 'tooltip'>[Subreddit]\
+    <span class = 'tooltiptext'>Do <strong>not </strong>include 'r/'</div></span></div></td>";
+    DataTable += '<td>Returns a random post from an SFW subreddit (within the past ~5 days of posts).</td>';
+    DataTable += "<td><div class = 'tablealiases'>k.rr</div></td></tr>";
+
     DataTable += "<tr><td><div class = 'tablecommands'>k.reddit_top <div class = 'tooltip'>[Subreddit]\
     <span class = 'tooltiptext'>Do <strong>not</strong> include 'r/'</div></span></div></td>";
-    DataTable += '<td>Retrieves the all-time top post from an SFW subreddit.</td>';
+    DataTable += '<td>Retrieves the top post from an SFW subreddit according to the specified timeframe.</td>';
     DataTable += "<td><div class = 'tablealiases'>k.rt</div></td></tr>";
+
+    DataTable += "<tr><td><div class = 'tablecommands'>k.si <div class = 'tooltip'>[Query]\
+    <span class = 'tooltiptext'>Any type</div></span></div></td>";
+    DataTable += "<td>Returns relevant kpop servers according to the specified query.</td>";
+    DataTable += "<td><div class = 'tablealiases'>k.ksi</div></td></tr>";
+
+    DataTable += "<tr><td><div class = 'tablecommands'>k.steam <div class = 'tooltip'>[Query]\
+    <span class = 'tooltiptext'>Any type</div></span></div></td>";
+    DataTable += "<td>Returns the most relevant Steam search result according to the specified query.</td>";
+    DataTable += "<td><div class = 'tablealiases'>k.game</div></td></tr>";
 
     DataTable += "<tr><td><div class = 'tablecommands'>k.stock <div class = 'tooltip'>[Ticker] [Timeframe]\
     <span class = 'tooltiptext'>[Ticker]: Valid ticker symbol<br>[Timeframe]: s/m/l</div></span></div></td>";
@@ -46,7 +87,7 @@ var DataTable = "<table id = 'DataTable'><tr class = 'header'>\
     <strong>Documentation.</strong></a></td>";
     DataTable += "<td><div class = 'tablealiases'>k.stonks</div></td></tr>";
 
-    DataTable += "<tr><td><div class = 'tablecommands'>k.translate <div class = 'tooltip'>[Start] [End] [Message]\
+    DataTable += "<tr><td><div class = 'tablecommands'>k.translate <div class = 'tooltip'>[Start]/[End] [Message]\
     <span class = 'tooltiptext'>[Start]: Valid language code<br>[End]: Valid language code<br>[Message]: Any type</div></span></div></td>";
     DataTable += "<td>Translates the message according to the specified language codes.</td>";
     DataTable += "<td><div class = 'tablealiases'>k.tr</div></td></tr>";
@@ -72,6 +113,25 @@ var DataTable = "<table id = 'DataTable'><tr class = 'header'>\
     [Timeframe]: Integer between 0 - 7. Leave blank for recent.</div></span></div></td>";
     DataTable += '<td>Retrieves three tweets according to the specified query, category, and timeframe.</td>';
     DataTable += "<td><div class = 'tablealiases'>k.tws</div></td></tr>";
+
+    DataTable += "<tr><td><div class = 'tablecommands'>k.urban <div class = 'tooltip'>[Query]\
+    <span class = 'tooltiptext'>Any type</div></span></div></td>";
+    DataTable += '<td>Returns the Urban Dictionary definition of the specified query.</td>';
+    DataTable += "<td><div class = 'tablealiases'>k.urb</div></td></tr>";
+
+    DataTable += "<tr><td><div class = 'tablecommands'>k.wotd</div></td>";
+    DataTable += "<td>Returns the word of the day, courtesy of Merriam Webster.</td>";
+    DataTable += "<td><div class = 'tablealiases'>k.dailyword</div></td></tr>";
+
+    DataTable += "<tr><td><div class = 'tablecommands'>k.youtube_search <div class = 'tooltip'>[Query]\
+    <span class = 'tooltiptext'>Valid YouTube search query</div></span></div></td>";
+    DataTable += "<td>Returns the top five most relevant YouTube videos/channels/playlists of the specified query.</td>";
+    DataTable += "<td><div class = 'tablealiases'>k.yts</div></td></tr>";
+
+    DataTable += "<tr><td><div class = 'tablecommands'>k.youtube_top <div class = 'tooltip'>[Query]\
+    <span class = 'tooltiptext'>Valid YouTube search query</div></span></div></td>";
+    DataTable += "<td>Returns the most relevant YouTube video of the specified query.</td>";
+    DataTable += "<td><div class = 'tablealiases'>k.yt</div></td></tr>";
 
     DataTable += '</table>';
 
@@ -107,6 +167,11 @@ var GamesTable = "<table id = 'GamesTable'><tr class = 'header'>\
     <span class = 'tooltiptext'>Positive integer</div></span></div></td>";
     GamesTable += '<td>Rolls an n-sided die.</td>';
     GamesTable += "<td><div class = 'tablealiases'>k.roll</div></td></tr>";
+
+    GamesTable += "<tr><td><div class = 'tablecommands'>k.hungergames <div class = 'tooltip'>[Category]\
+    <span class = 'tooltiptext'>Male/female/mixed</div></span></div></td>";
+    GamesTable += '<td>Runs a Hunger Games simulator.</td>';
+    GamesTable += "<td><div class = 'tablealiases'>k.hg</div></td></tr>";
 
     GamesTable += "<tr><td><div class = 'tablecommands'>k.magic8ball <div class = 'tooltip'>[Question]\
     <span class = 'tooltiptext'>Any type</div></span> <i class = 'fa fa-commenting'></div></td>";
@@ -200,6 +265,11 @@ var MathTable = "<table id = 'MathTable'><tr class = 'header'>\
     <span class = 'tooltiptext'>[Increment]: Integer<br>[Message]: Any type</div></span></div></td>";
     MathTable += '<td>Encrypts a message by shifting each character by the specified increment.</td>';
     MathTable += "<td><div class = 'tablealiases'>k.encrypt</td></div></tr>";
+
+    MathTable += "<tr><td><div class = 'tablecommands'>k.convert <div class = 'tooltip'>[Temperature]\
+    <span class = 'tooltiptext'>Number+[C or F]</div></span></div></td>";
+    MathTable += "<td>Converts the specified temperature to either C or F.</td>";
+    MathTable += "<td><div class = 'tablealiases'>k.conv</div></td></tr>";
 
     MathTable += "<tr><td><div class = 'tablecommands'>k.derivative <div class = 'tooltip'>[Variable] [Function]\
     <span class = 'tooltiptext'>[Variable]: Letter<br>[Function]: Valid function (follows BEDMAS)</div></span></div></td>";
