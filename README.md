@@ -2,7 +2,7 @@
 Discord bot for Kaisercord.
 
 <p align = 'center'>
-  <img src = 'https://cdn.discordapp.com/attachments/630633322686578689/699425742752317490/KaiserBotcircular.png'>
+  <img src = 'https://imgur.com/qBz4yeq.png'>
 </p>
 
 Prefix: `k.`
@@ -19,9 +19,9 @@ Features:
 - Retrieve info about your favourite groups/soloists/shows/companies
 - Check Melon, Flo, Bugs, genie, soribada, and Naver charts in realtime
 - Run a Hunger Games simulator with your friends
-- Search for books, games, and urban dictionary definitions
+- Search for books, games, movies, and urban dictionary definitions
 - Do calculus, manipulate images, translate phrases, and define words
-- Retrieve top, hot, new, and controversial posts from any SFW subreddit
+- Retrieve top, hot, new, controversial, and random posts from any SFW subreddit
 - Twitter trends/search data (with graphs!) from 467 different locations
 - Search through YouTube for the most relevant videos, channels, and playlists
 - Up to 20 years of stock market data from 17 different exchanges/indexes
