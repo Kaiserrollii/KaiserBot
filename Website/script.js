@@ -38,10 +38,10 @@ var DataTable = "<table id = 'DataTable'><tr class = 'header'>\
     DataTable += "<td>Retrieves info on groups, soloists, companies, shows, albums, and singles. Information from Kpop Wiki.</td>";
     DataTable += "<td><div class = 'tablealiases'>k.kpop</div></td></tr>";
 
-    DataTable += "<tr><td><div class = 'tablecommands'>k.profile <div class = 'tooltip'>[Query]\
+    DataTable += "<tr><td><div class = 'tablecommands'>k.kprofile <div class = 'tooltip'>[Query]\
     <span class = 'tooltiptext'>Valid group/soloist on Kprofiles</div></span></div></td>";
     DataTable += "<td>Retrieves info on any group or soloist.</td>";
-    DataTable += "<td><div class = 'tablealiases'>k.profile</div></td></tr>";
+    DataTable += "<td><div class = 'tablealiases'>k.kprofiles<br>k.kpro</div></td></tr>";
 
     DataTable += "<tr><td><div class = 'tablecommands'>k.reddit_controversial <div class = 'tooltip'>[Subreddit] [Timeframe]\
     <span class = 'tooltiptext'>[Subreddit]: Do <strong>not </strong>include 'r/'<br>[Timeframe]: must be a valid timeframe\
@@ -173,6 +173,10 @@ var GamesTable = "<table id = 'GamesTable'><tr class = 'header'>\
     GamesTable += '<td>Runs a Hunger Games simulator.</td>';
     GamesTable += "<td><div class = 'tablealiases'>k.hg</div></td></tr>";
 
+    GamesTable += "<tr><td><div class = 'tablecommands'>k.hungergames_leaderboard</td>";
+    GamesTable += '<td>Shows a multi-server Hunger Games leaderboard.</td>';
+    GamesTable += "<td><div class = 'tablealiases'>k.hg_lb<br>k.hg_leaderboard<br>k.hungergames_lb</div></td></tr>";
+
     GamesTable += "<tr><td><div class = 'tablecommands'>k.magic8ball <div class = 'tooltip'>[Question]\
     <span class = 'tooltiptext'>Any type</div></span> <i class = 'fa fa-commenting'></div></td>";
     GamesTable += "<td>Ask any question, and it'll give an answer. May not be a good one, though.</td>";
@@ -202,6 +206,133 @@ var GamesTable = "<table id = 'GamesTable'><tr class = 'header'>\
 
 function Games() { 
   document.getElementById('MasterTable').innerHTML = GamesTable;
+}
+
+var HousesRPGTable = "<table id = 'HousesRPGTable'><tr class = 'header'>\
+<th><div class = 'tabletitle'>Houses & RPG</div></th>\
+<th><div class = 'tabletitle'>&#x200b;</div></th>\
+<th><div class = 'tabletitle'>&#x200b;</div></th>\
+<th><div class = 'tabletitle'>&#x200b;</div></th>";
+
+    HousesRPGTable += "<tr><td><div class = 'tablecommands'>k.guide</div></td>";
+    HousesRPGTable += '<td>An introductory guide to the Houses & RPG system.</td>';
+    HousesRPGTable += "<td><div class = 'tablealiases'>k.rpg</div></td></tr>";
+
+    HousesRPGTable += "<tr><td><div class = 'tablecommands'>k.profile_set</div></td>";
+    HousesRPGTable += '<td>Sets your general profile.</td>';
+    HousesRPGTable += "<td><div class = 'tablealiases'>k.pro_set</div></td></tr>";
+
+    HousesRPGTable += "<tr><td><div class = 'tablecommands'>k.profile</div></td>";
+    HousesRPGTable += '<td>Shows your general profile.</td>';
+    HousesRPGTable += "<td><div class = 'tablealiases'>k.pro</div></td></tr>";
+
+    HousesRPGTable += "<tr><td><div class = 'tablecommands'>k.profile_bio <div class = 'tooltip'>[Message]\
+    <span class = 'tooltiptext'>Valid message <= 200 characters</div></span></div></td>";
+    HousesRPGTable += '<td>Sets your profile bio according to the specified message.</td>';
+    HousesRPGTable += "<td><div class = 'tablealiases'>k.pro_bio</div></td></tr>";
+
+    HousesRPGTable += "<tr><td><div class = 'tablecommands'>k.profile_rpg</div></td>";
+    HousesRPGTable += '<td>Shows your RPG profile.</td>';
+    HousesRPGTable += "<td><div class = 'tablealiases'>k.pro_rpg<br>k.inventory<br>k.inv</div></td></tr>";
+
+    HousesRPGTable += "<tr><td><div class = 'tablecommands'>k.handshake <div class = 'tooltip'>[User]\
+    <span class = 'tooltiptext'>Valid user with a general profile</div></span></div></td>";
+    HousesRPGTable += '<td>Shakes hands with the specified user.</td>';
+    HousesRPGTable += "<td><div class = 'tablealiases'>k.rep</div></td></tr>";
+
+    HousesRPGTable += "<tr><td><div class = 'tablecommands'>k.get_sorted</div></td>";
+    HousesRPGTable += '<td>Sorts you into one of five houses.</td>';
+    HousesRPGTable += "<td><div class = 'tablealiases'>k.sorting_quiz</div></td></tr>";
+
+    HousesRPGTable += "<tr><td><div class = 'tablecommands'>k.house <div class = 'tooltip'>[House name]\
+    <span class = 'tooltiptext'>Pink/Yellow/Blue/Green/Purple</div></span></div></td>";
+    HousesRPGTable += '<td>Shows information about the specified house.</td>';
+    HousesRPGTable += "<td><div class = 'tablealiases'>k.house_info</div></td></tr>";
+
+    HousesRPGTable += "<tr><td><div class = 'tablecommands'>k.house_leaderboard</div></td>";
+    HousesRPGTable += '<td>Shows the current house points leaderboard.</td>';
+    HousesRPGTable += "<td><div class = 'tablealiases'>k.house_lb</div></td></tr>";
+
+    HousesRPGTable += "<tr><td><div class = 'tablecommands'>k.house_cup</div></td>";
+    HousesRPGTable += '<td>Provides more information on the House Cup.</td>';
+    HousesRPGTable += "<td><div class = 'tablealiases'>k.housecup</div></td></tr>";
+
+    HousesRPGTable += "<tr><td><div class = 'tablecommands'>k.market</div></td>";
+    HousesRPGTable += '<td>Displays all goods for sale at the market.</td>';
+    HousesRPGTable += "<td><div class = 'tablealiases'>k.shop<br>k.store</div></td></tr>";
+
+    HousesRPGTable += "<tr><td><div class = 'tablecommands'>k.item <div class = 'tooltip'>[Item name]\
+    <span class = 'tooltiptext'>Valid name / weapons / armor</div></span></div></td>";
+    HousesRPGTable += '<td>Shows information about the specified item.</td>';
+    HousesRPGTable += "<td><div class = 'tablealiases'>k.item_info</div></td></tr>";
+
+    HousesRPGTable += "<tr><td><div class = 'tablecommands'>k.buy <div class = 'tooltip'>[Item name]\
+    <span class = 'tooltiptext'>Valid name</div></span></div></td>";
+    HousesRPGTable += '<td>Buys the specified item.</td>';
+    HousesRPGTable += "<td><div class = 'tablealiases'>k.purchase</div></td></tr>";
+
+    HousesRPGTable += "<tr><td><div class = 'tablecommands'>k.sell <div class = 'tooltip'>[Item name]\
+    <span class = 'tooltiptext'>Valid name</div></span></div></td>";
+    HousesRPGTable += '<td>Sells the specified item for rubies.</td>';
+    HousesRPGTable += "<td><div class = 'tablealiases'>k.sold</div></td></tr>";
+
+    HousesRPGTable += "<tr><td><div class = 'tablecommands'>k.dismantle <div class = 'tooltip'>[Item name]\
+    <span class = 'tooltiptext'>Valid name</div></span></div></td>";
+    HousesRPGTable += '<td>Dismantles the specified item for house points.</td>';
+    HousesRPGTable += "<td><div class = 'tablealiases'>k.destroy<br>k.disassemble</div></td></tr>";
+
+    HousesRPGTable += "<tr><td><div class = 'tablecommands'>k.quest</div></td>";
+    HousesRPGTable += '<td>Shows a list of available quests and survival chances for each.</td>';
+    HousesRPGTable += "<td><div class = 'tablealiases'>k.loot</div></td></tr>";
+
+    HousesRPGTable += "<tr><td><div class = 'tablecommands'>k.quest_check</div></td>";
+    HousesRPGTable += '<td>Calulates the survival chances of each quest, based on user input.</td>';
+    HousesRPGTable += "<td><div class = 'tablealiases'>k.questcheck<br>k.check<br>k.checker</div></td></tr>";
+
+    HousesRPGTable += "<tr><td><div class = 'tablecommands'>k.heal</div></td>";
+    HousesRPGTable += '<td>Restores user to 100 HP.</td>';
+    HousesRPGTable += "<td><div class = 'tablealiases'>k.health</div></td></tr>";
+
+    HousesRPGTable += "<tr><td><div class = 'tablecommands'>k.work</div></td>";
+    HousesRPGTable += '<td>Works a shift.</td>';
+    HousesRPGTable += "<td><div class = 'tablealiases'>k.shift</div></td></tr>";
+
+    HousesRPGTable += "<tr><td><div class = 'tablecommands'>k.points_to <div class = 'tooltip'>[House] [Amount] [User]\
+    <span class = 'tooltiptext'>[House]: Valid house<br>[Amount]: Integer<br>[User]: Valid user</div></span></div></td>";
+    HousesRPGTable += '<td>Adds the specified amount of house points to the house, with optional individual points added \
+    to the specified user.</td>';
+    HousesRPGTable += "<td><div class = 'tablealiases'>k.add_points<br>k.points_add</div></td>"
+    HousesRPGTable += "<td><div class = 'tableperms'>Owner</div></td></tr>";
+
+    HousesRPGTable += "<tr><td><div class = 'tablecommands'>k.points_from <div class = 'tooltip'>[House] [Amount] [User]\
+    <span class = 'tooltiptext'>[House]: Valid house<br>[Amount]: Integer<br>[User]: Valid user</div></span></div></td>";
+    HousesRPGTable += '<td>Takes the specified amount of house points from the house, with optional individual points taken \
+    from the specified user.</td>';
+    HousesRPGTable += "<td><div class = 'tablealiases'>k.subtract_points<br>k.points_subtract</div></td>"
+    HousesRPGTable += "<td><div class = 'tableperms'>Owner</div></td></tr>";
+
+    HousesRPGTable += "<tr><td><div class = 'tablecommands'>k.rubies_to <div class = 'tooltip'>[User] [Amount]\
+    <span class = 'tooltiptext'>[User]: Valid user<br>[Amount]: Integer</div></span></div></td>";
+    HousesRPGTable += '<td>Adds the specified amount of rubies to the user.</td>';
+    HousesRPGTable += "<td><div class = 'tablealiases'>k.add_points<br>k.points_add</div></td>"
+    HousesRPGTable += "<td><div class = 'tableperms'>Owner</div></td></tr>";
+
+    HousesRPGTable += "<tr><td><div class = 'tablecommands'>k.rubies_from <div class = 'tooltip'>[User] [Amount]\
+    <span class = 'tooltiptext'>[User]: Valid user<br>[Amount]: Integer</div></span></div></td>";
+    HousesRPGTable += '<td>Takes the specified amount of rubies from the user.</td>';
+    HousesRPGTable += "<td><div class = 'tablealiases'>k.subtract_points<br>k.points_subtract</div></td>"
+    HousesRPGTable += "<td><div class = 'tableperms'>Owner</div></td></tr>";
+
+    HousesRPGTable += "<tr><td><div class = 'tablecommands'>k.delete_user <div class = 'tooltip'>[User]\
+    <span class = 'tooltiptext'>Valid user</div></span></div></td>";
+    HousesRPGTable += '<td>Deletes the specified user from the Houses & RPG system.</td>';
+    HousesRPGTable += "<td><div class = 'tablealiases'>k.remove_user</div></td>"
+    HousesRPGTable += "<td><div class = 'tableperms'>Owner</div></td></tr>";
+
+    HousesRPGTable += '</table>';
+
+function HousesRPG() { 
+  document.getElementById('MasterTable').innerHTML = HousesRPGTable;
 }
 
 var ImagesTable = "<table id = 'ImagesTable'><tr class = 'header'>\
@@ -301,10 +432,6 @@ var MathTable = "<table id = 'MathTable'><tr class = 'header'>\
     </div></span></div></td>";
     MathTable += '<td>Calculates the limit as the function approaches the specified value.</td>';
     MathTable += "<td><div class = 'tablealiases'>k.lim</div></td></tr>";
-
-    
-
-    
 
     MathTable += '</table>';
 
@@ -416,9 +543,6 @@ var MiscellaneousTable = "<table id = 'MiscellaneousTable'><tr class = 'header'>
 function Miscellaneous() { 
   document.getElementById('MasterTable').innerHTML = MiscellaneousTable;
 }
-
-// Currently broken even though it was working perfectly fine before
-// Will fix later
 
 // function flashingdownarrow() {
 //   var a;
