@@ -49,11 +49,11 @@ class Miscellaneous_Cog(commands.Cog):
     # Returns bot's profile picture
     @commands.command(aliases = ['Boticon', 'bot_icon', 'Bot_icon'])
     async def boticon(self, ctx):
-        await ctx.send('https://cdn.discordapp.com/attachments/630633322686578689/699425742752317490/KaiserBotcircular.png')
-
+        await ctx.send('https://imgur.com/CuNlLOP.png')
+        
     # Returns an invite link to Kaisercord
-    @commands.command(aliases = ['Invite', 'inv', 'Inv'])
-    async def invite(self, ctx):
+    @commands.command(aliases = ['kaisercord', 'Kaisercord', 'aicord', 'kaicord', 'Kaicord'])
+    async def aisercord(self, ctx):
         await ctx.send('https://discord.gg/kjuX5TZ')
 
     # Consumes a parameter, member, which must be a valid user
