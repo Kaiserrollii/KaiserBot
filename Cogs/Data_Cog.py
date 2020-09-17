@@ -848,9 +848,9 @@ discographies, and kpop-related television shows. Everything is pulled directly 
 k.pop Red Velvet\n>>> [Information about Red Velvet]```')
 
     # Consumes query, which must be a valid group/soloist on Kprofiles (works for some group members as well)
-    # Returns the profile of the specified query
-    @commands.command(aliases = ['Profile', 'profiles', 'Profiles', 'pro', 'Pro'])
-    async def profile(self, ctx, *, query = None):
+    # Returns the kprofile of the specified query
+    @commands.command(aliases = ['Kprofile', 'kprofiles', 'Kprofiles', 'kpro', 'Kpro'])
+    async def kprofile(self, ctx, *, query = None):
         if query is None:
             await ctx.send('You need to specify a query, pabo. Try again.')
         else:
@@ -912,9 +912,9 @@ k.pop Red Velvet\n>>> [Information about Red Velvet]```')
                     await message.delete()
                     await ctx.send(f"I wasn't able to find anything related to `{query}` on Kprofiles. Nugu.")
 
-    @commands.command(aliases = ['Profile_ex', 'profiles_ex', 'Profiles_ex', 'pro_ex', 'Pro_ex'])
-    async def profile_ex(self, ctx):
-        await ctx.send('```k.profile Red Velvet\n>>> https://kprofiles.com/irene-facts-profile-irene-ideal-type/```')
+    @commands.command(aliases = ['Kprofile_ex', 'kprofiles_ex', 'Kprofiles_ex', 'kpro_ex', 'Kpro_ex'])
+    async def kprofile_ex(self, ctx):
+        await ctx.send('```k.kprofile Irene\n>>> https://kprofiles.com/irene-facts-profile-irene-ideal-type/```')
 
     # Consumes amount, an int between 1-25, and location, which must be a valid location (see WOEIDs.md for full list)
     # Returns a dataframe of the trending topics on Twitter according to the specified amount and location
