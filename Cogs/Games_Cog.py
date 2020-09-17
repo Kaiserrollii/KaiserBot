@@ -9,6 +9,7 @@ from sympy import *
 from sympy.parsing.sympy_parser import parse_expr
 import pandas as pd
 import html
+import sqlite3 as sql
 from discord.ext import commands 
 
 
@@ -380,7 +381,7 @@ k.uwufy \n>>> [Uwufies the most recent text message in the current channel]```")
                 return
             else:
                 if str(reaction.emoji) == '🏆':
-                    dtributes[user.name] = user.avatar_url
+                    dtributes[user.name] = [user.avatar_url, user.id]
                     if len(list(dtributes.keys())) == 24:
                         startgame = True
                     else:
@@ -797,7 +798,7 @@ find that your journey in the Games will end sooner than you think.",
                                 elif sponsoranswer.content == asptask2:
                                     if random.randint(0, 100) <= 10 :
                                         sponsordeath = 'None'
-                                        description.append(f"{choice1} attempted to kill {choice2} with a {gift} but was too slow.")
+                                        description.append(f"{choice2} attempted to kill {choice1} with a {gift} but was too slow.")
                                         wsponsorembed = discord.Embed(title = f'Hunger Games - {arena} - Sponsor',
                                         colour = discord.Colour(0xefe61),
                                         description = f"**{choice2}** has been sponsored! A parachute floats down from the \
@@ -873,24 +874,8 @@ find that your journey in the Games will end sooner than you think.",
                         deadnum = len(dead)
 
                     text = '\n'.join(description)
-                    if arena == 'Swamp':
-                        dembed = discord.Embed(title = f'Hunger Games - {arena} - Day {day} Recap', colour = discord.Colour(0xefe61), 
-                        description = text) 
-                    elif arena == 'Beach':
-                        dembed = discord.Embed(title = f'Hunger Games - {arena} - Day {day} Recap', colour = discord.Colour(0xefe61), 
-                        description = text) 
-                    elif arena == 'Forest':
-                        dembed = discord.Embed(title = f'Hunger Games - {arena} - Day {day} Recap', colour = discord.Colour(0xefe61), 
-                        description = text)  
-                    elif arena == 'Tundra':
-                        dembed = discord.Embed(title = f'Hunger Games - {arena} - Day {day} Recap', colour = discord.Colour(0xefe61), 
-                        description = text)  
-                    elif arena == 'Urban':
-                        dembed = discord.Embed(title = f'Hunger Games - {arena} - Day {day} Recap', colour = discord.Colour(0xefe61), 
-                        description = text) 
-                    else:
-                        dembed = discord.Embed(title = f'Hunger Games - {arena} - Day {day} Recap', colour = discord.Colour(0xefe61), 
-                        description = text)  
+                    dembed = discord.Embed(title = f'Hunger Games - {arena} - Day {day} Recap', colour = discord.Colour(0xefe61), 
+                    description = text) 
 
                     dembed.add_field(name = f'Alive ({len(alive)}):', value = '\n'.join(alive))
                     dembed.add_field(name = f'Deceased ({deadnum}):', value = deadvalue)
@@ -1042,7 +1027,59 @@ find that your journey in the Games will end sooner than you think.",
                 **Survival:** {day} days\n**Victor rating:** {victorrating}")
 
                 if victor in list(dtributes.keys()):
-                    overviewembed.set_thumbnail(url = dtributes[victor])
+                    overviewembed.set_thumbnail(url = dtributes[victor][0])
+
+                    pdb = sql.connect('Profiles.sqlite')
+                    cursor = pdb.cursor()
+                    cursor.execute(f'SELECT House FROM main WHERE UserID = {dtributes[victor][1]}')
+                    house = cursor.fetchone()[0]
+                    pdb.commit()
+                    cursor.close()
+                    pdb.close()
+
+                    hdb = sql.connect('Houses.sqlite')
+                    cursor = hdb.cursor()
+                    cursor.execute(f'SELECT {house} FROM House_points')
+                    updated = cursor.fetchone()[0] + 20
+                    insert = (f'UPDATE House_points SET {house} = ?')
+                    values = (updated,)
+                    cursor.execute(insert, values)
+
+                    cursor.execute(f'SELECT IN_points FROM {house} WHERE UserID = {dtributes[victor][1]}')
+                    INupdated = cursor.fetchone()[0] + 20
+                    INinsert = (f'UPDATE {house} SET IN_points = ? WHERE UserID = ?')
+                    INvalues = (INupdated, dtributes[victor][1])
+                    cursor.execute(INinsert, INvalues)
+
+                    hdb.commit()
+                    cursor.close()
+                    hdb.close()
+
+                    hgdb = sql.connect('HG.sqlite')
+                    cursor = hgdb.cursor()
+                    cursor.execute('SELECT UserID FROM victors')
+                    IDlist = cursor.fetchall()
+
+                    x = False
+                    for i in IDlist:
+                        if str(dtributes[victor][1]) == i[0]:
+                            x = True
+                            break
+                    if x:
+                        cursor.execute(f'SELECT Wins FROM victors WHERE UserID = {dtributes[victor][1]}')
+                        hgupdated = cursor.fetchone()[0] + 1
+                        hginsert = (f'UPDATE victors SET Wins = ? WHERE UserID = ?')
+                        hgvalues = (hgupdated, dtributes[victor][1])
+                        cursor.execute(hginsert, hgvalues)
+                    else:
+                        hginsert = ('INSERT INTO victors(UserID, Wins) VALUES(?, ?)')
+                        hgvalues = (ctx.author.id, 1)
+                        cursor.execute(hginsert, hgvalues)
+
+                    hgdb.commit()
+                    cursor.close()
+                    hgdb.close()
+
                 else:
                     overviewembed.set_thumbnail(url = 'https://imgur.com/9Pp2BQm.gif')
                 
@@ -1071,6 +1108,38 @@ Check back in a few moments, or try a different channel.')
         df = pd.DataFrame(data = d, index = index)
         await ctx.send(f'```Due to the nature of this command, it can only run one instance at a time per channel.\n\n\
 Full list of categories:\n\n{df}\n\nk.hungergames Mixed\n>>> [Starts up a Hunger Games with both male and female idols]```')
+
+    @commands.command(aliases = ['hg_lb', 'hg_leaderboard', 'hungergames_lb'])
+    async def hungergames_leaderboard(self, ctx):
+        db = sql.connect('HG.sqlite')
+        cursor = db.cursor()
+        cursor.execute(f'SELECT * FROM victors ORDER BY Wins DESC;')
+        result = cursor.fetchmany(3)
+        cursor.execute(f'SELECT Count(*) FROM victors')
+        total = cursor.fetchone()[0]
+        db.commit()
+        cursor.close()
+        db.close()
+
+        embed = discord.Embed(title = 'Hunger Games Leaderboard ', colour = discord.Colour(0xefe61))
+        embed.set_thumbnail(url = 'https://imgur.com/09B1zTq.gif')
+
+        if total >= 3:
+            embed.add_field(name = 'Top Victors:', value = f'1. **{self.bot.get_user(int(result[0][0]))}** - {result[0][1]}\n\
+                                                             2. **{self.bot.get_user(int(result[1][0]))}** - {result[1][1]}\n\
+                                                             3. **{self.bot.get_user(int(result[2][0]))}** - {result[2][1]}')
+        elif total == 2:
+            embed.add_field(name = 'Top Victors:', value = f'1. **{self.bot.get_user(int(result[0][0]))}** - {result[0][1]}\n\
+                                                             2. **{self.bot.get_user(int(result[1][0]))}** - {result[1][1]}')
+        elif total == 1:
+            embed.add_field(name = 'Top Victors:', value = f'1. **{self.bot.get_user(int(result[0][0]))}** - {result[0][1]}')
+        elif total == 0:
+            embed.add_field(name = 'Top Victors:', value = 'None')
+
+        embed.set_footer(text = f'KaiserBot | {ctx.guild.name}', icon_url = 'https://i.imgur.com/CuNlLOP.png')
+        embed.timestamp = datetime.datetime.utcnow()
+
+        await ctx.send(embed = embed)
 
 
 def setup(bot):
