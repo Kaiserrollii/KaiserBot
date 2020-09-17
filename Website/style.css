@@ -414,6 +414,25 @@ body {
   background: rgb(110, 109, 109);
 }
 
+#housesrpgbutton {
+  display: inline-block;
+  padding: 0.3em 1.2em;
+  margin: 0 0.3em 0.3em 0;
+  border-radius: 2em;
+  box-sizing:  border-box;
+  text-decoration: none;
+  font-weight: 300;
+  color: #FFFFFF;
+  background: #333;
+  text-align: center;
+  transition:  all 0.2s;
+  cursor:  pointer;
+}
+
+#housesrpgbutton:hover{
+  background: rgb(110, 109, 109);
+}
+
 .glow {
   font-size: 80px;
   color: #fff;
