@@ -63,10 +63,12 @@
     <button onclick = 'All()' id = 'allbutton' title = 'View all commands'>All</button>
     <button onclick = 'Data()' id = 'databutton' title = 'Search for data commands'>Data</button>
     <button onclick = 'Games()' id = 'gamesbutton' title = 'Search for games commands'>Games</button>
+    <button onclick = 'HousesRPG()' id = 'housesrpgbutton' title = 'Search for Houses & RPG commands'>Houses & RPG</button>
     <button onclick = 'Images()' id = 'imagesbutton' title = 'Search for images commands'>Images</button>
     <button onclick = 'Math()' id = 'mathbutton' title = 'Search for math commands'>Math</button>
     <button onclick = 'Moderation()' id = 'moderationbutton' title = 'Search for moderation commands'>Moderation</button>
     <button onclick = 'Miscellaneous()' id = 'miscellaneousbutton' title = 'Search for miscellaneous commands'>Miscellaneous</button>
+    
 
     <br>
     <br>
@@ -87,6 +89,11 @@
         <span class = 'tooltiptext'>Any type</div></span> <i class='fa fa-commenting'></i></div></td>";
         MasterTable += "<td>Ask any question. Receive good advice.</td>";
         MasterTable += "<td><div class = 'tablealiases'>k.question</div></td>";
+        MasterTable += '<td></td></tr>';
+
+        MasterTable += "<tr><td><div class = 'tablecommands'>k.aisercord</div></td>";
+        MasterTable += "<td>Returns an invite link to Kaisercord.</td>";
+        MasterTable += "<td><div class = 'tablealiases'>k.kaisercord<br>k.aicord<br>k.kaicord</div></td>";
         MasterTable += '<td></td></tr>';
 
         MasterTable += "<tr><td><div class = 'tablecommands'>k.area_ngon <div class = 'tooltip'>[n] [Radius]\
@@ -123,6 +130,11 @@
         MasterTable += "<td>Returns the KaiserBot icon.</td>";
         MasterTable += "<td><div class = 'tablealiases'>k.bot_icon</div></td>";
         MasterTable += '<td></td></tr>';
+
+        MasterTable += "<tr><td><div class = 'tablecommands'>k.buy <div class = 'tooltip'>[Item name]\
+        <span class = 'tooltiptext'>Valid name</div></span></div></td>";
+        MasterTable += '<td>Buys the specified item.</td>';
+        MasterTable += "<td><div class = 'tablealiases'>k.purchase</div></td></tr>";
 
         MasterTable += "<tr><td><div class = 'tablecommands'>k.charts <div class = 'tooltip'>[Artist]\
         <span class = 'tooltiptext'>Valid artist on the charts (see k.chart_ex for full list)</div></span></div></td>";
@@ -172,6 +184,12 @@
         MasterTable += "<td><div class = 'tablealiases'>k.def<br>k.word</div></td>";
         MasterTable += '<td></td></tr>';
 
+        MasterTable += "<tr><td><div class = 'tablecommands'>k.delete_user <div class = 'tooltip'>[User]\
+        <span class = 'tooltiptext'>Valid user</div></span></div></td>";
+        MasterTable += '<td>Deletes the specified user from the Houses & RPG system.</td>';
+        MasterTable += "<td><div class = 'tablealiases'>k.remove_user</div></td>"
+        MasterTable += "<td><div class = 'tableperms'>Owner</div></td></tr>";
+
         MasterTable += "<tr><td><div class = 'tablecommands'>k.derivative <div class = 'tooltip'>[Variable] [Function]\
         <span class = 'tooltiptext'>[Variable]: Letter<br>[Function]: Valid function (follows BEDMAS)</div></span></div></td>";
         MasterTable += "<td>Calculates the derivative of the function with respect to the given variable.</td>";
@@ -183,6 +201,11 @@
         MasterTable += '<td>Rolls an n-sided die.</td>';
         MasterTable += "<td><div class = 'tablealiases'>k.roll</div></td>";
         MasterTable += '<td></td></tr>';
+
+        MasterTable += "<tr><td><div class = 'tablecommands'>k.dismantle <div class = 'tooltip'>[Item name]\
+        <span class = 'tooltiptext'>Valid name</div></span></div></td>";
+        MasterTable += '<td>Dismantles the specified item for house points.</td>';
+        MasterTable += "<td><div class = 'tablealiases'>k.destroy<br>k.disassemble</div></td></tr>";
 
         MasterTable += "<tr><td><div class = 'tablecommands'>k.evaluate <div class = 'tooltip'>[Expression]\
         <span class = 'tooltiptext'>Valid expression (follows BEDMAS)</div></span></div></td>";
@@ -202,15 +225,51 @@
         MasterTable += "<td><div class = 'tablealiases'>k.GCD</div></td>";
         MasterTable += '<td></td></tr>';
 
+        MasterTable += "<tr><td><div class = 'tablecommands'>k.get_sorted</div></td>";
+        MasterTable += '<td>Sorts you into one of five houses.</td>';
+        MasterTable += "<td><div class = 'tablealiases'>k.sorting_quiz</div></td></tr>";
+
+        MasterTable += "<tr><td><div class = 'tablecommands'>k.guide</div></td>";
+        MasterTable += '<td>An introductory guide to the Houses & RPG system.</td>';
+        MasterTable += "<td><div class = 'tablealiases'>k.rpg</div></td>";
+        MasterTable += '<td></td></tr>';
+
+        MasterTable += "<tr><td><div class = 'tablecommands'>k.handshake <div class = 'tooltip'>[User]\
+        <span class = 'tooltiptext'>Valid user with a general profile</div></span></div></td>";
+        MasterTable += '<td>Shakes hands with the specified user.</td>';
+        MasterTable += "<td><div class = 'tablealiases'>k.rep</div></td></tr>";
+
+        MasterTable += "<tr><td><div class = 'tablecommands'>k.heal</div></td>";
+        MasterTable += '<td>Restores user to 100 HP.</td>';
+        MasterTable += "<td><div class = 'tablealiases'>k.health</div></td></tr>";
+
         MasterTable += "<tr><td><div class = 'tablecommands'>k.help</div></td>";
         MasterTable += "<td>Returns a general help page for KaiserBot.</td>";
         MasterTable += "<td><div class = 'tablealiases'>k.pabo</div></td>";
         MasterTable += '<td></td></tr>';
 
+        MasterTable += "<tr><td><div class = 'tablecommands'>k.house <div class = 'tooltip'>[House name]\
+        <span class = 'tooltiptext'>Pink/Yellow/Blue/Green/Purple</div></span></div></td>";
+        MasterTable += '<td>Shows information about the specified house.</td>';
+        MasterTable += "<td><div class = 'tablealiases'>k.house_info</div></td></tr>";
+
+        MasterTable += "<tr><td><div class = 'tablecommands'>k.house_cup</div></td>";
+        MasterTable += '<td>Provides more information on the House Cup.</td>';
+        MasterTable += "<td><div class = 'tablealiases'>k.housecup</div></td></tr>";
+
+        MasterTable += "<tr><td><div class = 'tablecommands'>k.house_leaderboard</div></td>";
+        MasterTable += '<td>Shows the current house points leaderboard.</td>';
+        MasterTable += "<td><div class = 'tablealiases'>k.house_lb</div></td></tr>";
+
         MasterTable += "<tr><td><div class = 'tablecommands'>k.hungergames <div class = 'tooltip'>[Category]\
         <span class = 'tooltiptext'>Male/female/mixed</div></span></div></td>";
         MasterTable += '<td>Runs a Hunger Games simulator.</td>';
         MasterTable += "<td><div class = 'tablealiases'>k.hg</div></td>";
+        MasterTable += '<td></td></tr>';
+
+        MasterTable += "<tr><td><div class = 'tablecommands'>k.hungergames_leaderboard</div></td>";
+        MasterTable += '<td>Shows a multi-server Hunger Games leaderboard.</td>';
+        MasterTable += "<td><div class = 'tablealiases'>k.hg_lb<br>k.hg_leaderboard<br>k.hungergames_lb</div></td>";
         MasterTable += '<td></td></tr>';
 
         MasterTable += "<tr><td><div class = 'tablecommands'>k.img_analyze <div class = 'tooltip'>[Link]\
@@ -256,16 +315,22 @@
         MasterTable += "<td><div class = 'tablealiases'>k.int<br>k.integrate</div></td>";
         MasterTable += '<td></td></tr>';
 
-        MasterTable += "<tr><td><div class = 'tablecommands'>k.invite</div></td>";
-        MasterTable += "<td>Returns an invite link to Kaisercord.</td>";
-        MasterTable += "<td><div class = 'tablealiases'>k.inv</div></td>";
-        MasterTable += '<td></td></tr>';
+        MasterTable += "<tr><td><div class = 'tablecommands'>k.item <div class = 'tooltip'>[Item name]\
+        <span class = 'tooltiptext'>Valid name / weapons / armor</div></span></div></td>";
+        MasterTable += '<td>Shows information about the specified item.</td>';
+        MasterTable += "<td><div class = 'tablealiases'>k.item_info</div></td></tr>";
 
         MasterTable += "<tr><td><div class = 'tablecommands'>k.kick <div class = 'tooltip'>[User]\
         <span class = 'tooltiptext'>@ or ID</div></span></div></td>";
         MasterTable += "<td>Kicks the specified user.</td>";
         MasterTable += "<td><div class = 'tablealiases'>k.sadbye</div></td>";
         MasterTable += "<td><div class = 'tableperms'>Kick Members</div></td></tr>";
+
+        MasterTable += "<tr><td><div class = 'tablecommands'>k.kprofile <div class = 'tooltip'>[Query]\
+        <span class = 'tooltiptext'>Valid group/soloist on Kprofiles</div></span></div></td>";
+        MasterTable += "<td>Retrieves info on any group or soloist.</td>";
+        MasterTable += "<td><div class = 'tablealiases'>k.kprofiles<br>k.kpro</div></td>";
+        MasterTable += '<td></td></tr>';
 
         MasterTable += "<tr><td><div class = 'tablecommands'>k.limit <div class = 'tooltip'>[Variable] [Approaches] [Function]\
         <span class = 'tooltiptext'>[Variable]: Letter<br>[Approaches]: 'inf' for infinity<br>[Function]: Valid function (follows BEDMAS)\
@@ -279,6 +344,10 @@
         MasterTable += "<td>Ask any question, and it'll give an answer. May not be a good one, though.</td>";
         MasterTable += "<td><div class = 'tablealiases'>k.magic</div></td>";
         MasterTable += '<td></td></tr>';
+
+        MasterTable += "<tr><td><div class = 'tablecommands'>k.market</div></td>";
+        MasterTable += '<td>Displays all goods for sale at the market.</td>';
+        MasterTable += "<td><div class = 'tablealiases'>k.shop<br>k.store</div></td></tr>";
 
         MasterTable += "<tr><td><div class = 'tablecommands'>k.melon <div class = 'tooltip'>[Timeframe]\
         <span class = 'tooltiptext'>Valid timeframe (see k.melon_ex for full list)</div></span></div></td>";
@@ -308,17 +377,50 @@
         MasterTable += "<td><div class = 'tablealiases'>k.pong</div></td>";
         MasterTable += '<td></td></tr>';
 
+        MasterTable += "<tr><td><div class = 'tablecommands'>k.points_from <div class = 'tooltip'>[House] [Amount] [User]\
+        <span class = 'tooltiptext'>[House]: Valid house<br>[Amount]: Integer<br>[User]: Valid user</div></span></div></td>";
+        MasterTable += '<td>Takes the specified amount of house points from the house, with optional individual points taken \
+        from the specified user.</td>';
+        MasterTable += "<td><div class = 'tablealiases'>k.subtract_points<br>k.points_subtract</div></td>"
+        MasterTable += "<td><div class = 'tableperms'>Owner</div></td></tr>";
+
+        MasterTable += "<tr><td><div class = 'tablecommands'>k.points_to <div class = 'tooltip'>[House] [Amount] [User]\
+        <span class = 'tooltiptext'>[House]: Valid house<br>[Amount]: Integer<br>[User]: Valid user</div></span></div></td>";
+        MasterTable += '<td>Adds the specified amount of house points to the house, with optional individual points added \
+        to the specified user.</td>';
+        MasterTable += "<td><div class = 'tablealiases'>k.add_points<br>k.points_add</div></td>"
+        MasterTable += "<td><div class = 'tableperms'>Owner</div></td></tr>";
+        
         MasterTable += "<tr><td><div class = 'tablecommands'>k.pop <div class = 'tooltip'>[Query]\
         <span class = 'tooltiptext'>Group / soloist / group member, etc.</div></span></div></td>";
         MasterTable += "<td>Retrieves info on groups, soloists, companies, shows, albums, and singles. Information from Kpop Wiki.</td>";
         MasterTable += "<td><div class = 'tablealiases'>k.kpop</div></td>";
         MasterTable += '<td></td></tr>';
 
-        MasterTable += "<tr><td><div class = 'tablecommands'>k.profile <div class = 'tooltip'>[Query]\
-        <span class = 'tooltiptext'>Valid group/soloist on Kprofiles</div></span></div></td>";
-        MasterTable += "<td>Retrieves info on any group or soloist.</td>";
-        MasterTable += "<td><div class = 'tablealiases'>k.profile</div></td>";
-        MasterTable += '<td></td></tr>';
+        MasterTable += "<tr><td><div class = 'tablecommands'>k.profile</div></td>";
+        MasterTable += '<td>Shows your general profile.</td>';
+        MasterTable += "<td><div class = 'tablealiases'>k.pro</div></td></tr>";
+
+        MasterTable += "<tr><td><div class = 'tablecommands'>k.profile_bio <div class = 'tooltip'>[Message]\
+        <span class = 'tooltiptext'>Valid message <= 200 characters</div></span></div></td>";
+        MasterTable += '<td>Sets your profile bio according to the specified message.</td>';
+        MasterTable += "<td><div class = 'tablealiases'>k.pro_bio</div></td></tr>";
+
+        MasterTable += "<tr><td><div class = 'tablecommands'>k.profile_rpg</div></td>";
+        MasterTable += '<td>Shows your RPG profile.</td>';
+        MasterTable += "<td><div class = 'tablealiases'>k.pro_rpg<br>k.inventory<br>k.inv</div></td></tr>";
+
+        MasterTable += "<tr><td><div class = 'tablecommands'>k.profile_set</div></td>";
+        MasterTable += '<td>Sets your general profile.</td>';
+        MasterTable += "<td><div class = 'tablealiases'>k.pro_set</div></td></tr>";
+
+        MasterTable += "<tr><td><div class = 'tablecommands'>k.quest</div></td>";
+        MasterTable += '<td>Shows a list of available quests and survival chances for each.</td>';
+        MasterTable += "<td><div class = 'tablealiases'>k.loot</div></td></tr>";
+
+        MasterTable += "<tr><td><div class = 'tablecommands'>k.quest_check</div></td>";
+        MasterTable += '<td>Calulates the survival chances of each quest, based on user input.</td>';
+        MasterTable += "<td><div class = 'tablealiases'>k.questcheck<br>k.check<br>k.checker</div></td></tr>";
 
         MasterTable += "<tr><td><div class = 'tablecommands'>k.reddit_controversial <div class = 'tooltip'>[Subreddit] [Timeframe]\
         <span class = 'tooltiptext'>[Subreddit]: Do <strong>not </strong>include 'r/'<br>[Timeframe]: must be a valid timeframe\
@@ -352,11 +454,28 @@
         MasterTable += "<td><div class = 'tablealiases'>k.rt</div></td>";
         MasterTable += '<td></td></tr>';
 
+        MasterTable += "<tr><td><div class = 'tablecommands'>k.rubies_from <div class = 'tooltip'>[User] [Amount]\
+        <span class = 'tooltiptext'>[User]: Valid user<br>[Amount]: Integer</div></span></div></td>";
+        MasterTable += '<td>Takes the specified amount of rubies from the user.</td>';
+        MasterTable += "<td><div class = 'tablealiases'>k.subtract_points<br>k.points_subtract</div></td>"
+        MasterTable += "<td><div class = 'tableperms'>Owner</div></td></tr>";
+
+        MasterTable += "<tr><td><div class = 'tablecommands'>k.rubies_to <div class = 'tooltip'>[User] [Amount]\
+        <span class = 'tooltiptext'>[User]: Valid user<br>[Amount]: Integer</div></span></div></td>";
+        MasterTable += '<td>Adds the specified amount of rubies to the user.</td>';
+        MasterTable += "<td><div class = 'tablealiases'>k.add_points<br>k.points_add</div></td>"
+        MasterTable += "<td><div class = 'tableperms'>Owner</div></td></tr>";
+
         MasterTable += "<tr><td><div class = 'tablecommands'>k.say <div class = 'tooltip'>[Channel] [Message]\
         <span class = 'tooltiptext'>[Channel]: Valid channel<br>[Message]: Any type</div></span></div></td>";
         MasterTable += "<td>Sends a message in the specified channel.</td>";
         MasterTable += "<td><div class = 'tablealiases'>k.send</div></td>";
         MasterTable += "<td><div class = 'tableperms'>Administrator</div></td></tr>";
+
+        MasterTable += "<tr><td><div class = 'tablecommands'>k.sell <div class = 'tooltip'>[Item name]\
+        <span class = 'tooltiptext'>Valid name</div></span></div></td>";
+        MasterTable += '<td>Sells the specified item for rubies.</td>';
+        MasterTable += "<td><div class = 'tablealiases'>k.sold</div></td></tr>";
 
         MasterTable += "<tr><td><div class = 'tablecommands'>k.servericon</div></td>";
         MasterTable += "<td>Returns the server icon.</td>";
@@ -469,6 +588,10 @@
         MasterTable += "<td><div class = 'tablealiases'>k.site</div></td>";
         MasterTable += '<td></td></tr>';
 
+        MasterTable += "<tr><td><div class = 'tablecommands'>k.work</div></td>";
+        MasterTable += '<td>Works a shift.</td>';
+        MasterTable += "<td><div class = 'tablealiases'>k.shift</div></td></tr>";
+
         MasterTable += "<tr><td><div class = 'tablecommands'>k.wotd</div></td>";
         MasterTable += "<td>Returns the word of the day, courtesy of Merriam Webster.</td>";
         MasterTable += "<td><div class = 'tablealiases'>k.dailyword</div></td>";
@@ -547,19 +670,21 @@
         </div>
         <div class = 'column'>
           <span style = "font-family: 'Bebas Neue', cursive; font-size: 38px">Levelling System</span><br>
-          <img src = 'https://imgur.com/APqf7ox.png' style = 'width: 85%'>
+          <img src = 'https://imgur.com/jCu2eqQ.png' style = 'width: 85%'>
           <br><br>
           <span style = 'font-size: 12px'>Watch as I struggle with databases.<br>
             Track how much time you've wasted on Discord.<br>
-            Not sponsored by Red Velvet.</span>
+            Not sponsored by Red Velvet.<br>
+            <strong>As of 18/09/20, this task has been completed!</strong></span>
         </div>
         <div class = 'column'>
           <span style = "font-family: 'Great Vibes', cursive; font-size: 38px">Simple RPG</span><br>
-          <img src = 'https://imgur.com/lazJvzb.png' style = 'width: 85%'>
+          <img src = 'https://imgur.com/QrpoRS9.png' style = 'width: 85%'>
           <br><br>
           <span style = 'font-size: 12px'>Watch as I continue to struggle with databases.<br>
             Maybe experience points or something.<br>
-            This is really still in the brainstorming stage.</span>
+            This is really still in the brainstorming stage.<br>
+            <strong>As of 18/09/20, this task has been completed!</strong></span>
         </div>
       </div>
     </div>
@@ -572,8 +697,8 @@
 
       <h1>Changelog</h1>
       <p>Updated whenever significant changes are made to the bot (see <a href = '#inprogress' style = 'color: rgb(243, 136, 54)'>
-        <strong>In-Progress</strong></a>). 
-        Small changes will be reflected in each update.<br>
+        <strong>In-Progress</strong></a>).<br>
+        Small changes will be reflected in each update, as well as in <strong>#scrapyard</strong> in Kaisercord.<br>
         Dates in DD/MM/YY format. Hover over each for more detailed descriptions.
       </p>
 
@@ -804,6 +929,38 @@
             </p>
           </div>
         </div>
+        <div class = 'changelogbox right'>
+          <div class = 'changelog_content'>
+            <h2>1.2 - Houses & RPG System</h2>
+            <p>
+              <i>18/09/20</i><br><br>
+              A birthday present to Kaisercord! ✨<br><br>
+              <strong>The Houses & RPG System:</strong><br>
+              - General and RPG profiles<br>
+              - Custom profile bios<br>
+              - 25 different weapons and 15 types of armor across 5 tiers<br> 
+              - 4 types of companions with unique special abilities<br>
+              - 6 different jobs available to unlock<br>
+              - 4 types of quests with increasing difficulty<br>
+              - Get sorted into one of five different houses with other users<br>
+              - Compete for the House Cup by gaining house points<br>
+              - Win eternal glory (/s)<br><br>
+              <strong>What Else is New?</strong><br>
+              - Multi-server Hunger Games leaderboard<br>
+              - Movie search command<br><br>
+              <strong>What's Updated:</strong><br>
+              - Fixed case sensitivity during Hunger Games deathmatch trivia<br> 
+              - Patched the choose command<br> 
+              - Added auto-detection to the translate command<br> 
+              - Added new cords to the ksi command and fixed broken links<br> 
+              - k.profile command renamed to k.kprofile<br>
+              - k.invite command renamed to k.aisercord<br><br> 
+              <strong>Coming Soon:</strong><br>
+              - Complete overhaul of Hunger Games deathmatch trivia questions<br>
+              - Music maybe? Sorry, I know I keep saying it'll be out soon.<br>
+            </p>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -817,8 +974,8 @@
   </div>
 
   <div class = 'footer'>
-    <p>Report issues & suggestions to Kaiserrollii#6698 
-      <img src = 'https://cdn.discordapp.com/attachments/630633322686578689/699426662265389086/Kaisercircular.png' width = '8' height = '7'>
+    <p>Report issues & suggestions to Kaiserrollii#7268 
+      <img src = 'https://imgur.com/f6xT5w3.png' width = '8' height = '7'>
       Source code licensed by <a href = 'https://opensource.org/licenses/mit-license.php' style = 'color: rgb(243, 136, 54)',
       target = '_blank'>MIT</a>
     </p>
