@@ -12,6 +12,28 @@ import html
 import sqlite3 as sql
 from discord.ext import commands 
 
+def profile_check(user_id):
+    db = sql.connect('Profiles.sqlite')
+    cursor = db.cursor()
+    cursor.execute(f'SELECT UserID FROM users WHERE UserID = {str(user_id)}')
+    result = cursor.fetchone()
+    db.commit()
+    cursor.close()
+    db.close()
+    return result
+
+def house_check(user_id):
+    db = sql.connect('Profiles.sqlite')
+    cursor = db.cursor()
+    cursor.execute(f'SELECT House FROM users WHERE UserID = {str(user_id)}')
+    result = cursor.fetchone()[0]
+    db.commit()
+    cursor.close()
+    db.close()
+    if result == 'Set your house using `k.get_sorted`.' or result is None:
+        return False
+    return True
+
 
 class Games_Cog(commands.Cog):
 
@@ -1029,31 +1051,33 @@ find that your journey in the Games will end sooner than you think.",
                 if victor in list(dtributes.keys()):
                     overviewembed.set_thumbnail(url = dtributes[victor][0])
 
-                    pdb = sql.connect('Profiles.sqlite')
-                    cursor = pdb.cursor()
-                    cursor.execute(f'SELECT House FROM main WHERE UserID = {dtributes[victor][1]}')
-                    house = cursor.fetchone()[0]
-                    pdb.commit()
-                    cursor.close()
-                    pdb.close()
+                    if house_check(dtributes[victor][1]):
 
-                    hdb = sql.connect('Houses.sqlite')
-                    cursor = hdb.cursor()
-                    cursor.execute(f'SELECT {house} FROM House_points')
-                    updated = cursor.fetchone()[0] + 20
-                    insert = (f'UPDATE House_points SET {house} = ?')
-                    values = (updated,)
-                    cursor.execute(insert, values)
+                        pdb = sql.connect('Profiles.sqlite')
+                        cursor = pdb.cursor()
+                        cursor.execute(f'SELECT House FROM main WHERE UserID = {dtributes[victor][1]}')
+                        house = cursor.fetchone()[0]
+                        pdb.commit()
+                        cursor.close()
+                        pdb.close()
 
-                    cursor.execute(f'SELECT IN_points FROM {house} WHERE UserID = {dtributes[victor][1]}')
-                    INupdated = cursor.fetchone()[0] + 20
-                    INinsert = (f'UPDATE {house} SET IN_points = ? WHERE UserID = ?')
-                    INvalues = (INupdated, dtributes[victor][1])
-                    cursor.execute(INinsert, INvalues)
+                        hdb = sql.connect('Houses.sqlite')
+                        cursor = hdb.cursor()
+                        cursor.execute(f'SELECT {house} FROM House_points')
+                        updated = cursor.fetchone()[0] + 20
+                        insert = (f'UPDATE House_points SET {house} = ?')
+                        values = (updated,)
+                        cursor.execute(insert, values)
 
-                    hdb.commit()
-                    cursor.close()
-                    hdb.close()
+                        cursor.execute(f'SELECT IN_points FROM {house} WHERE UserID = {dtributes[victor][1]}')
+                        INupdated = cursor.fetchone()[0] + 20
+                        INinsert = (f'UPDATE {house} SET IN_points = ? WHERE UserID = ?')
+                        INvalues = (INupdated, dtributes[victor][1])
+                        cursor.execute(INinsert, INvalues)
+
+                        hdb.commit()
+                        cursor.close()
+                        hdb.close()
 
                     hgdb = sql.connect('HG.sqlite')
                     cursor = hgdb.cursor()
