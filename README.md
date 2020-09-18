@@ -19,6 +19,8 @@ Features:
 - Retrieve info about your favourite groups/soloists/shows/companies
 - Check Melon, Flo, Bugs, genie, soribada, and Naver charts in realtime
 - Run a Hunger Games simulator with your friends
+- Get sorted into one of five houses, and work together to win the House Cup
+- Go on quests, purchase weapons/armor/companions, and gain house points
 - Search for books, games, movies, and urban dictionary definitions
 - Do calculus, manipulate images, translate phrases, and define words
 - Retrieve top, hot, new, controversial, and random posts from any SFW subreddit
