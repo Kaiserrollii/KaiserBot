@@ -167,11 +167,14 @@ class System(commands.Cog):
     @commands.cooldown(1, 86400, commands.BucketType.user) 
     async def handshake(self, ctx, member: discord.User = None):
         if member is None:
+            self.bot.get_command('handshake').reset_cooldown(ctx)
             await ctx.send("You can't shake hands with no one, pabo. Specify a member.")
         elif member.id == ctx.author.id:
+            self.bot.get_command('handshake').reset_cooldown(ctx)
             await ctx.send("You can't shake hands with yourself, pabo. Specify a different member.")
         else:
             if not profile_check(member.id):
+                self.bot.get_command('handshake').reset_cooldown(ctx)
                 await ctx.send("You can't shake hands with someone who doesn't have a profile, pabo.")
                 return
 
@@ -1315,9 +1318,11 @@ You are now free to purchase new armor.')
     @commands.cooldown(1, 43200, commands.BucketType.user)
     async def quest(self, ctx):
         if not profile_check(ctx.author.id):
+            self.bot.get_command('quest').reset_cooldown(ctx)
             await ctx.send('Please create a profile (`k.profile_set`) before attempting to loot.')
             return
         if not house_check(ctx.author.id):
+            self.bot.get_command('quest').reset_cooldown(ctx)
             await ctx.send('Please set your house (`k.get_sorted`) before attempting to loot, pabo.')
             return
 
@@ -1462,6 +1467,7 @@ You are now free to purchase new armor.')
                 db.commit()
                 cursor.close()
                 db.close()
+                self.bot.get_command('quest').reset_cooldown(ctx)
                 await choosemessage.delete()
                 cancelled = await ctx.send('RPG Quest cancelled.')
                 await asyncio.sleep(10)
@@ -1940,9 +1946,11 @@ weapon/armor/companion/health you choose. "None" is a valid answer for any of th
     @commands.cooldown(1, 28800, commands.BucketType.user) 
     async def work(self, ctx):
         if not profile_check(ctx.author.id):
+            self.bot.get_command('work').reset_cooldown(ctx)
             await ctx.send("You haven't set a profile yet, pabo. Create one with `k.profile_set`.")
             return
         if not house_check(ctx.author.id):
+            self.bot.get_command('work').reset_cooldown(ctx)
             await ctx.send("You don't have a house yet, pabo. Get sorted into one with `k.get_sorted`.")
             return
         
@@ -1954,6 +1962,7 @@ weapon/armor/companion/health you choose. "None" is a valid answer for any of th
         rubies = user_info[2]
 
         if job == 'None':
+            self.bot.get_command('work').reset_cooldown(ctx)
             await ctx.send('You are unemployed, pabo. Get a job first.')
             return
 
