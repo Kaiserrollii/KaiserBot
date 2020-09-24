@@ -1,6 +1,9 @@
 import discord
 import asyncio
 import datetime
+import sqlite3 as sql
+import pandas as pd 
+import numpy as np
 from discord.ext import commands 
 
 
@@ -50,7 +53,7 @@ class Miscellaneous_Cog(commands.Cog):
     @commands.command(aliases = ['Boticon', 'bot_icon', 'Bot_icon'])
     async def boticon(self, ctx):
         await ctx.send('https://imgur.com/CuNlLOP.png')
-        
+
     # Returns an invite link to Kaisercord
     @commands.command(aliases = ['kaisercord', 'Kaisercord', 'aicord', 'kaicord', 'Kaicord'])
     async def aisercord(self, ctx):
@@ -97,6 +100,68 @@ class Miscellaneous_Cog(commands.Cog):
     @commands.command(aliases = ['Patreon', 'simp', 'Simp'])
     async def patreon(self, ctx):
         await ctx.send('<https://www.patreon.com/kaiserbot>')
+
+    @commands.command(aliases = ['Status', 'todo', 'Todo'])
+    async def status(self, ctx):
+        db = sql.connect('Status.sqlite')
+        cursor = db.cursor()
+        cursor.execute(f'SELECT * FROM todo ORDER BY Priority ASC;')
+        result = cursor.fetchall()
+        db.commit()
+        cursor.close()
+        db.close()
+
+        priorities = list(map(lambda x: f'**{x[0]}** - ', result))
+        tasks = list(map(lambda x: x[1], result))
+        df = pd.DataFrame(data = {'': tasks}, index = priorities)
+
+        embed = discord.Embed(title = 'KaiserBot - Status', colour = discord.Colour(0xefe61),
+        description = f'*Priority - Task*\n{df}')
+        embed.set_thumbnail(url = 'https://imgur.com/rYLKlN8.gif')
+        embed.set_footer(text = f'KaiserBot | {ctx.guild.name}', icon_url = 'https://i.imgur.com/CuNlLOP.png')
+        embed.timestamp = datetime.datetime.utcnow()
+        await ctx.send(embed = embed)
+
+    @commands.command(aliases = ['Status_add', 'task_add', 'Task_add'])
+    async def status_add(self, ctx, priority, *, item):
+        if ctx.author.id != 496181635952148483:
+            await ctx.send('Only Kaiserrollii is allowed to do that, pabo.')
+            return
+
+        db = sql.connect('Status.sqlite')
+        cursor = db.cursor()
+        insert = (f'INSERT INTO todo(Priority, Task) VALUES(?, ?)')
+        values = (priority, item)
+        cursor.execute(insert, values)
+        db.commit()
+        cursor.close()
+        db.close()
+
+        await ctx.send(f'Added `{item}` to the task list!')
+
+    @commands.command(aliases = ['Status_add_ex', 'task_add_ex', 'Task_add_ex'])
+    async def status_add_ex(self, ctx):
+        await ctx.send('```k.status_add 1 Random task\n>>> [Adds "Random task" to the list at priority 1]```')
+
+    @commands.command(aliases = ['Status_remove', 'task_remove', 'Task_remove'])
+    async def status_remove(self, ctx, *, item):
+        if ctx.author.id != 496181635952148483:
+            await ctx.send('Only Kaiserrollii is allowed to do that, pabo.')
+            return
+
+        db = sql.connect('Status.sqlite')
+        cursor = db.cursor()
+        cursor.execute(f'DELETE FROM todo WHERE Task Like "{item}"')
+        db.commit()
+        cursor.close()
+        db.close()
+
+        await ctx.send(f'Removed `{item}` from the task list!')
+
+    @commands.command(aliases = ['Status_remove_ex', 'task_remove_ex', 'Task_remove_ex'])
+    async def status_remove_ex(self, ctx):
+        await ctx.send('```k.status_remove Random task\n>>> [Removes "Random task" from the list]```')
+
 
 
 def setup(bot):
