@@ -1051,59 +1051,59 @@ find that your journey in the Games will end sooner than you think.",
                 if victor in list(dtributes.keys()):
                     overviewembed.set_thumbnail(url = dtributes[victor][0])
 
-                    if profile_check(dtributes[victor][1]):
-                        if house_check(dtributes[victor][1]):
+                    # if profile_check(dtributes[victor][1]):
+                    #     if house_check(dtributes[victor][1]):
 
-                            pdb = sql.connect('Profiles.sqlite')
-                            cursor = pdb.cursor()
-                            cursor.execute(f'SELECT House FROM main WHERE UserID = {dtributes[victor][1]}')
-                            house = cursor.fetchone()[0]
-                            pdb.commit()
-                            cursor.close()
-                            pdb.close()
+                    #         pdb = sql.connect('Profiles.sqlite')
+                    #         cursor = pdb.cursor()
+                    #         cursor.execute(f'SELECT House FROM main WHERE UserID = {dtributes[victor][1]}')
+                    #         house = cursor.fetchone()[0]
+                    #         pdb.commit()
+                    #         cursor.close()
+                    #         pdb.close()
 
-                            hdb = sql.connect('Houses.sqlite')
-                            cursor = hdb.cursor()
-                            cursor.execute(f'SELECT {house} FROM House_points')
-                            updated = cursor.fetchone()[0] + 20
-                            insert = (f'UPDATE House_points SET {house} = ?')
-                            values = (updated,)
-                            cursor.execute(insert, values)
+                    #         hdb = sql.connect('Houses.sqlite')
+                    #         cursor = hdb.cursor()
+                    #         cursor.execute(f'SELECT {house} FROM House_points')
+                    #         updated = cursor.fetchone()[0] + 25
+                    #         insert = (f'UPDATE House_points SET {house} = ?')
+                    #         values = (updated,)
+                    #         cursor.execute(insert, values)
 
-                            cursor.execute(f'SELECT IN_points FROM {house} WHERE UserID = {dtributes[victor][1]}')
-                            INupdated = cursor.fetchone()[0] + 20
-                            INinsert = (f'UPDATE {house} SET IN_points = ? WHERE UserID = ?')
-                            INvalues = (INupdated, dtributes[victor][1])
-                            cursor.execute(INinsert, INvalues)
+                    #         cursor.execute(f'SELECT IN_points FROM {house} WHERE UserID = {dtributes[victor][1]}')
+                    #         INupdated = cursor.fetchone()[0] + 25
+                    #         INinsert = (f'UPDATE {house} SET IN_points = ? WHERE UserID = ?')
+                    #         INvalues = (INupdated, dtributes[victor][1])
+                    #         cursor.execute(INinsert, INvalues)
 
-                            hdb.commit()
-                            cursor.close()
-                            hdb.close()
+                    #         hdb.commit()
+                    #         cursor.close()
+                    #         hdb.close()
 
-                    hgdb = sql.connect('HG.sqlite')
-                    cursor = hgdb.cursor()
-                    cursor.execute('SELECT UserID FROM victors')
-                    IDlist = cursor.fetchall()
+                    # hgdb = sql.connect('HG.sqlite')
+                    # cursor = hgdb.cursor()
+                    # cursor.execute('SELECT UserID FROM victors')
+                    # IDlist = cursor.fetchall()
 
-                    x = False
-                    for i in IDlist:
-                        if str(dtributes[victor][1]) == i[0]:
-                            x = True
-                            break
-                    if x:
-                        cursor.execute(f'SELECT Wins FROM victors WHERE UserID = {dtributes[victor][1]}')
-                        hgupdated = cursor.fetchone()[0] + 1
-                        hginsert = (f'UPDATE victors SET Wins = ? WHERE UserID = ?')
-                        hgvalues = (hgupdated, dtributes[victor][1])
-                        cursor.execute(hginsert, hgvalues)
-                    else:
-                        hginsert = ('INSERT INTO victors(UserID, Wins) VALUES(?, ?)')
-                        hgvalues = (ctx.author.id, 1)
-                        cursor.execute(hginsert, hgvalues)
+                    # x = False
+                    # for i in IDlist:
+                    #     if str(dtributes[victor][1]) == i[0]:
+                    #         x = True
+                    #         break
+                    # if x:
+                    #     cursor.execute(f'SELECT Wins FROM victors WHERE UserID = {dtributes[victor][1]}')
+                    #     hgupdated = cursor.fetchone()[0] + 1
+                    #     hginsert = (f'UPDATE victors SET Wins = ? WHERE UserID = ?')
+                    #     hgvalues = (hgupdated, dtributes[victor][1])
+                    #     cursor.execute(hginsert, hgvalues)
+                    # else:
+                    #     hginsert = ('INSERT INTO victors(UserID, Wins) VALUES(?, ?)')
+                    #     hgvalues = (ctx.author.id, 1)
+                    #     cursor.execute(hginsert, hgvalues)
 
-                    hgdb.commit()
-                    cursor.close()
-                    hgdb.close()
+                    # hgdb.commit()
+                    # cursor.close()
+                    # hgdb.close()
 
                 else:
                     overviewembed.set_thumbnail(url = 'https://imgur.com/9Pp2BQm.gif')
@@ -1136,35 +1136,36 @@ Full list of categories:\n\n{df}\n\nk.hungergames Mixed\n>>> [Starts up a Hunger
 
     @commands.command(aliases = ['hg_lb', 'hg_leaderboard', 'hungergames_lb'])
     async def hungergames_leaderboard(self, ctx):
-        db = sql.connect('HG.sqlite')
-        cursor = db.cursor()
-        cursor.execute(f'SELECT * FROM victors ORDER BY Wins DESC;')
-        result = cursor.fetchmany(3)
-        cursor.execute(f'SELECT Count(*) FROM victors')
-        total = cursor.fetchone()[0]
-        db.commit()
-        cursor.close()
-        db.close()
+        await ctx.send('Currently broken. Will be fixed later.')
+        # db = sql.connect('HG.sqlite')
+        # cursor = db.cursor()
+        # cursor.execute(f'SELECT * FROM victors ORDER BY Wins DESC;')
+        # result = cursor.fetchmany(3)
+        # cursor.execute(f'SELECT Count(*) FROM victors')
+        # total = cursor.fetchone()[0]
+        # db.commit()
+        # cursor.close()
+        # db.close()
 
-        embed = discord.Embed(title = 'Hunger Games Leaderboard ', colour = discord.Colour(0xefe61))
-        embed.set_thumbnail(url = 'https://imgur.com/09B1zTq.gif')
+        # embed = discord.Embed(title = 'Hunger Games Leaderboard ', colour = discord.Colour(0xefe61))
+        # embed.set_thumbnail(url = 'https://imgur.com/09B1zTq.gif')
 
-        if total >= 3:
-            embed.add_field(name = 'Top Victors:', value = f'1. **{self.bot.get_user(int(result[0][0]))}** - {result[0][1]}\n\
-                                                             2. **{self.bot.get_user(int(result[1][0]))}** - {result[1][1]}\n\
-                                                             3. **{self.bot.get_user(int(result[2][0]))}** - {result[2][1]}')
-        elif total == 2:
-            embed.add_field(name = 'Top Victors:', value = f'1. **{self.bot.get_user(int(result[0][0]))}** - {result[0][1]}\n\
-                                                             2. **{self.bot.get_user(int(result[1][0]))}** - {result[1][1]}')
-        elif total == 1:
-            embed.add_field(name = 'Top Victors:', value = f'1. **{self.bot.get_user(int(result[0][0]))}** - {result[0][1]}')
-        elif total == 0:
-            embed.add_field(name = 'Top Victors:', value = 'None')
+        # if total >= 3:
+        #     embed.add_field(name = 'Top Victors:', value = f'1. **{self.bot.get_user(int(result[0][0]))}** - {result[0][1]}\n\
+        #                                                      2. **{self.bot.get_user(int(result[1][0]))}** - {result[1][1]}\n\
+        #                                                      3. **{self.bot.get_user(int(result[2][0]))}** - {result[2][1]}')
+        # elif total == 2:
+        #     embed.add_field(name = 'Top Victors:', value = f'1. **{self.bot.get_user(int(result[0][0]))}** - {result[0][1]}\n\
+        #                                                      2. **{self.bot.get_user(int(result[1][0]))}** - {result[1][1]}')
+        # elif total == 1:
+        #     embed.add_field(name = 'Top Victors:', value = f'1. **{self.bot.get_user(int(result[0][0]))}** - {result[0][1]}')
+        # elif total == 0:
+        #     embed.add_field(name = 'Top Victors:', value = 'None')
 
-        embed.set_footer(text = f'KaiserBot | {ctx.guild.name}', icon_url = 'https://i.imgur.com/CuNlLOP.png')
-        embed.timestamp = datetime.datetime.utcnow()
+        # embed.set_footer(text = f'KaiserBot | {ctx.guild.name}', icon_url = 'https://i.imgur.com/CuNlLOP.png')
+        # embed.timestamp = datetime.datetime.utcnow()
 
-        await ctx.send(embed = embed)
+        # await ctx.send(embed = embed)
 
 
 def setup(bot):
