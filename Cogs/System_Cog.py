@@ -585,6 +585,9 @@ and unapologetically you. But despite your image, when you're with close friends
             description = 'Purple is the house of social butterflies. You make friends wherever you go, and you prefer being \
 with others rather than being alone. Social situations are where you thrive.'
             thumbnail = 'https://imgur.com/QMsYrjP.png'
+        else:
+            await ctx.send("That's not a valid house, pabo. See `k.house_ex` for a list of all the houses.")
+            return
 
         embed.colour = discord.Colour(colour)
         embed.description = description
@@ -620,7 +623,7 @@ with others rather than being alone. Social situations are where you thrive.'
 
     @commands.command(aliases = ['House_ex', 'house_info_ex', 'House_info_ex'])
     async def house_ex(self, ctx):
-        await ctx.send('```k.house Pink\n>>> [Information about Pink house]```')
+        await ctx.send('```Houses: Pink/Yellow/Blue/Green/Purple\n\nk.house Pink\n>>> [Information about Pink house]```')
 
     @commands.command(aliases = ['House_leaderboard', 'house_lb', 'House_lb'])
     async def house_leaderboard(self, ctx):
@@ -647,7 +650,7 @@ how to win the House Cup, and the prizes associated with winning.')
     async def house_cup(self, ctx):
         embed = discord.Embed(title = 'The House Cup', colour = discord.Colour(0xefe61),
         description = f"There are **5** ways of getting points for your house:\n\n\
-**1.** Win a round of Hunger Games (20 points)\n\
+**1.** Win a round of Hunger Games (25 points)\n\
 **2.** Complete quests\n\
 **3.** Dismantle weapons/armor\n\
 **4.** Convert rubies to house points\n\
@@ -1319,11 +1322,11 @@ You are now free to purchase new armor.')
     async def quest(self, ctx):
         if not profile_check(ctx.author.id):
             self.bot.get_command('quest').reset_cooldown(ctx)
-            await ctx.send('Please create a profile (`k.profile_set`) before attempting to loot.')
+            await ctx.send('Please create a profile (`k.profile_set`) before attempting to quest.')
             return
         if not house_check(ctx.author.id):
             self.bot.get_command('quest').reset_cooldown(ctx)
-            await ctx.send('Please set your house (`k.get_sorted`) before attempting to loot, pabo.')
+            await ctx.send('Please set your house (`k.get_sorted`) before attempting to quest, pabo.')
             return
 
         db = sql.connect('RPG.sqlite')
@@ -1445,6 +1448,7 @@ You are now free to purchase new armor.')
             db.commit()
             cursor.close()
             db.close()
+            self.bot.get_command('quest').reset_cooldown(ctx)
             await choosemessage.delete()
             await ctx.send('RPG Quest timed out. Be faster next time, pabo.')
             return
