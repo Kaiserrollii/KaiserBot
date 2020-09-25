@@ -1071,6 +1071,10 @@ Before applying for a new job, you must leave your current job (`k.sell [job nam
         elif category[0] == 'j':
             if xp < price:
                 await ctx.send("You don't have enough XP to hold this job, pabo. Come back later.")
+                db.commit()
+                cursor.close()
+                db.close()
+                return
             if job == 'None':
                 insert = (f'UPDATE users SET Job = ? WHERE UserID = ?')
                 values = (item.capitalize(), ctx.author.id)
