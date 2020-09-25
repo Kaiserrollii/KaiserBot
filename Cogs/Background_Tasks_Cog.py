@@ -23,6 +23,7 @@ class Background_Tasks_Cog(commands.Cog):
         channel = self.bot.get_channel(630633322686578689)
         while not self.bot.is_closed():
             await channel.send('**Status:** Online')
+            await channel.send(f'{len(self.bot.guilds)} | {len(self.bot.users)}')
             await asyncio.sleep(3600) 
 
     # Sends a daily affirmation into #the-spa every 24h
