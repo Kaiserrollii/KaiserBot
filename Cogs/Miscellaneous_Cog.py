@@ -115,8 +115,11 @@ class Miscellaneous_Cog(commands.Cog):
         tasks = list(map(lambda x: x[1], result))
         df = pd.DataFrame(data = {'': tasks}, index = priorities)
 
+        guildcount = len(self.bot.guilds)
+        membercount = len(self.bot.users)
+
         embed = discord.Embed(title = 'KaiserBot - Status', colour = discord.Colour(0xefe61),
-        description = f'*Priority - Task*\n{df}')
+        description = f'*Currently serving **{guildcount}** servers and **{membercount}** users.\n\nPriority - Task*\n{df}')
         embed.set_thumbnail(url = 'https://imgur.com/rYLKlN8.gif')
         embed.set_footer(text = f'KaiserBot | {ctx.guild.name}', icon_url = 'https://i.imgur.com/CuNlLOP.png')
         embed.timestamp = datetime.datetime.utcnow()
