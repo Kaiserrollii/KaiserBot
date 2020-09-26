@@ -205,7 +205,7 @@ class Games_Cog(commands.Cog):
 
     # Consumes a str, message
     # Returns the spongebobified version of the message
-    @commands.command(aliases = ['Spongebobify', 'copypasta', 'Copypasta'])
+    @commands.command(aliases = ['Spongebobify', 'mock', 'Mock'])
     async def spongebobify(self, ctx, *, message = None):
         if message is None:
             recent = await ctx.channel.history(limit = 25).flatten()
@@ -238,7 +238,7 @@ class Games_Cog(commands.Cog):
 
     # Consumes a str, message
     # Returns the scuffed spongebobified version of the message
-    @commands.command(aliases = ['Spongebobify2', 'scuffed', 'Scuffed'])
+    @commands.command(aliases = ['Spongebobify2', 'scuffed', 'Scuffed', 'mock2', 'Mock2'])
     async def spongebobify2(self, ctx, *, message = None):
         if message is None:
             recent = await ctx.channel.history(limit = 25).flatten()
