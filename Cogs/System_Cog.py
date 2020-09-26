@@ -532,7 +532,7 @@ to explore!\n\n\
 for rubies or dismantle it for house points (`k.dismantle [item name])` before purchasing another one.\n\n\
 **5.** Explore the different jobs on the job board at the market \n\
 (`k.item [job name]`), and apply for one that you're qualified for \n\
-(`k.buy [job name]`). Afterwards, work a shift using `k.work`. Shifts can be worked every 8 hours. If you want to change your job, \
+(`k.buy [job name]`). Afterwards, work a shift using `k.work`. Shifts can be worked every 6 hours. If you want to change your job, \
 you must first leave your current one using `k.sell [job name]`.\n\n\
 **6.** When you're ready, go on your first quest using `k.quest`. You can check your chances of survival using `k.quest_check`. \
 To increase your chances, upgrade your weapons/armor/companion, and make sure you're fully healed by purchasing a \
@@ -867,7 +867,7 @@ Before purchasing a new companion, your current companion must be sold \n\
             special = result[5]
             embed.description = 'Jobs provide a secure source of income. To obtain a job, you must have a sufficient amount \
 of XP, as well as enough rubies to pay the application fee. Higher-paying jobs require more XP and have a higher application \
-fee. After obtaining a job, shifts can be worked every 8 hours (`k.work`).\n\n\
+fee. After obtaining a job, shifts can be worked every 6 hours (`k.work`).\n\n\
 Before applying for a new job, you must leave your current job (`k.sell [job name]`).'
             embed.add_field(name = 'Class:', value = 'Job')
             embed.add_field(name = 'Special:', value = f'{special} rubies / shift')
@@ -1951,7 +1951,7 @@ weapon/armor/companion/health you choose. "None" is a valid answer for any of th
         await ctx.send('🍷 You drink a health potion and restore your health to **100** HP.')
 
     @commands.command(aliases = ['Work', 'shift', 'Shift'])
-    @commands.cooldown(1, 28800, commands.BucketType.user) 
+    @commands.cooldown(1, 21600, commands.BucketType.user) 
     async def work(self, ctx):
         if not profile_check(ctx.author.id):
             self.bot.get_command('work').reset_cooldown(ctx)
