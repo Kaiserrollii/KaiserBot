@@ -40,7 +40,7 @@ class Events_Cog(commands.Cog):
 
         elif member.guild.id == 437895879643365376: #joycord id
             autorole = discord.utils.get(member.guild.roles, name = 'Joyful') #joycord autorole
-            channel = self.bot.get_channel(id = 437895879643365379) # joycord general
+            channel = self.bot.get_channel(id = 762008603686207528) # joycord joy-channel
             welcome_channel = self.bot.get_channel(id = 437953446784532492) #joycord welcome
             roles_channel = self.bot.get_channel(id = 437959289206865952) # joycord roles
             bot_channel = self.bot.get_channel(id = 437954532169744384) # joycord botland
