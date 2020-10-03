@@ -94,7 +94,7 @@ class Miscellaneous_Cog(commands.Cog):
     # Returns the bot website
     @commands.command(aliases = ['Website', 'site', 'Site'])
     async def website(self, ctx):
-        await ctx.send('https://tinyurl.com/kaiserbotwebsite')
+        await ctx.send('<https://kaiserbotwebsite.kaiserrollii.repl.co/>')
 
     # Returns the bot patreon page
     @commands.command(aliases = ['Patreon', 'simp', 'Simp'])
