@@ -165,7 +165,15 @@ class Miscellaneous_Cog(commands.Cog):
     async def status_remove_ex(self, ctx):
         await ctx.send('```k.status_remove Random task\n>>> [Removes "Random task" from the list]```')
 
-
+    @commands.command()
+    async def servers(self, ctx):
+        if ctx.author.id != 496181635952148483:
+            await ctx.send('Only Kaiserrollii is allowed to do that, pabo.')
+            return
+        
+        await ctx.send(f'{len(self.bot.guilds)} | {len(self.bot.users)}')
+        for i in self.bot.guilds:
+            await ctx.send(f'{i.name} | {i.id} | {i.member_count}')
 
 def setup(bot):
     bot.add_cog(Miscellaneous_Cog(bot))
