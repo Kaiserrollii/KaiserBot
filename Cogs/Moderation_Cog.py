@@ -258,6 +258,18 @@ class Moderation_Cog (commands.Cog):
     async def say_ex(self, ctx):
         await ctx.send('```k.say #the-lounge stfu\n>>> [Sends "stfu" in #the-lounge]```')
 
+    @commands.command()
+    async def leave(self, ctx, guild_id):
+        if ctx.author.id != 496181635952148483:
+            await ctx.send('Only Kaiserrollii is allowed to do that, pabo.')
+            return
+
+        for i in self.bot.guilds:
+            if str(i.id) == guild_id:
+                await i.leave()
+                await ctx.send(f'Left `{i.name}`.')
+                return
+
 
 def setup (bot):
     bot.add_cog(Moderation_Cog(bot))
