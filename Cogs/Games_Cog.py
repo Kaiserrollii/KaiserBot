@@ -75,7 +75,15 @@ class Games_Cog(commands.Cog):
                        'https://cdn.discordapp.com/attachments/630633322686578689/708470605556613140/afzxwn0il7221.png',
                        'https://cdn.discordapp.com/attachments/630633322686578689/717638617928957972/unknown.png',
                        'https://cdn.discordapp.com/attachments/630633322686578689/717638790335823892/unknown.png',
-                       'https://imgur.com/rxfQ3XQ.png']
+                       'https://imgur.com/rxfQ3XQ.png',
+                       'https://imgur.com/XDtxIeV.png',
+                       'https://imgur.com/zgNgAR5.png',
+                       'https://imgur.com/2cSdNeK.png',
+                       'https://imgur.com/oYirDBM.png',
+                       'https://imgur.com/fJDTDjj.png',
+                       'https://imgur.com/gAFVj9Z.png',
+                       'https://imgur.com/slpf69R.png',
+                       'https://imgur.com/3cMBLZN.png']
                     
         await ctx.send(f'{random.choice(cringe_list)}')
 
