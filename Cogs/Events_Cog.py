@@ -38,17 +38,17 @@ class Events_Cog(commands.Cog):
             await member.send(f"Welcome to {member.guild.name}! I'm KaiserBot: the server's personal bot.\nFor more information about me, head to \
     https://kaiserbotwebsite--kaiserrollii.repl.co/")
 
-        elif member.guild.id == 437895879643365376: #rvcord id
-            autorole = discord.utils.get(member.guild.roles, name = 'Reveluv') #rvcord autorole
-            channel = self.bot.get_channel(id = 762008603686207528) # rvcord rv-channel
-            welcome_channel = self.bot.get_channel(id = 437953446784532492) #rvcord welcome
-            roles_channel = self.bot.get_channel(id = 437959289206865952) # rvcord roles
-            bot_channel = self.bot.get_channel(id = 437954532169744384) # rvcord botland
+        elif member.guild.id == 764260384818462731: #joycord id
+            autorole = discord.utils.get(member.guild.roles, name = 'Joyful') #joycord autorole
+            channel = self.bot.get_channel(id = 764263186747883531) # joycord joy-channel
+            welcome_channel = self.bot.get_channel(id = 764268945758617620) #joycord welcome
+            roles_channel = self.bot.get_channel(id = 764270079042781195) # joycord roles
+            bot_channel = self.bot.get_channel(id = 764261923905994762) # joycord botland
 
             embed = discord.Embed(title = 'A new member has arrived!', colour = discord.Colour(0x00d741),
-            description = f"Welcome to the Red Velvet discord server, {member.mention}!\n\n\
+            description = f"Welcome to the Joy discord server, {member.mention}!\n\n\
 Please check out {welcome_channel.mention} for rules and important information!\n\
-You can add special Red Velvet themed roles in {roles_channel.mention}!\n\
+You can add special Joy themed roles in {roles_channel.mention}!\n\
 If you're here for the card game, please check out {bot_channel.mention}!")
             embed.set_thumbnail(url = f'{member.avatar_url}')
             embed.set_footer(text = f'Member #{len(list(member.guild.members))}!')
