@@ -599,11 +599,11 @@ find that your journey in the Games will end sooner than you think.",
                     if day == 1:
                         percentage = random.randint(33, 50) / 100
                         deadper = round(percentage * len(noncareers))
-                        if random.randint(1, 100) > 10:
+                        if random.randint(1, 100) < 10:
                             dead = noncareers[:deadper] + [careers[0]]
                             alive = list(filter(lambda x: x not in dead, alive))
                             for i in dead:
-                                if random.randint(0, 100) > 75:
+                                if random.randint(0, 100) < 80:
                                     killer = random.choice(careers[1:])
                                     dstats[killer][0] += 1
                                     dstats[i][1] = day
@@ -754,17 +754,21 @@ find that your journey in the Games will end sooner than you think.",
 
                             while asptask1 == asptask2:
                                 if randomsptask == 0:
-                                    sptask2 = f"{random.randint(1, 50)} {random.choice(['+', '-'])} {random.randint(1, 50)}"
-                                    asptask2 = str(simplify(sptask2))
+                                    qsptask2 = f"{random.randint(1, 100)} {random.choice(['+', '-'])} {random.randint(1, 100)}"
+                                    asptask2 = str(simplify(qsptask2))
+                                    qsptask2 = f"Solve: `{qsptask2}`"
                                 elif randomsptask == 1:
-                                    sptask2 = f"{random.randint(2, 12)} * {random.randint(2, 12)}"
-                                    asptask2 = str(simplify(sptask2))
+                                    qsptask2 = f"{random.randint(2, 12)} * {random.randint(2, 12)}"
+                                    asptask2 = str(simplify(qsptask2))
+                                    qsptask2 = f"Solve: `{qsptask2.replace('*', 'x')}`"
                                 elif randomsptask == 2:
-                                    sptask2 = f"{random.randint(1, 8)} ** {random.randint(1, 8)}"
-                                    asptask2 = str(simplify(sptask2))
+                                    qsptask2 = f"{random.randint(2, 10)} ** {random.randint(0, 3)}"
+                                    asptask2 = str(simplify(qsptask2))
+                                    qsptask2 = f"Solve: `{qsptask2.replace('**', '^')}`"
                                 else:
-                                    sptask2 = f"{random.randint(50, 100)} % {random.randint(1, 49)}"
-                                    asptask2 = str(simplify(sptask2))
+                                    qsptask2 = f"{random.randint(50, 100)} % {random.randint(1, 49)}"
+                                    asptask2 = str(simplify(qsptask2))
+                                    qsptask2 = f"Solve: `{qsptask2.replace('%', '/')}`"
 
                             sponsorembed = discord.Embed(title = f'Hunger Games - {arena} - Sponsor', colour = discord.Colour(0xefe61),
                             description = f'Chance to sponsor **{choice1}** or **{choice2}**! First task completed will result in that\
@@ -960,24 +964,25 @@ find that your journey in the Games will end sooner than you think.",
                         pickrng = True
                         await stylemessage.delete()
                     elif str(reaction.emoji) == '❓':
-                        url = 'https://opentdb.com/api.php?amount=2&difficulty=easy&type=multiple'
-                        request = requests.get(url)
-                        dmtrivia = json.loads(request.text)
+                        db = sql.connect('Trivia.sqlite')
+                        cursor = db.cursor()
+                        cursor.execute(f'SELECT * FROM qlist ORDER BY RANDOM() LIMIT 2')
+                        results = cursor.fetchall()
+                        db.commit()
+                        cursor.close()
+                        db.close()
 
-                        dmatchtasks = {html.unescape(dmtrivia['results'][0]['question']): 
-                                       html.unescape(dmtrivia['results'][0]['correct_answer']),
-                                       html.unescape(dmtrivia['results'][1]['question']): 
-                                       html.unescape(dmtrivia['results'][1]['correct_answer'])}
-
-                        qdmtask1 = list(dmatchtasks.keys())[0]
-                        admtask1 = dmatchtasks[qdmtask1].lower()
-                        qdmtask2 = list(dmatchtasks.keys())[1]
-                        admtask2 = dmatchtasks[qdmtask2].lower()
+                        set1 = results[0]
+                        set2 = results[1]
+                        qdmtask1 = set1[0]
+                        admtask1 = set1[1].lower()
+                        qdmtask2 = set2[0]
+                        admtask2 = set2[1].lower()
 
                         dmatchembed = discord.Embed(title = f'Hunger Games - {arena} - Deathmatch', colour = discord.Colour(0xefe61),
                         description = 'The first task completed will decide the outcome of the Games!')
-                        dmatchembed.add_field(name = f'{alive[0]}:', value = qdmtask1)
-                        dmatchembed.add_field(name = f'{alive[1]}:', value = qdmtask2)
+                        dmatchembed.add_field(name = f'{alive[0]}:', value = f'`{qdmtask1}`', inline = False)
+                        dmatchembed.add_field(name = f'{alive[1]}:', value = f'`{qdmtask2}`', inline = False)
                         dmatchembed.set_footer(text = f'KaiserBot | {ctx.guild.name}', icon_url = 'https://i.imgur.com/CuNlLOP.png')
                         dmatchembed.timestamp = datetime.datetime.utcnow()
 
@@ -1059,59 +1064,64 @@ find that your journey in the Games will end sooner than you think.",
                 if victor in list(dtributes.keys()):
                     overviewembed.set_thumbnail(url = dtributes[victor][0])
 
-                    # if profile_check(dtributes[victor][1]):
-                    #     if house_check(dtributes[victor][1]):
+                    if profile_check(dtributes[victor][1]):
+                        if house_check(dtributes[victor][1]):
 
-                    #         pdb = sql.connect('Profiles.sqlite')
-                    #         cursor = pdb.cursor()
-                    #         cursor.execute(f'SELECT House FROM main WHERE UserID = {dtributes[victor][1]}')
-                    #         house = cursor.fetchone()[0]
-                    #         pdb.commit()
-                    #         cursor.close()
-                    #         pdb.close()
+                            pdb = sql.connect('Profiles.sqlite')
+                            cursor = pdb.cursor()
+                            cursor.execute(f'SELECT House FROM users WHERE UserID = {dtributes[victor][1]}')
+                            house = cursor.fetchone()[0]
+                            cursor.execute(f'SELECT HG_wins FROM users WHERE UserID = {dtributes[victor][1]}')
+                            updated = cursor.fetchone()[0] + 1
+                            insert = (f'UPDATE users SET HG_wins = ? WHERE UserID = ?')
+                            values = (updated, dtributes[victor][1])
+                            cursor.execute(insert, values)
+                            pdb.commit()
+                            cursor.close()
+                            pdb.close()
 
-                    #         hdb = sql.connect('Houses.sqlite')
-                    #         cursor = hdb.cursor()
-                    #         cursor.execute(f'SELECT {house} FROM House_points')
-                    #         updated = cursor.fetchone()[0] + 25
-                    #         insert = (f'UPDATE House_points SET {house} = ?')
-                    #         values = (updated,)
-                    #         cursor.execute(insert, values)
+                            hdb = sql.connect('Houses.sqlite')
+                            cursor = hdb.cursor()
+                            cursor.execute(f'SELECT {house} FROM House_points')
+                            updated = cursor.fetchone()[0] + 25
+                            insert = (f'UPDATE House_points SET {house} = ?')
+                            values = (updated,)
+                            cursor.execute(insert, values)
 
-                    #         cursor.execute(f'SELECT IN_points FROM {house} WHERE UserID = {dtributes[victor][1]}')
-                    #         INupdated = cursor.fetchone()[0] + 25
-                    #         INinsert = (f'UPDATE {house} SET IN_points = ? WHERE UserID = ?')
-                    #         INvalues = (INupdated, dtributes[victor][1])
-                    #         cursor.execute(INinsert, INvalues)
+                            cursor.execute(f'SELECT IN_points FROM {house} WHERE UserID = {dtributes[victor][1]}')
+                            INupdated = cursor.fetchone()[0] + 25
+                            INinsert = (f'UPDATE {house} SET IN_points = ? WHERE UserID = ?')
+                            INvalues = (INupdated, dtributes[victor][1])
+                            cursor.execute(INinsert, INvalues)
 
-                    #         hdb.commit()
-                    #         cursor.close()
-                    #         hdb.close()
+                            hdb.commit()
+                            cursor.close()
+                            hdb.close()
 
-                    # hgdb = sql.connect('HG.sqlite')
-                    # cursor = hgdb.cursor()
-                    # cursor.execute('SELECT UserID FROM victors')
-                    # IDlist = cursor.fetchall()
+                            hgdb = sql.connect('HG.sqlite')
+                            cursor = hgdb.cursor()
+                            cursor.execute('SELECT UserID FROM victors')
+                            IDlist = cursor.fetchall()
 
-                    # x = False
-                    # for i in IDlist:
-                    #     if str(dtributes[victor][1]) == i[0]:
-                    #         x = True
-                    #         break
-                    # if x:
-                    #     cursor.execute(f'SELECT Wins FROM victors WHERE UserID = {dtributes[victor][1]}')
-                    #     hgupdated = cursor.fetchone()[0] + 1
-                    #     hginsert = (f'UPDATE victors SET Wins = ? WHERE UserID = ?')
-                    #     hgvalues = (hgupdated, dtributes[victor][1])
-                    #     cursor.execute(hginsert, hgvalues)
-                    # else:
-                    #     hginsert = ('INSERT INTO victors(UserID, Wins) VALUES(?, ?)')
-                    #     hgvalues = (ctx.author.id, 1)
-                    #     cursor.execute(hginsert, hgvalues)
+                            x = False
+                            for i in IDlist:
+                                if str(dtributes[victor][1]) == i[0]:
+                                    x = True
+                                    break
+                            if x:
+                                cursor.execute(f'SELECT Wins FROM victors WHERE UserID = {dtributes[victor][1]}')
+                                hgupdated = cursor.fetchone()[0] + 1
+                                hginsert = (f'UPDATE victors SET Wins = ? WHERE UserID = ?')
+                                hgvalues = (hgupdated, dtributes[victor][1])
+                                cursor.execute(hginsert, hgvalues)
+                            else:
+                                hginsert = ('INSERT INTO victors(UserID, Wins) VALUES(?, ?)')
+                                hgvalues = (ctx.author.id, 1)
+                                cursor.execute(hginsert, hgvalues)
 
-                    # hgdb.commit()
-                    # cursor.close()
-                    # hgdb.close()
+                            hgdb.commit()
+                            cursor.close()
+                            hgdb.close()
 
                 else:
                     overviewembed.set_thumbnail(url = 'https://imgur.com/9Pp2BQm.gif')
@@ -1144,36 +1154,120 @@ Full list of categories:\n\n{df}\n\nk.hungergames Mixed\n>>> [Starts up a Hunger
 
     @commands.command(aliases = ['hg_lb', 'hg_leaderboard', 'hungergames_lb'])
     async def hungergames_leaderboard(self, ctx):
-        await ctx.send('Currently broken. Will be fixed later.')
-        # db = sql.connect('HG.sqlite')
-        # cursor = db.cursor()
-        # cursor.execute(f'SELECT * FROM victors ORDER BY Wins DESC;')
-        # result = cursor.fetchmany(3)
-        # cursor.execute(f'SELECT Count(*) FROM victors')
-        # total = cursor.fetchone()[0]
-        # db.commit()
-        # cursor.close()
-        # db.close()
+        db = sql.connect('HG.sqlite')
+        cursor = db.cursor()
+        cursor.execute(f'SELECT * FROM victors ORDER BY Wins DESC;')
+        result = cursor.fetchmany(3)
+        cursor.execute(f'SELECT Count(*) FROM victors')
+        total = cursor.fetchone()[0]
+        db.commit()
+        cursor.close()
+        db.close()
 
-        # embed = discord.Embed(title = 'Hunger Games Leaderboard ', colour = discord.Colour(0xefe61))
-        # embed.set_thumbnail(url = 'https://imgur.com/09B1zTq.gif')
+        embed = discord.Embed(title = 'Hunger Games Leaderboard ', colour = discord.Colour(0xefe61))
+        embed.set_thumbnail(url = 'https://imgur.com/09B1zTq.gif')
 
-        # if total >= 3:
-        #     embed.add_field(name = 'Top Victors:', value = f'1. **{self.bot.get_user(int(result[0][0]))}** - {result[0][1]}\n\
-        #                                                      2. **{self.bot.get_user(int(result[1][0]))}** - {result[1][1]}\n\
-        #                                                      3. **{self.bot.get_user(int(result[2][0]))}** - {result[2][1]}')
-        # elif total == 2:
-        #     embed.add_field(name = 'Top Victors:', value = f'1. **{self.bot.get_user(int(result[0][0]))}** - {result[0][1]}\n\
-        #                                                      2. **{self.bot.get_user(int(result[1][0]))}** - {result[1][1]}')
-        # elif total == 1:
-        #     embed.add_field(name = 'Top Victors:', value = f'1. **{self.bot.get_user(int(result[0][0]))}** - {result[0][1]}')
-        # elif total == 0:
-        #     embed.add_field(name = 'Top Victors:', value = 'None')
+        if total >= 3:
+            embed.add_field(name = 'Top Victors:', value = f'1. **{self.bot.get_user(int(result[0][0]))}** - {result[0][1]}\n\
+                                                             2. **{self.bot.get_user(int(result[1][0]))}** - {result[1][1]}\n\
+                                                             3. **{self.bot.get_user(int(result[2][0]))}** - {result[2][1]}')
+        elif total == 2:
+            embed.add_field(name = 'Top Victors:', value = f'1. **{self.bot.get_user(int(result[0][0]))}** - {result[0][1]}\n\
+                                                             2. **{self.bot.get_user(int(result[1][0]))}** - {result[1][1]}')
+        elif total == 1:
+            embed.add_field(name = 'Top Victors:', value = f'1. **{self.bot.get_user(int(result[0][0]))}** - {result[0][1]}')
+        elif total == 0:
+            embed.add_field(name = 'Top Victors:', value = 'None')
 
-        # embed.set_footer(text = f'KaiserBot | {ctx.guild.name}', icon_url = 'https://i.imgur.com/CuNlLOP.png')
-        # embed.timestamp = datetime.datetime.utcnow()
+        embed.set_footer(text = f'KaiserBot | {ctx.guild.name}', icon_url = 'https://i.imgur.com/CuNlLOP.png')
+        embed.timestamp = datetime.datetime.utcnow()
 
-        # await ctx.send(embed = embed)
+        await ctx.send(embed = embed)
+
+    @commands.command()
+    async def hg_add(self, ctx):
+        if ctx.author.id != 496181635952148483:
+            await ctx.send('Only Kaiserrollii can do that, pabo.')
+            return 
+
+        def check(answer: discord.Message): 
+            return answer.channel == ctx.channel and answer.author.id == ctx.author.id
+
+        qmessage = await ctx.send('Enter question:')
+        try:
+            question = await self.bot.wait_for('message', timeout = 60, check = check)
+            question = question.content
+            await qmessage.delete()
+        except asyncio.TimeoutError:
+            await qmessage.delete()
+            await ctx.send('Timed out.')
+            return
+        else:
+            if question.lower() == 'quit' or question.lower() == 'exit':
+                await ctx.send('Cancelled.')
+                return
+            
+            amessage = await ctx.send('Enter answer:')
+            try:
+                answer = await self.bot.wait_for('message', timeout = 60, check = check)
+                answer = answer.content
+                await amessage.delete()
+            except asyncio.TimeoutError:
+                await amessage.delete()
+                await ctx.send('Timed out.')
+                return
+            else:
+                if answer.lower() == 'quit' or answer.lower() == 'exit':
+                    await ctx.send('Cancelled.')
+                    return
+
+        db = sql.connect('Trivia.sqlite')
+        cursor = db.cursor()
+        insert = ('INSERT INTO qlist(Question, Answer) VALUES(?, ?)')
+        values = (question, answer)
+        cursor.execute(insert, values)
+        db.commit()
+        cursor.close()
+        db.close()
+
+        await ctx.send('Question set added.')
+
+    @commands.command()
+    async def hg_remove(self, ctx, *, question):
+        if ctx.author.id != 496181635952148483:
+            await ctx.send('Only Kaiserrollii can do that, pabo.')
+            return 
+
+        db = sql.connect('Trivia.sqlite')
+        cursor = db.cursor()
+        cursor.execute(f'DELETE FROM qlist WHERE Question LIKE "{question}"')
+        db.commit()
+        cursor.close()
+        db.close()
+
+        await ctx.send('Question set removed.')
+
+    @commands.command()
+    async def hg_view(self, ctx, *, query):
+        if ctx.author.id != 496181635952148483:
+            await ctx.send('Only Kaiserrollii can do that, pabo.')
+            return 
+
+        db = sql.connect('Trivia.sqlite')
+        cursor = db.cursor()
+        cursor.execute('SELECT * FROM qlist')
+        full = cursor.fetchall()
+        db.commit()
+        cursor.close()
+        db.close()
+
+        if query.lower() != 'all':
+            full = list(filter(lambda x: query.lower() in x[0].lower(), full))
+
+        counter = 1
+        for i in full:
+            await ctx.send(f'**{counter}.** ```{i[0]}``` ||{i[1]}||')
+            counter += 1
 
 
 def setup(bot):
