@@ -524,10 +524,9 @@ Language codes: <https://developers.google.com/admin-sdk/directory/v1/languages>
             else:
                 message = await ctx.send('*Searching the kpop wiki...*')
 
-                results = searchsoup.find('ul', {'class': 'Results'})
-                topresult = results.find('li', {'class': 'result'})
-                profilepreview = topresult.find('li')
-                profilelink = profilepreview.find('a')['href']
+                results = searchsoup.find('ul', {'class': 'unified-search__results'})
+                topresult = results.find('li', {'class': 'unified-search__result'})
+                profilelink = topresult.find('a')['href']
 
                 profilerequest = requests.get(profilelink, headers = user_agent)
                 profilesoup = BeautifulSoup(profilerequest.text, 'html.parser')
