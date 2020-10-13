@@ -1083,13 +1083,13 @@ find that your journey in the Games will end sooner than you think.",
                             hdb = sql.connect('Houses.sqlite')
                             cursor = hdb.cursor()
                             cursor.execute(f'SELECT {house} FROM House_points')
-                            updated = cursor.fetchone()[0] + 25
+                            updated = cursor.fetchone()[0] + 10
                             insert = (f'UPDATE House_points SET {house} = ?')
                             values = (updated,)
                             cursor.execute(insert, values)
 
                             cursor.execute(f'SELECT IN_points FROM {house} WHERE UserID = {dtributes[victor][1]}')
-                            INupdated = cursor.fetchone()[0] + 25
+                            INupdated = cursor.fetchone()[0] + 10
                             INinsert = (f'UPDATE {house} SET IN_points = ? WHERE UserID = ?')
                             INvalues = (INupdated, dtributes[victor][1])
                             cursor.execute(INinsert, INvalues)
