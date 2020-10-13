@@ -649,12 +649,11 @@ how to win the House Cup, and the prizes associated with winning.')
     @commands.command(aliases = ['House_cup', 'housecup', 'Housecup'])
     async def house_cup(self, ctx):
         embed = discord.Embed(title = 'The House Cup', colour = discord.Colour(0xefe61),
-        description = f"There are **5** ways of getting points for your house:\n\n\
-**1.** Win a round of Hunger Games (25 points)\n\
+        description = f"There are **4** ways of getting points for your house:\n\n\
+**1.** Win a round of Hunger Games (10 points)\n\
 **2.** Complete quests\n\
-**3.** Dismantle weapons/armor\n\
-**4.** Convert rubies to house points\n\
-**5.** Impress the Headmaster, <@!496181635952148483>\n\n\
+**3.** Convert rubies to house points\n\
+**4.** Impress the Headmaster, <@!496181635952148483>\n\n\
 After a set amount of time, the house with the most points wins the House Cup, an honour greater than receiving a \
 Nobel Peace Prize. 100% legit. In addition, members of the winning house will get their house colour showcased in \
 Kaisercord for 3 days, and the top three members will receive an extra special role for 7 days.")
@@ -860,7 +859,7 @@ Before purchasing a new companion, your current companion must be sold \n\
         elif category[0] == 'm':
             special= result[5]
             embed.description = '**Health potion:** fully restores your health to 100 HP\n\
-                                 **House points:** 20 rubies -> 1 point'
+                                 **House points:** 5 rubies -> 1 point'
             embed.add_field(name = 'Class:', value = 'Miscellaneous')
             embed.add_field(name = 'Special:', value = f'{special}')
         elif category[0] == 'j':
@@ -1222,104 +1221,104 @@ Before applying for a new job, you must leave your current job (`k.sell [job nam
     async def sell_ex(self, ctx):
         await ctx.send('```k.sell [Item name]\n>>> [Sells the specified item]```')
 
-    @commands.command(aliases = ['Dismantle', 'destroy', 'Destroy', 'disassemble', 'Disassemble'])
-    async def dismantle(self, ctx, *, item = None):
-        if not profile_check(ctx.author.id):
-            await ctx.send("You haven't set a profile yet, pabo. Create one with `k.profile_set`.")
-            return
-        if not house_check(ctx.author.id):
-            await ctx.send("You don't have a house yet, pabo. Get sorted into one with `k.get_sorted`.")
-            return
-        if item is None:
-            await ctx.send('You must specify an item to dismantle, pabo. Try again.')
-            return
-        if not item_check(item):
-            await ctx.send('Item not found, pabo. Try again.')
-            return
+#     @commands.command(aliases = ['Dismantle', 'destroy', 'Destroy', 'disassemble', 'Disassemble'])
+#     async def dismantle(self, ctx, *, item = None):
+#         if not profile_check(ctx.author.id):
+#             await ctx.send("You haven't set a profile yet, pabo. Create one with `k.profile_set`.")
+#             return
+#         if not house_check(ctx.author.id):
+#             await ctx.send("You don't have a house yet, pabo. Get sorted into one with `k.get_sorted`.")
+#             return
+#         if item is None:
+#             await ctx.send('You must specify an item to dismantle, pabo. Try again.')
+#             return
+#         if not item_check(item):
+#             await ctx.send('Item not found, pabo. Try again.')
+#             return
 
-        db = sql.connect('Profiles.sqlite')
-        cursor = db.cursor()
-        cursor.execute(f'SELECT House FROM users WHERE UserID = {ctx.author.id}')
-        house = cursor.fetchone()[0]
-        db.commit()
-        cursor.close()
-        db.close()
+#         db = sql.connect('Profiles.sqlite')
+#         cursor = db.cursor()
+#         cursor.execute(f'SELECT House FROM users WHERE UserID = {ctx.author.id}')
+#         house = cursor.fetchone()[0]
+#         db.commit()
+#         cursor.close()
+#         db.close()
 
-        db = sql.connect('RPG.sqlite')
-        cursor = db.cursor()
-        cursor.execute(f'SELECT * FROM market WHERE Name LIKE "{item}"')
-        dis_item = cursor.fetchall()
-        dis_item = dis_item[0]
-        name = dis_item[0]
-        category = dis_item[1]
+#         db = sql.connect('RPG.sqlite')
+#         cursor = db.cursor()
+#         cursor.execute(f'SELECT * FROM market WHERE Name LIKE "{item}"')
+#         dis_item = cursor.fetchall()
+#         dis_item = dis_item[0]
+#         name = dis_item[0]
+#         category = dis_item[1]
         
-        cursor.execute(f'SELECT * FROM users WHERE UserID = {ctx.author.id}')
-        user_info = cursor.fetchall()[0]
-        weapon = user_info[4]
-        armor = user_info[5]
+#         cursor.execute(f'SELECT * FROM users WHERE UserID = {ctx.author.id}')
+#         user_info = cursor.fetchall()[0]
+#         weapon = user_info[4]
+#         armor = user_info[5]
 
-        if category[0] == 'w':
-            if weapon == 'None' or weapon != name:
-                await ctx.send("You can't dismantle something you don't own, pabo. Try again.")
-                db.commit()
-                cursor.close()
-                db.close()
-                return
-            else:
-                insert = (f'UPDATE users SET Weapon = ? WHERE UserID = ?')
-                values = ('None', ctx.author.id)
-                cursor.execute(insert, values)
-                db.commit()
-                cursor.close()
-                db.close()
-                await ctx.send(f'⚔ Dismantled your **{item.lower()}** for **{int(category[-1]) ** 2}** points to **{house}** house! \
-You are now free to purchase a new weapon.')
+#         if category[0] == 'w':
+#             if weapon == 'None' or weapon != name:
+#                 await ctx.send("You can't dismantle something you don't own, pabo. Try again.")
+#                 db.commit()
+#                 cursor.close()
+#                 db.close()
+#                 return
+#             else:
+#                 insert = (f'UPDATE users SET Weapon = ? WHERE UserID = ?')
+#                 values = ('None', ctx.author.id)
+#                 cursor.execute(insert, values)
+#                 db.commit()
+#                 cursor.close()
+#                 db.close()
+#                 await ctx.send(f'⚔ Dismantled your **{item.lower()}** for **{int(category[-1]) ** 2}** points to **{house}** house! \
+# You are now free to purchase a new weapon.')
 
-        elif category[0] == 'a':
-            if armor == 'None' or armor != name:
-                await ctx.send("You can't dismantle something you don't own, pabo. Try again.")
-                db.commit()
-                cursor.close()
-                db.close()
-                return
-            else:
-                insert = (f'UPDATE users SET Armor = ? WHERE UserID = ?')
-                values = ('None', ctx.author.id)
-                cursor.execute(insert, values)
-                db.commit()
-                cursor.close()
-                db.close()
-                await ctx.send(f'🛡️ Dismantled your **{item.lower()}** for **{int(category[-1]) ** 2}** points to **{house}** house! \
-You are now free to purchase new armor.')
+#         elif category[0] == 'a':
+#             if armor == 'None' or armor != name:
+#                 await ctx.send("You can't dismantle something you don't own, pabo. Try again.")
+#                 db.commit()
+#                 cursor.close()
+#                 db.close()
+#                 return
+#             else:
+#                 insert = (f'UPDATE users SET Armor = ? WHERE UserID = ?')
+#                 values = ('None', ctx.author.id)
+#                 cursor.execute(insert, values)
+#                 db.commit()
+#                 cursor.close()
+#                 db.close()
+#                 await ctx.send(f'🛡️ Dismantled your **{item.lower()}** for **{int(category[-1]) ** 2}** points to **{house}** house! \
+# You are now free to purchase new armor.')
 
-        elif category[0] == 'c' or category[0] == 'j' or category[0] == 'm':
-            await ctx.send("You can't dismantle this item, pabo. Try again.")
-            db.commit()
-            cursor.close()
-            db.close()
-            return
+#         elif category[0] == 'c' or category[0] == 'j' or category[0] == 'm':
+#             await ctx.send("You can't dismantle this item, pabo. Try again.")
+#             db.commit()
+#             cursor.close()
+#             db.close()
+#             return
 
-        db = sql.connect('Houses.sqlite')
-        cursor = db.cursor()
-        cursor.execute(f'SELECT {house} FROM House_points')
-        updated = cursor.fetchone()[0] + (int(category[-1]) ** 2)
-        insert = (f'UPDATE House_points SET {house} = ?')
-        values = (updated,)
-        cursor.execute(insert, values)
+#         db = sql.connect('Houses.sqlite')
+#         cursor = db.cursor()
+#         cursor.execute(f'SELECT {house} FROM House_points')
+#         updated = cursor.fetchone()[0] + (int(category[-1]) ** 2)
+#         insert = (f'UPDATE House_points SET {house} = ?')
+#         values = (updated,)
+#         cursor.execute(insert, values)
 
-        cursor.execute(f'SELECT IN_points FROM {house} WHERE UserID = {ctx.author.id}')
-        INupdated = cursor.fetchone()[0] + (int(category[-1]) ** 2)
-        INinsert = (f'UPDATE {house} SET IN_points = ? WHERE UserID = ?')
-        INvalues = (INupdated, ctx.author.id)
-        cursor.execute(INinsert, INvalues)
+#         cursor.execute(f'SELECT IN_points FROM {house} WHERE UserID = {ctx.author.id}')
+#         INupdated = cursor.fetchone()[0] + (int(category[-1]) ** 2)
+#         INinsert = (f'UPDATE {house} SET IN_points = ? WHERE UserID = ?')
+#         INvalues = (INupdated, ctx.author.id)
+#         cursor.execute(INinsert, INvalues)
 
-        db.commit()
-        cursor.close()
-        db.close()
+#         db.commit()
+#         cursor.close()
+#         db.close()
 
-    @commands.command(aliases = ['Dismantle_ex', 'destroy_ex', 'Destroy_ex', 'disassemble_ex', 'Disassemble_ex'])
-    async def dismantle_ex(self, ctx):
-        await ctx.send('```k.dismantle [Item name]\n>>> [Dismantles the specified item]```')
+#     @commands.command(aliases = ['Dismantle_ex', 'destroy_ex', 'Destroy_ex', 'disassemble_ex', 'Disassemble_ex'])
+#     async def dismantle_ex(self, ctx):
+#         await ctx.send('```k.dismantle [Item name]\n>>> [Dismantles the specified item]```')
 
     @commands.command(aliases = ['Quest', 'loot', 'Loot'])
     @commands.cooldown(1, 43200, commands.BucketType.user)
@@ -1566,7 +1565,7 @@ You are now free to purchase new armor.')
             looted['t1'] = random.choice(items['tier_1'])
         if random.randint(1, 100) <= (50  + comp_bonus + quest_loot_bonus):
             looted['t2'] = random.choice(items['tier_2'])
-        if random.randint(1, 100) <= (25  + comp_bonus + quest_loot_bonus):
+        if random.randint(1, 100) <= (50  + comp_bonus + quest_loot_bonus):
             loot_points = random.randint(1 + points_bonus, 10 + points_bonus)
             looted['points'] = f'{loot_points} house points'
         if random.randint(1, 100) <= (10  + comp_bonus + quest_loot_bonus):
