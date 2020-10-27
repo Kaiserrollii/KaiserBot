@@ -48,7 +48,8 @@ class Background_Tasks_Cog(commands.Cog):
         channel = self.bot.get_channel(627970443361648685)
         while not self.bot.is_closed():
 
-            url = requests.get('https://www.verseoftheday.com/')
+            user_agent = {'User-Agent': 'Mozilla/5.0'}
+            url = requests.get('https://www.verseoftheday.com/', user_agent)
             soup = BeautifulSoup(url.text, 'html.parser')
             verse = soup.find('div', {'class': 'bilingual-left'})
             formatted = ''.join(verse.text.replace('—', '\n- '))
