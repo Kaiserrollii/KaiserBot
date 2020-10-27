@@ -83,7 +83,8 @@ class Games_Cog(commands.Cog):
                        'https://imgur.com/fJDTDjj.png',
                        'https://imgur.com/gAFVj9Z.png',
                        'https://imgur.com/slpf69R.png',
-                       'https://imgur.com/3cMBLZN.png']
+                       'https://imgur.com/3cMBLZN.png',
+                       'https://imgur.com/GlsfwyM.png']
                     
         await ctx.send(f'{random.choice(cringe_list)}')
 
@@ -348,7 +349,7 @@ k.uwufy \n>>> [Uwufies the most recent text message in the current channel]```")
                        'You may rely on it.',
                        'Yes definitely.',
                        'It is decidedly so.',
-                       'As the great bearer of wisdow, the almightly seeker of truth, *yes*.',
+                       'As the great bearer of wisdom, the almightly seeker of truth, *yes*.',
                        'Most likely.',
                        'YES.',
                        'Outlook good.',
