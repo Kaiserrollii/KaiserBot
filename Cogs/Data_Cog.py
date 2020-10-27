@@ -534,9 +534,8 @@ Language codes: <https://developers.google.com/admin-sdk/directory/v1/languages>
                 groupcategory = profilesoup.find('div', {'class': 'page-header__categories-links'})
 
                 if 'Disambiguations' in groupcategory.text:
-                    second = results.find_all('li', {'class': 'result'})[1]
-                    sec = second.find('li')
-                    link = sec.find('a')['href']
+                    second = results.find_all('li', {'class': 'unified-search__result'})[1]
+                    link = second.find('a')['href']
                     profilelink = link
                     profilerequest = requests.get(profilelink, headers = user_agent)
                     profilesoup = BeautifulSoup(profilerequest.text, 'html.parser')
