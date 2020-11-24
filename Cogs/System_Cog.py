@@ -982,18 +982,12 @@ Before applying for a new job, you must leave your current job (`k.sell [job nam
             quantityembed.timestamp = datetime.datetime.utcnow()
             quantitymessage = await ctx.send(embed = quantityembed)
 
-            await quantitymessage.add_reaction('1️⃣')
-            await quantitymessage.add_reaction('2️⃣')
-            await quantitymessage.add_reaction('3️⃣')
-            await quantitymessage.add_reaction('4️⃣')
-            await quantitymessage.add_reaction('5️⃣')
+            await quantitymessage.add_reaction('🔢')
             await quantitymessage.add_reaction('❌')
 
             def check(reaction, user):
                 return (user == ctx.message.author and \
-                    (str(reaction.emoji) == '1️⃣' or str(reaction.emoji) == '2️⃣' or \
-                    str(reaction.emoji) == '3️⃣' or str(reaction.emoji) == '4️⃣' or \
-                    str(reaction.emoji) == '5️⃣' or str(reaction.emoji) == '❌') and \
+                    (str(reaction.emoji) == '🔢' or str(reaction.emoji) == '❌') and \
                     reaction.message.id == quantitymessage.id)
                 
             try: 
@@ -1006,16 +1000,33 @@ Before applying for a new job, you must leave your current job (`k.sell [job nam
                 await ctx.send('Buy item timed out. Be faster next time, pabo.')
                 return
             else:
-                if str(reaction.emoji) == '1️⃣':
-                    quantity = 1
-                elif str(reaction.emoji) == '2️⃣':
-                    quantity = 2
-                elif str(reaction.emoji) == '3️⃣':
-                    quantity = 3
-                elif str(reaction.emoji) == '4️⃣':
-                    quantity = 4
-                elif str(reaction.emoji) == '5️⃣':
-                    quantity = 5
+                if str(reaction.emoji) == '🔢':
+                    inputmessage = await ctx.send('Enter a valid numeric quantity:')
+                    
+                    def inputcheck(answer: discord.Message): 
+                        return answer.channel == ctx.channel and answer.author.id == ctx.author.id
+                    
+                    try:
+                        quantity = await self.bot.wait_for('message', timeout = 120, check = inputcheck)
+                    except asyncio.TimeoutError:
+                        db.commit()
+                        cursor.close()
+                        db.close()
+                        await quantitymessage.delete()
+                        await inputmessage.delete()
+                        await ctx.send('Buy item timed out. Be faster next time, pabo.')
+                        return
+                    else:
+                        await inputmessage.delete()
+                        quantity = int(float(quantity.content))
+                        if quantity <= 0:
+                            db.commit()
+                            cursor.close()
+                            db.close()
+                            await quantitymessage.delete()
+                            await ctx.send('Invalid quantity.')
+                            return
+
                 elif str(reaction.emoji) == '❌':
                     db.commit()
                     cursor.close()
