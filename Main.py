@@ -9,7 +9,9 @@ fin.close()
 
 Token = lines[0]
 
-bot = commands.Bot(command_prefix = 'k.')
+intents = discord.Intents.default()
+intents.members = True
+bot = commands.Bot(command_prefix = 'k.', intents = intents)
 bot.remove_command('help')
 
 @bot.event
@@ -45,6 +47,5 @@ async def cog_offline(ctx, extension):
 for filename in os.listdir('./Cogs'):
     if filename.endswith('.py'):
         bot.load_extension(f'Cogs.{filename[:-3]}')
-
 
 bot.run(Token)
