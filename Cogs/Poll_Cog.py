@@ -216,10 +216,12 @@ class Poll_Cog(commands.Cog):
                 if thumbnail.lower() != 'none':
                     poll_embed.set_thumbnail(url = thumbnail)
 
-                # Add each option pair as a field
+                # Add each option pair into a field value
+                value = ''
                 for i in options.items():
-                    poll_embed.add_field(name = '\u200b', value = i[0] + ' ' + i[1], inline = False)
+                    value += i[0] + ' ' + i[1] + '\n'
 
+                poll_embed.add_field(name = '\u200b', value = value, inline = False)
                 poll_embed.set_footer(text = f'KaiserBot | {ctx.guild.name}', icon_url = 'https://i.imgur.com/CuNlLOP.png')
                 poll_embed.timestamp = datetime.datetime.utcnow()
 
