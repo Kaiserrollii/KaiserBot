@@ -55,79 +55,123 @@ class Poll_Cog(commands.Cog):
         setup_embed.timestamp = datetime.datetime.utcnow()
         setup_message = await ctx.send(embed = setup_embed)
 
+        cancel_message = await ctx.send('"Cancel poll" to cancel.')
+
         # Identify channel for the poll to be sent in
         channel_message = await ctx.send('**Enter the channel to start the poll in:**')
         try:
-            channel_wait = await self.bot.wait_for('message', timeout = 60, check = check)
+            channel_wait = await self.bot.wait_for('message', timeout = 180, check = check)
             channel = channel_wait.content
             await channel_wait.delete()
+
+            if channel.lower() == 'cancel poll':
+                await setup_message.delete()
+                await channel_message.delete()
+                await cancel_message.delete()
+                await ctx.send('Poll cancelled.')
+                return
+
             base_description['Channel: '] = channel
             description = dict_format(base_description)
             setup_embed.description = description
             await setup_message.edit(embed = setup_embed)
             await channel_message.delete()
+
         except asyncio.TimeoutError:
             await setup_message.delete()
             await channel_message.delete()
+            await cancel_message.delete()
             await ctx.send('Timed out.')
             return
 
         # Identify member asking the poll question
         member_message = await ctx.send('**Enter the member asking the poll question:**')
         try:
-            member_wait = await self.bot.wait_for('message', timeout = 60, check = check)
+            member_wait = await self.bot.wait_for('message', timeout = 180, check = check)
             member = member_wait.content
             await member_wait.delete()
+
+            if member.lower() == 'cancel poll':
+                await setup_message.delete()
+                await member_message.delete()
+                await cancel_message.delete()
+                await ctx.send('Poll cancelled.')
+                return
+
             base_description['Member: '] = member
             description = dict_format(base_description)
             setup_embed.description = description
             await setup_message.edit(embed = setup_embed)
             await member_message.delete()
+
         except asyncio.TimeoutError:
             await setup_message.delete()
             await member_message.delete()
+            await cancel_message.delete()
             await ctx.send('Timed out.')
             return
 
         # Identify poll question
         question_message = await ctx.send('**Enter the question:**')
         try:
-            question_wait = await self.bot.wait_for('message', timeout = 60, check = check)
+            question_wait = await self.bot.wait_for('message', timeout = 180, check = check)
             question = question_wait.content
             await question_wait.delete()
+
+            if question.lower() == 'cancel poll':
+                await setup_message.delete()
+                await question_message.delete()
+                await cancel_message.delete()
+                await ctx.send('Poll cancelled.')
+                return
+
             base_description['Question: '] = question
             description = dict_format(base_description)
             setup_embed.description = description
             await setup_message.edit(embed = setup_embed)
             await question_message.delete()
+
         except asyncio.TimeoutError:
             await setup_message.delete()
             await question_message.delete()
+            await cancel_message.delete()
             await ctx.send('Timed out.')
             return
 
         # Ask if user wants to add a thumbnail to the poll
         thumbnail_message = await ctx.send('**Poll image url (optional - "None" for no image):**')
         try:
-            thumbnail_wait = await self.bot.wait_for('message', timeout = 60, check = check)
+            thumbnail_wait = await self.bot.wait_for('message', timeout = 180, check = check)
             thumbnail = thumbnail_wait.content
             await thumbnail_wait.delete()
+
+            if thumbnail.lower() == 'cancel poll':
+                await setup_message.delete()
+                await thumbnail_message.delete()
+                await cancel_message.delete()
+                await ctx.send('Poll cancelled.')
+                return
+
             if thumbnail.lower() == 'none':
                 pass
             else:
                 setup_embed.set_thumbnail(url = thumbnail)
                 await setup_message.edit(embed = setup_embed)
             await thumbnail_message.delete()
+
         except asyncio.TimeoutError:
             await setup_message.delete()
             await thumbnail_message.delete()
+            await cancel_message.delete()
             await ctx.send('Timed out.')
             return
+
+        await cancel_message.delete()
 
         # Identify amount of options for the poll (<=10)
         amount_message = await ctx.send('**How many options will your poll have:**')
         try:
-            amount_wait = await self.bot.wait_for('message', timeout = 60, check = check)
+            amount_wait = await self.bot.wait_for('message', timeout = 180, check = check)
             amount = int(amount_wait.content)
 
             if amount > 10:
@@ -136,9 +180,16 @@ class Poll_Cog(commands.Cog):
                 await amount_message.delete()
                 await amount_wait.delete()
                 return
+            if amount <= 1:
+                await ctx.send('You need at least 2 options for your poll.')
+                await setup_message.delete()
+                await amount_message.delete()
+                await amount_wait.delete()
+                return
 
             await amount_wait.delete()
             await amount_message.delete()
+
         except asyncio.TimeoutError:
             await setup_message.delete()
             await amount_message.delete()
@@ -154,7 +205,7 @@ class Poll_Cog(commands.Cog):
             # Get emote for option (must be either default or in one of the bot's guilds)
             emote_message = await ctx.send(f'**Enter the emote for Option {counter}:**')
             try:
-                emote_wait = await self.bot.wait_for('message', timeout = 60, check = check)
+                emote_wait = await self.bot.wait_for('message', timeout = 180, check = check)
                 emote = emote_wait.content
                 await emote_wait.delete()
                 await emote_message.delete()
@@ -167,7 +218,7 @@ class Poll_Cog(commands.Cog):
             # Get text for option
             text_message = await ctx.send(f'**Enter the text for Option {counter}:**')
             try:
-                text_wait = await self.bot.wait_for('message', timeout = 60, check = check)
+                text_wait = await self.bot.wait_for('message', timeout = 180, check = check)
                 text = text_wait.content
                 await text_wait.delete()
                 await text_message.delete()
@@ -194,7 +245,7 @@ class Poll_Cog(commands.Cog):
 
         # Wait for user reaction
         try: 
-            reaction, user = await self.bot.wait_for('reaction_add', timeout = 60, check = reaction_check)
+            reaction, user = await self.bot.wait_for('reaction_add', timeout = 180, check = reaction_check)
         except asyncio.TimeoutError:
             await setup_message.delete()
             await ready_message.delete()
@@ -234,6 +285,7 @@ class Poll_Cog(commands.Cog):
                     await poll_message.add_reaction(i)
 
                 await ctx.send('Deployed!')
+                await setup_message.delete()
 
             # Otherwise, cancel
             elif str(reaction.emoji) == '❌':
@@ -245,7 +297,8 @@ class Poll_Cog(commands.Cog):
 
     @commands.command(aliases = ['Poll_ex', 'pollii_ex', 'Pollii_ex'])
     async def poll_ex(self, ctx):
-        await ctx.send(f'```k.poll\n>>> [Starts a new poll setup]```')
+        await ctx.send(f'```k.poll \n>>> [Starts a new poll setup]\
+        \n\nChannel: must be a valid channel object.\nMember: must be a valid member object. Use format <@member_ID> if member is not directly pingable.```')
 
     
 def setup(bot):
