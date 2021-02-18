@@ -1922,6 +1922,7 @@ k.youtube_search Red Velvet\n>>>[Top 5 videos/channels/playlists on YouTube of R
                 score = 'N/A'
                 director = 'N/A'
                 stars = 'N/A'
+                genre = 'N/A'
                 runtime = 'N/A'
 
                 if 'Released' in moviekeys:
@@ -1936,6 +1937,8 @@ k.youtube_search Red Velvet\n>>>[Top 5 videos/channels/playlists on YouTube of R
                     director = movie['Director']
                 if 'Actors' in moviekeys:
                     stars = movie['Actors']
+                if 'Genre' in moviekeys:
+                    genre = movie['Genre']
                 if 'Runtime' in moviekeys:
                     runtime = movie['Runtime']
 
@@ -1943,7 +1946,7 @@ k.youtube_search Red Velvet\n>>>[Top 5 videos/channels/playlists on YouTube of R
                     summary = summary[:800] + '...'
 
                 embed = discord.Embed(title = f"Movie Search: {title}", colour = discord.Colour(0xefe61), 
-                description = f"**Director(s):** {director}\n**Stars:** {stars}")
+                description = f"**Director(s):** {director}\n**Stars:** {stars}\n**Genre:** {genre}")
                 embed.set_thumbnail(url = image)
                 embed.add_field(name = 'Summary:', value = summary, inline = False)
                 embed.add_field(name = 'Released:', value = date)
