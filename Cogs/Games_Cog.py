@@ -55,6 +55,7 @@ class Games_Cog(commands.Cog):
                        'Weebs',
                        'Akgaes',
                        'Sliding into the Facebook Messenger DMs.',
+                       'not being subscribed to awwwchuu',
                        'https://www.youtube.com/watch?v=9eWsyXlR0Qk',
                        'https://cdn.discordapp.com/attachments/623770537340174336/690651875086827610/ee9c152.jpg',
                        'https://cdn.discordapp.com/attachments/623770537340174336/690652718095794246/e26440f.jpg',
