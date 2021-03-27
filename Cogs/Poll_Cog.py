@@ -47,7 +47,7 @@ class Poll_Cog(commands.Cog):
             return answer.channel == ctx.channel and answer.author.id == ctx.author.id
 
         # Poll setup embed
-        base_description = {'Channel: ': '', 'Member: ': '', 'Question: ': ''}
+        base_description = {'Channel: ': '', 'Member: ': '', 'Question: ': '', 'Custom title: ': '', 'Custom colour: ': ''}
         setup_embed = discord.Embed(title = 'Poll Setup', colour = discord.Colour(0xefe61))
         setup_embed.description = dict_format(base_description)
         setup_embed.set_thumbnail(url = 'https://imgur.com/1u0GZ83.png')
@@ -134,6 +134,66 @@ class Poll_Cog(commands.Cog):
         except asyncio.TimeoutError:
             await setup_message.delete()
             await question_message.delete()
+            await cancel_message.delete()
+            await ctx.send('Timed out.')
+            return
+
+        # Ask if user wants to add a custom title to the poll
+        title_message = await ctx.send('**Enter custom poll title (optional - "None" for default title):**')
+        try:
+            title_wait = await self.bot.wait_for('message', timeout = 180, check = check)
+            title = title_wait.content
+            await title_wait.delete()
+
+            if title.lower() == 'cancel poll':
+                await setup_message.delete()
+                await title_message.delete()
+                await cancel_message.delete()
+                await ctx.send('Poll cancelled.')
+                return
+
+            if title.lower() == 'none':
+                base_description['Custom title: '] = 'Default'
+            else:
+                base_description['Custom title: '] = title
+            description = dict_format(base_description)
+            setup_embed.description = description
+            await setup_message.edit(embed = setup_embed)
+            await title_message.delete()
+
+        except asyncio.TimeoutError:
+            await setup_message.delete()
+            await title_message.delete()
+            await cancel_message.delete()
+            await ctx.send('Timed out.')
+            return
+
+        # Ask if user wants to add a custom colour to the poll
+        colour_message = await ctx.send('**Enter custom poll colour hexcode (Ex. 98c7db) (optional - "None" for default colour):**')
+        try:
+            colour_wait = await self.bot.wait_for('message', timeout = 180, check = check)
+            colour = colour_wait.content.replace('#', '')
+            await colour_wait.delete()
+
+            if colour.lower() == 'cancel poll':
+                await setup_message.delete()
+                await colour_message.delete()
+                await cancel_message.delete()
+                await ctx.send('Poll cancelled.')
+                return
+
+            if colour.lower() == 'none':
+                base_description['Custom colour: '] = 'Default'
+            else:
+                base_description['Custom colour: '] = colour
+            description = dict_format(base_description)
+            setup_embed.description = description
+            await setup_message.edit(embed = setup_embed)
+            await colour_message.delete()
+
+        except asyncio.TimeoutError:
+            await setup_message.delete()
+            await colour_message.delete()
             await cancel_message.delete()
             await ctx.send('Timed out.')
             return
@@ -259,10 +319,22 @@ class Poll_Cog(commands.Cog):
                 # Convert member string to member object
                 member = await Find_Object.member_convert(self, ctx, member)
 
-                poll_embed = discord.Embed(title = f"{member.name}'s Question of the Day")
-                poll_embed.colour = member.colour
+                # Create poll to be sent
+                poll_embed = discord.Embed()
                 poll_embed.description = question
 
+                # Check for custom/default colour
+                if base_description['Custom colour: '] == 'Default':
+                    poll_embed.colour = member.colour
+                else:
+                    poll_embed.colour = discord.Colour(int(('0x' + colour), 0))
+
+                # Check for custom/default title
+                if base_description['Custom title: '] == 'Default':
+                    poll_embed.title = f"{member.name}'s Question of the Day"
+                else:
+                    poll_embed.title = title
+                
                 # Set thumbnail if given
                 if thumbnail.lower() != 'none':
                     poll_embed.set_thumbnail(url = thumbnail)
