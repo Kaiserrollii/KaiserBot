@@ -13,6 +13,7 @@ class Background_Tasks_Cog(commands.Cog):
         self.bg_task = self.bot.loop.create_task(self.status())
         self.bg_task = self.bot.loop.create_task(self.daily_affirmation())
         self.bg_task = self.bot.loop.create_task(self.daily_bible())
+        self.bg_task = self.bot.loop.create_task(self.daily_ariana_quote())
 
     @commands.Cog.listener()
     async def on_ready(self):
@@ -65,17 +66,17 @@ class Background_Tasks_Cog(commands.Cog):
         channel = self.bot.get_channel(778771519362957342)
         while not self.bot.is_closed():
 
-                url = 'https://quotes.thefamouspeople.com/ariana-grande-15637.php'
-                user_agent = {'User-Agent': 'Mozilla/5.0'}
+            url = 'https://quotes.thefamouspeople.com/ariana-grande-15637.php'
+            user_agent = {'User-Agent': 'Mozilla/5.0'}
 
-                response = requests.get(url, headers = user_agent)
-                soup = BeautifulSoup(response.text, 'html.parser')
-                quotes = soup.find_all('div', {'class': 'quote'})
-                random_quote = random.choice(quotes)
-                processed = random_quote.find('q').text
+            response = requests.get(url, headers = user_agent)
+            soup = BeautifulSoup(response.text, 'html.parser')
+            quotes = soup.find_all('div', {'class': 'quote'})
+            random_quote = random.choice(quotes)
+            processed = random_quote.find('q').text
 
-                await channel.send(f'**Daily Ariana Quote:**\n{processed}')
-                await asyncio.sleep(86400)
+            await channel.send(f'**Daily Ariana Quote:**\n{processed}')
+            await asyncio.sleep(86400)
 
 
 def setup(bot):
