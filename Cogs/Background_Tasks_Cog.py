@@ -43,6 +43,7 @@ class Background_Tasks_Cog(commands.Cog):
             await channel.send(f'{random.choice(text)}')
             await asyncio.sleep(86400) 
 
+    # Sends a daily bible quote into #the-spa every 24h
     async def daily_bible(self):
         await self.bot.wait_until_ready()
         channel = self.bot.get_channel(627970443361648685)
@@ -56,6 +57,25 @@ class Background_Tasks_Cog(commands.Cog):
 
             await channel.send(f'**Daily Bible Verse:**\n{formatted}')
             await asyncio.sleep(86400)
+
+    # Sends a daily Ariana Grande quote into #ariana-chat every 24h
+    # As per request from Aricord
+    async def daily_ariana_quote(self):
+        await self.bot.wait_until_ready()
+        channel = self.bot.get_channel(778771519362957342)
+        while not self.bot.is_closed():
+
+                url = 'https://quotes.thefamouspeople.com/ariana-grande-15637.php'
+                user_agent = {'User-Agent': 'Mozilla/5.0'}
+
+                response = requests.get(url, headers = user_agent)
+                soup = BeautifulSoup(response.text, 'html.parser')
+                quotes = soup.find_all('div', {'class': 'quote'})
+                random_quote = random.choice(quotes)
+                processed = random_quote.find('q').text
+
+                await channel.send(f'**Daily Ariana Quote:**\n{processed}')
+                await asyncio.sleep(86400)
 
 
 def setup(bot):
