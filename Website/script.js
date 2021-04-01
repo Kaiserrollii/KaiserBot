@@ -245,7 +245,7 @@ var HousesRPGTable = "<table id = 'HousesRPGTable'><tr class = 'header'>\
     HousesRPGTable += "<td><div class = 'tablealiases'>k.sorting_quiz</div></td></tr>";
 
     HousesRPGTable += "<tr><td><div class = 'tablecommands'>k.house <div class = 'tooltip'>[House name]\
-    <span class = 'tooltiptext'>Pink/Yellow/Blue/Green/Purple</div></span></div></td>";
+    <span class = 'tooltiptext'>Pink/Yellow/Blue<br>/Green/Purple</div></span></div></td>";
     HousesRPGTable += '<td>Shows information about the specified house.</td>';
     HousesRPGTable += "<td><div class = 'tablealiases'>k.house_info</div></td></tr>";
 
@@ -503,6 +503,7 @@ function Moderation() {
 var MiscellaneousTable = "<table id = 'MiscellaneousTable'><tr class = 'header'>\
 <th><div class = 'tabletitle'>Miscellaneous</div></th>\
 <th><div class = 'tabletitle'>&#x200b;</div></th>\
+<th><div class = 'tabletitle'>&#x200b;</div></th>\
 <th><div class = 'tabletitle'>&#x200b;</div></th>";
 
     MiscellaneousTable += "<tr><td><div class = 'tablecommands'>k.avatar <div class = 'tooltip'>[User]\
@@ -529,6 +530,11 @@ var MiscellaneousTable = "<table id = 'MiscellaneousTable'><tr class = 'header'>
     MiscellaneousTable += "<tr><td><div class = 'tablecommands'>k.ping</div></td>";
     MiscellaneousTable += "<td>Returns the bot's ping.</td>";
     MiscellaneousTable += "<td><div class = 'tablealiases'>k.pong</div></td></tr>";
+
+    MiscellaneousTable += "<tr><td><div class = 'tablecommands'>k.poll</div></td>";
+    MiscellaneousTable += "<td>Begins setup for a customizable poll.</td>";
+    MiscellaneousTable += "<td><div class = 'tablealiases'>k.pollii</div></td>";
+    MiscellaneousTable += "<td><div class = 'tableperms'>Ban Members</div></td></tr>";
 
     MiscellaneousTable += "<tr><td><div class = 'tablecommands'>k.servericon</div></td>";
     MiscellaneousTable += '<td>Returns the server icon.</td>';
