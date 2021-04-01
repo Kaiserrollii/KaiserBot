@@ -249,7 +249,7 @@
         MasterTable += '<td></td></tr>';
 
         MasterTable += "<tr><td><div class = 'tablecommands'>k.house <div class = 'tooltip'>[House name]\
-        <span class = 'tooltiptext'>Pink/Yellow/Blue/Green/Purple</div></span></div></td>";
+        <span class = 'tooltiptext'>Pink/Yellow/Blue<br>/Green/Purple</div></span></div></td>";
         MasterTable += '<td>Shows information about the specified house.</td>';
         MasterTable += "<td><div class = 'tablealiases'>k.house_info</div></td></tr>";
 
@@ -388,8 +388,13 @@
         <span class = 'tooltiptext'>[House]: Valid house<br>[Amount]: Integer<br>[User]: Valid user</div></span></div></td>";
         MasterTable += '<td>Adds the specified amount of house points to the house, with optional individual points added \
         to the specified user.</td>';
-        MasterTable += "<td><div class = 'tablealiases'>k.add_points<br>k.points_add</div></td>"
+        MasterTable += "<td><div class = 'tablealiases'>k.add_points<br>k.points_add</div></td>";
         MasterTable += "<td><div class = 'tableperms'>Owner</div></td></tr>";
+
+        MasterTable += "<tr><td><div class = 'tablecommands'>k.poll</div></td>";
+        MasterTable += "<td>Begins setup for a customizable poll.</td>";
+        MasterTable += "<td><div class = 'tablealiases'>k.pollii</div></td>";
+        MasterTable += "<td><div class = 'tableperms'>Ban Members</div></td></tr>";
         
         MasterTable += "<tr><td><div class = 'tablecommands'>k.pop <div class = 'tooltip'>[Query]\
         <span class = 'tooltiptext'>Group / soloist / group member, etc.</div></span></div></td>";
