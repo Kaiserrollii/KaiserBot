@@ -15,7 +15,6 @@ from datetime import timedelta
 from googletrans import Translator
 from PyDictionary import PyDictionary as pyd
 from alpha_vantage.timeseries import TimeSeries
-from forex_python.converter import CurrencyRates as fxp
 from bs4 import BeautifulSoup
 from discord.ext import commands 
 
@@ -1726,6 +1725,7 @@ k.youtube_search Red Velvet\n>>>[Top 5 videos/channels/playlists on YouTube of R
         fquery = query.replace(' ', '+').lower()
         url = f'https://store.steampowered.com/search/?term={fquery}'
         user_agent = {'User-Agent': 'Mozilla/5.0'}
+        
         searchrequest = requests.get(url, headers = user_agent)
         searchsoup = BeautifulSoup(searchrequest.text, 'html.parser')
         topsearch = searchsoup.find('div', {'id': 'search_resultsRows'})
@@ -1767,21 +1767,16 @@ k.youtube_search Red Velvet\n>>>[Top 5 videos/channels/playlists on YouTube of R
             elif 'free' in price.text.strip().lower():
                 price = 'Free'
             else:
-                CDNprice = float(price.text.strip()[5:])
-                conversion = float(fxp().get_rate('CAD', 'USD'))
-                USDprice = '{:.2f}'.format(CDNprice * conversion)
-                price = 'USD$' + ' ' + USDprice
+                CDNprice = '{:.2f}'.format(float(price.text.strip()[5:]))
+                price = 'CDN$' + ' ' + CDNprice
 
             if discountpct is None and discountOG is None and discountfinal is None:
                 pass
             if discountpct is not None and discountOG is not None and discountfinal is not None:
-                CDNpriceOG = float(discountOG.text.strip()[5:])
-                CDNpricefinal = float(discountfinal.text.strip()[5:])
-                conversion = float(fxp().get_rate('CAD', 'USD'))
-                USDpriceOG = '{:.2f}'.format(CDNpriceOG * conversion)
-                USDpricefinal = '{:.2f}'.format(CDNpricefinal * conversion)
-                discountOG = 'USD$' + ' ' + USDpriceOG
-                discountfinal = 'USD$' + ' ' + USDpricefinal
+                CDNpriceOG = '{:.2f}'.format(float(discountOG.text.strip()[5:]))
+                CDNpricefinal = '{:.2f}'.format(float(discountfinal.text.strip()[5:]))
+                discountOG = 'CDN$' + ' ' + CDNpriceOG
+                discountfinal = 'CDN$' + ' ' + CDNpricefinal
                 price = f"{discountpct.text.replace('-', '')} off! ➞ ~~{discountOG}~~ **{discountfinal}**"
 
             if metacritic is None:
