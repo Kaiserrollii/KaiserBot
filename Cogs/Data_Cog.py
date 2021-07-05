@@ -509,11 +509,9 @@ Language codes: <https://developers.google.com/admin-sdk/directory/v1/languages>
         if query is None:
             await ctx.send('You need to specify a query, pabo. Try again.')
         else:
-            if 'gidle' in query.lower():
-                query = '(G)I-DLE'
             fquery = query.replace(' ', '+').lower()
-
-            url = f'https://kpop.fandom.com/wiki/Special:Search?search={fquery}&fulltext=Search&scope=internal&ns0=1&ns14=1#'
+            
+            url = f'https://kpop.fandom.com/wiki/Special:Search?query={fquery}&scope=internal&navigationSearch=true'
             user_agent = {'User-Agent': 'Mozilla/5.0'}
             searchrequest = requests.get(url, headers = user_agent)
             searchsoup = BeautifulSoup(searchrequest.text, 'html.parser')
@@ -531,7 +529,7 @@ Language codes: <https://developers.google.com/admin-sdk/directory/v1/languages>
                 profilerequest = requests.get(profilelink, headers = user_agent)
                 profilesoup = BeautifulSoup(profilerequest.text, 'html.parser')
 
-                groupcategory = profilesoup.find('div', {'class': 'page-header__categories-links'})
+                groupcategory = profilesoup.find('div', {'class': 'page-header__categories'})
 
                 if 'Disambiguations' in groupcategory.text:
                     second = results.find_all('li', {'class': 'unified-search__result'})[1]
@@ -539,30 +537,23 @@ Language codes: <https://developers.google.com/admin-sdk/directory/v1/languages>
                     profilelink = link
                     profilerequest = requests.get(profilelink, headers = user_agent)
                     profilesoup = BeautifulSoup(profilerequest.text, 'html.parser')
-                    groupcategory = profilesoup.find('div', {'class': 'page-header__categories-links'})
+                    groupcategory = profilesoup.find('div', {'class': 'page-header__categories'})
 
                 title = profilesoup.find('h1', {'class': 'page-header__title'})
                 image = profilesoup.find('figure', {'class': 'pi-item pi-image'})
                 infoheaders = profilesoup.find_all('h3', {'class': 'pi-data-label pi-secondary-font'})
                 infovalues = profilesoup.find_all('div', {'class': 'pi-data-value pi-font'})
-                aside = profilesoup.find('aside')
-                
-                if 'bts' == query.lower():
-                    description = "BTS (Korean: 방탄소년단; Japanese: 防弾少年团; also known as Bangtan Boys and Beyond the Scene)\
-                         is a seven-member boy group under Big Hit Entertainment. They debuted on June 13, 2013 with their first \
-                             single 2 Cool 4 Skool."
-                else:
-                    if aside is not None:
-                        paragraph = aside.find_next('p')
-                        if paragraph is None:
-                            description = 'N/A'
-                        else:
-                            if len(paragraph) > 1:
-                                description = paragraph.text.strip()
-                            else:
-                                description = 'N/A'
-                    else:
-                        description = 'N/A'
+               
+                output = profilesoup.find('div', {'class': 'toc'})
+                paragraph = output.find_next('p')
+                description = paragraph.text.strip()
+                if output is None:
+                    description = 'N/A'
+                elif 'This section is missing sources' in description:
+                    paragraph = paragraph.find_next('p')
+                    description = paragraph.text.strip()
+                if len(description) > 500:
+                    description = description[:500] + '...'
 
                 d = {}
                 if infoheaders is not None and infovalues is not None:
@@ -639,19 +630,15 @@ Language codes: <https://developers.google.com/admin-sdk/directory/v1/languages>
                     else:
                         founded = 'N/A'
 
-                    if 'cube' in query.lower():
-                        founders = 'Hong Seung Sung, Shin Jung Hwa'
+                    if 'Founder(s)' in d.keys():
+                        founders = d['Founder(s)']
                     else:
-                        if 'Founder(s)' in d.keys():
-                            founders = d['Founder(s)']
-                        else:
-                            founders = 'N/A'
+                        founders = 'N/A'
 
                     embeddesc = f"**Founded:** {founded}\n**Founder(s):** {founders}" 
                     embed = discord.Embed(title = f"Kpop Wiki Search - {title}", colour = discord.Colour(0xefe61), 
                     description = embeddesc, url = profilelink)
                     embed.set_thumbnail(url = thumbnail)
-                    embed.add_field(name = 'General Info:', value = description)
                     embed.set_footer(text = f'KaiserBot | {ctx.guild.name}', icon_url = 'https://i.imgur.com/CuNlLOP.png')
                     embed.timestamp = datetime.datetime.utcnow()
 
